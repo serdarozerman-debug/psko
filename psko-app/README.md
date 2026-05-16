@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PSKO
 
-## Getting Started
+PSKO is an AI-powered clinical psychology simulation trainer for psychology students. It provides:
 
-First, run the development server:
+- realistic client personas driven by cognitive models
+- multiple therapeutic lenses (CBT, psychodynamic, humanistic, ACT, DBT)
+- guided prompts during sessions
+- structured post-session feedback
+
+## Tech Stack
+
+- Next.js 14 (App Router)
+- TypeScript
+- Tailwind CSS
+- Supabase Auth + Postgres
+- Prisma
+- Anthropic Claude API
+- Vercel
+
+## Local Development
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Create local environment files:
+
+```bash
+cp .env.example .env.local
+cp .env.local .env
+```
+
+3. Fill in:
+
+- `ANTHROPIC_API_KEY`
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `DATABASE_URL`
+- `DIRECT_URL`
+
+4. Generate Prisma client and apply migrations:
+
+```bash
+npx prisma generate
+npx prisma migrate dev --name init
+```
+
+5. Start the app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Production Deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Production URL: `https://psko-app.vercel.app`
+- Vercel platform: `serdars-projects-f333f69f/psko-app`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Deployment Notes
 
-## Learn More
+- Prisma was pinned to `5.22.0` for Node 20 compatibility
+- Production build runs `prisma generate` before `next build`
+- Environment variables are configured in Vercel production settings
+- Local `.env` files are ignored and must never be committed
 
-To learn more about Next.js, take a look at the following resources:
+## Smoke Test Results
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Final post-deployment smoke tests were run against the live production site.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Public Routes
 
-## Deploy on Vercel
+- `GET /` → `200 OK`
+- `GET /login` → `200 OK`
+- `GET /register` → `200 OK`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Auth Protection
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `GET /dashboard` unauthenticated → redirected to `/login`
+- `GET /session/fake-session-id` unauthenticated → redirected to `/login`
+
+### Protected API Behavior
+
+- `GET /api/personas` unauthenticated → `401 Unauthorized`
+- `POST /api/session/start` unauthenticated → `401 Unauthorized`
+- `POST /api/session/end` unauthenticated → `401 Unauthorized`
+
+### Metadata Verification
+
+Verified on the live site:
+
+- `title` → `PSKO | Clinical Psychology Simulation Trainer`
+- `description` → `PSKO helps psychology students practice clinical interviewing through AI-powered therapy simulations, guided prompts, and structured feedback.`
+- `og:title` → `PSKO | Clinical Psychology Simulation Trainer`
+
+## Current Status
+
+Working in production:
+
+- landing page
+- login and register pages
+- auth guards on protected routes
+- protected API authorization behavior
+- deployment and metadata
+
+Not yet smoke tested with an authenticated end-to-end session:
+
+- signed-in dashboard flow
+- starting a real therapy simulation
+- live streaming patient responses
+- post-session feedback generation with a real user session

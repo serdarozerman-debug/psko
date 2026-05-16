@@ -85,10 +85,11 @@ interface Session {
   user_id: string
   persona_id: string
   therapeutic_approach: TherapeuticApproach
+  role_mode: 'THERAPIST' | 'CLIENT'  // THERAPIST = student plays therapist; CLIENT = student plays patient
   messages: Message[]
   started_at: Date
   ended_at?: Date
-  feedback?: SupervisorFeedback
+  feedback?: SupervisorFeedback | ClientDebrief
 }
 
 type TherapeuticApproach =
@@ -99,12 +100,22 @@ type TherapeuticApproach =
   | 'dbt'
 
 interface SupervisorFeedback {
-  overall_score: number           // 0-100
+  overall_score: number           // 0-100 (THERAPIST mode only)
   competency_scores: CompetencyScore[]
   strengths: string[]
   areas_for_improvement: string[]
   key_moments: SessionMoment[]    // Annotated transcript moments
   suggested_readings: string[]
+}
+
+interface ClientDebrief {
+  type: 'client-debrief'          // Discriminant for union narrowing
+  experience_summary: string
+  helpful_moments: string[]
+  challenging_moments: string[]
+  emotional_themes: string[]
+  technique_used: string
+  reflection_prompts: string[]
 }
 
 interface CompetencyScore {
@@ -119,14 +130,13 @@ interface CompetencyScore {
 ### 1. Start Simulation Session
 
 ```
-User selects persona + therapeutic approach
-  → POST /api/session/start
-  → Build system prompt:
-       [Persona cognitive model JSON]
-       [Approach-specific instructions]
-       [Conversational style parameters]
-  → Create session record in Supabase
-  → Return session_id + opening patient statement
+User selects persona + therapeutic approach + role mode
+  → POST /api/session/start { personaId, therapeuticApproach, roleMode }
+  → Build system prompt based on roleMode:
+       THERAPIST: [Persona cognitive model] + [Approach instructions] (patient persona)
+       CLIENT:    [Psychologist persona prompt] + [Presenting problem as treatment focus]
+  → Create session record in Supabase (stores roleMode)
+  → Return session_id + opening AI statement
 ```
 
 ### 2. Simulation Turn
@@ -145,10 +155,10 @@ Student types message
 ```
 Student ends session
   → POST /api/session/end { session_id }
-  → Retrieve full transcript
-  → Call Claude Supervisor Agent:
-       System: "You are a clinical psychology supervisor..."
-       User: [full transcript + persona model + approach used]
+  → Retrieve full transcript + session.roleMode
+  → Call Claude feedback agent (mode-dependent):
+       THERAPIST: Supervisor Agent → CTS-R competency scoring (SupervisorFeedback JSON)
+       CLIENT:    Debrief Agent   → Emotional experience debrief (ClientDebrief JSON)
   → Parse structured feedback JSON
   → Save to DB, return to student
 ```

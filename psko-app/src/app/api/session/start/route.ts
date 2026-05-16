@@ -53,12 +53,12 @@ export async function POST(req: Request) {
     },
   })
 
-  const aiRole = roleMode === 'CLIENT' ? 'therapist' : 'patient'
-
+  // The AI's message role is always 'patient' structurally (student = human, patient = AI).
+  // roleMode on the session determines the AI's *character* (psychologist vs patient persona).
   const message = await prisma.message.create({
     data: {
       sessionId: session.id,
-      role: aiRole,
+      role: 'patient',
       content: openingStatement,
     },
   })

@@ -143,22 +143,22 @@ db-schema (alchemist)
 
 | Task | Status | Agent | Tests | Commit | Notes |
 |------|--------|-------|-------|--------|-------|
-| db-schema | ⏳ Waiting | alchemist | — | — | |
-| api-types | ⏳ Waiting | smith | — | — | Depends: db-schema |
-| prompts | ⏳ Waiting | smith-1 | — | — | Depends: api-types |
-| api-routes | ⏳ Waiting | smith-2 | — | — | Depends: api-types |
-| ui-role-selector | ⏳ Waiting | shaper-1 | — | — | Depends: api-types |
-| ui-dashboard | ⏳ Waiting | shaper-2 | — | — | Depends: ui-role-selector |
-| ui-session | ⏳ Waiting | shaper-3 | — | — | Depends: api-types |
-| tests | ⏳ Waiting | enforcer | — | — | Depends: prompts, api-routes |
-| build | ⏳ Waiting | enforcer | — | — | Depends: all |
+| db-schema | ✓ Done | alchemist | ✓ Pass | 4ca16fa | RoleMode enum + migration applied |
+| api-types | ✓ Done | smith | ✓ Pass | 4ca16fa | RoleMode, ClientDebrief, SessionData |
+| prompts | ✓ Done | smith-1 | ✓ Pass | c8f9a20 | therapist-prompt + debrief-prompt + agent updates |
+| api-routes | ✓ Done | smith-2 | ✓ Pass | c8f9a20 | start/end/message routes roleMode-aware |
+| ui-role-selector | ✓ Done | shaper-1 | ✓ Pass | c8f9a20 | RoleModeSelector.tsx |
+| ui-dashboard | ✓ Done | shaper-2 | ✓ Pass | c8f9a20 | PersonaCard → selector, history badge |
+| ui-session | ✓ Done | shaper-3 | ✓ Pass | c8f9a20 | SimulationChat + FeedbackReport mode-aware |
+| tests | ✓ Done | enforcer | ✓ Pass (18/18) | 4ca16fa | node:test + tsx/cjs runner |
+| build | ✓ Done | enforcer | ✓ Pass | c8f9a20 | commits clean, tsc silent |
 
 ## Current Session
 
-**Phase:** 1 — Foundation
-**Active:** db-schema
-**Working on:** Adding RoleMode enum to Prisma schema
-**Next:** api-types (contracts)
+**Phase:** COMPLETE
+**Active:** —
+**Working on:** —
+**Next:** /audit-spec @2026-05-16-authenticated-simulation-flow
 
 ## Decisions
 

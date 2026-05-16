@@ -1,0 +1,48 @@
+{
+  "id": "ayse-depression-beginner",
+  "name": "Ayşe",
+  "age": 28,
+  "presentingProblem": "I've been feeling really low for a few months. I can't seem to enjoy anything anymore and I'm struggling to get out of bed.",
+  "backstory": "Ayşe works as a graphic designer in Istanbul. She grew up with a critical mother who set high standards and rarely praised her. She recently went through a breakup after a 3-year relationship. She has a small circle of close friends but has been withdrawing from them lately. She used to love painting and hiking but has abandoned both.",
+  "difficultyLevel": "beginner",
+  "conversationalStyle": "plain",
+  "recommendedApproaches": ["cbt", "humanistic", "act"],
+  "disorderProfile": ["Major Depressive Disorder, mild"],
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "I am not good enough",
+      "I don't deserve to be happy",
+      "If I try and fail, it confirms I'm worthless"
+    ],
+    "intermediateBeliefs": [
+      "I should achieve something significant to feel worthy",
+      "Asking for help means I'm weak",
+      "If I'm not productive, I have no value"
+    ],
+    "automaticThoughts": [
+      "What's the point of getting up?",
+      "Nobody really cares about me",
+      "I'll never feel normal again",
+      "I'm such a burden to everyone"
+    ],
+    "emotionalState": {
+      "primary": "sad",
+      "intensity": 3,
+      "secondary": "ashamed"
+    },
+    "triggers": [
+      "Questions about her relationship ending",
+      "Talk of success or achievement",
+      "Being asked about hobbies she's abandoned"
+    ],
+    "defenses": [
+      "Minimization (\"it's not that bad\")",
+      "Rationalization (\"I'm just tired\")"
+    ],
+    "values": [
+      "Creativity and self-expression",
+      "Close relationships",
+      "Making meaningful work"
+    ]
+  }
+}

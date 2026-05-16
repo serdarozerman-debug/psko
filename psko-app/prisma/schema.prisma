@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  sessions  Session[]
+
+  @@map("users")
+}
+
+model Persona {
+  id                    String   @id @default(uuid())
+  name                  String
+  age                   Int
+  presentingProblem     String   @map("presenting_problem")
+  backstory             String
+  difficultyLevel       String   @map("difficulty_level")
+  conversationalStyle   String   @map("conversational_style")
+  recommendedApproaches String[] @map("recommended_approaches")
+  cognitiveModel        Json     @map("cognitive_model")
+  disorderProfile       String[] @map("disorder_profile")
+  createdAt             DateTime @default(now()) @map("created_at")
+  sessions              Session[]
+
+  @@map("personas")
+}
+
+model Session {
+  id                  String    @id @default(uuid())
+  userId              String    @map("user_id")
+  personaId           String    @map("persona_id")
+  therapeuticApproach String    @map("therapeutic_approach")
+  startedAt           DateTime  @default(now()) @map("started_at")
+  endedAt             DateTime? @map("ended_at")
+  turnCount           Int       @default(0) @map("turn_count")
+  feedback            Json?
+  deletedAt           DateTime? @map("deleted_at")
+
+  user                User      @relation(fields: [userId], references: [id])
+  persona             Persona   @relation(fields: [personaId], references: [id])
+  messages            Message[]
+
+  @@map("sessions")
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  sessionId String   @map("session_id")
+  role      String
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  session   Session  @relation(fields: [sessionId], references: [id])
+
+  @@map("messages")
+}

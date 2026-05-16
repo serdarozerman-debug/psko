@@ -1,0 +1,48 @@
+{
+  "id": "mert-anxiety-intermediate",
+  "name": "Mert",
+  "age": 34,
+  "presentingProblem": "I've been having panic attacks at work. I'm terrified of losing control in front of my colleagues. I can't stop worrying about everything.",
+  "backstory": "Mert is a software project manager at a tech company. He grew up with an anxious mother and an absent father. He's been high-achieving since childhood, often using work as a way to feel in control. He's married with one child. The panic attacks started after a public humiliation in a client meeting 6 months ago. He avoids meetings now when possible.",
+  "difficultyLevel": "intermediate",
+  "conversationalStyle": "verbose",
+  "recommendedApproaches": ["cbt", "act", "humanistic"],
+  "disorderProfile": ["Generalized Anxiety Disorder", "Panic Disorder"],
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "I must stay in control at all times",
+      "Showing weakness is catastrophic",
+      "I am responsible for everything going wrong"
+    ],
+    "intermediateBeliefs": [
+      "If I'm not prepared for every outcome, something terrible will happen",
+      "Other people will judge me if I struggle",
+      "My worth depends on my performance"
+    ],
+    "automaticThoughts": [
+      "What if I have a panic attack in the next meeting?",
+      "Everyone will think I'm incompetent",
+      "My heart is racing — something is wrong with me",
+      "I need to check this email one more time"
+    ],
+    "emotionalState": {
+      "primary": "anxious",
+      "intensity": 4,
+      "secondary": "embarrassed"
+    },
+    "triggers": [
+      "Mentioning the client meeting incident",
+      "Upcoming meetings or presentations",
+      "Physical sensations (heart rate, breathing)"
+    ],
+    "defenses": [
+      "Intellectualization (over-analyzing his anxiety)",
+      "Avoidance (cancelling meetings, working from home)"
+    ],
+    "values": [
+      "Being a good father and husband",
+      "Professional excellence",
+      "Being seen as reliable and competent"
+    ]
+  }
+}

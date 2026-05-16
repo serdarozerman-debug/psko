@@ -102,7 +102,7 @@ export default function SimulationChat({
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col">
+    <div className="h-screen bg-slate-950 text-white flex flex-col">
       {/* Header */}
       <div className="border-b border-slate-800 px-6 py-3 flex items-center justify-between">
         <div>

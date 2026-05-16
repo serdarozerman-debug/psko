@@ -1,6 +1,6 @@
 ---
 spec: 2026-05-16-authenticated-simulation-flow
-status: in-progress
+status: complete
 domain: simulation
 
 provides:
@@ -21,17 +21,29 @@ affects:
   - Prisma session schema (roleMode field)
 
 patterns_established:
-  - role-mode branching pattern for multi-persona AI interactions
-key_files: []
+  - role-mode branching: session-level enum drives system prompt + feedback selection
+  - structural message roles: student/patient are identity markers; AI character comes from session.roleMode
+  - mode-aware feedback: single feedback JSON column, type discriminant 'client-debrief'
+key_files:
+  - psko-app/prisma/migrations/20260516182823_add_role_mode/migration.sql
+  - psko-app/src/types/index.ts
+  - psko-app/src/lib/claude/prompts/therapist-prompt.ts
+  - psko-app/src/lib/claude/prompts/debrief-prompt.ts
+  - psko-app/src/lib/claude/patient-agent.ts
+  - psko-app/src/lib/claude/supervisor-agent.ts
+  - psko-app/src/components/simulation/RoleModeSelector.tsx
+  - psko-app/src/components/feedback/FeedbackReport.tsx
 key_decisions:
-  - Two distinct role modes are first-class session attributes, not a post-MVP add-on
-  - PSKO system prompt differs fundamentally between modes; same persona can be reused in both
-  - Feedback generation is mode-aware: emotional debrief vs. competency scoring
+  - Two distinct role modes are first-class session attributes stored on Session.roleMode
+  - PSKO system prompt differs fundamentally between modes; same persona reused in both
+  - Feedback generation is mode-aware: emotional debrief (ClientDebrief) vs. competency scoring (SupervisorFeedback)
+  - Message.role field is always student/patient for structural purposes; AI character is inferred from Session.roleMode
+  - Test runner migrated from vitest to node:test + tsx/cjs due to esbuild IPC deadlock on macOS arm64
 ---
 
 # Dual-Role Simulation Flows
 
-> Status: IN-PROGRESS
+> Status: COMPLETE
 
 ## Overview
 

@@ -1,101 +1,179 @@
-import Image from "next/image";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const features = [
+    {
+      title: "Realistic client simulations",
+      description:
+        "Practice with AI-powered client personas built from cognitive models, emotional states, and therapeutic context.",
+    },
+    {
+      title: "Multi-approach training",
+      description:
+        "Explore CBT, psychodynamic, humanistic, ACT, and DBT perspectives in a single learning environment.",
+    },
+    {
+      title: "Competency-based feedback",
+      description:
+        "Review structured post-session feedback inspired by CTS-R domains to improve your clinical interviewing skills.",
+    },
+  ];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const outcomes = [
+    "Choose a persona and therapeutic approach",
+    "Run a realistic text-based therapy simulation",
+    "Get guided prompts without losing autonomy",
+    "Review strengths, blind spots, and next steps",
+  ];
+  return (
+    <main className="min-h-screen bg-slate-950 text-white">
+      <section className="mx-auto flex max-w-6xl flex-col gap-16 px-6 py-12 sm:px-10 lg:px-12">
+        <header className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-400">
+              PSKO
+            </p>
+            <p className="mt-2 text-sm text-slate-400">
+              Clinical psychology simulation trainer for students
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <a
+              className="rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-200 transition-colors hover:border-slate-500 hover:bg-slate-900"
+              href="/login"
+            >
+              Sign in
+            </a>
+            <a
+              className="rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-500"
+              href="/register"
+            >
+              Get started
+            </a>
+          </div>
+        </header>
+
+        <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+          <div className="space-y-8">
+            <div className="space-y-5">
+              <span className="inline-flex rounded-full border border-blue-800 bg-blue-950/60 px-3 py-1 text-xs font-medium text-blue-300">
+                AI-guided deliberate practice
+              </span>
+              <h1 className="max-w-4xl text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+                Train clinical interviewing skills with realistic therapy simulations.
+              </h1>
+              <p className="max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
+                PSKO helps psychology students practice with lifelike client personas,
+                approach-specific guidance, and structured feedback designed to close
+                the gap between theory and real clinical conversations.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <a
+                className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500"
+                href="/register"
+              >
+                Create an account
+              </a>
+              <a
+                className="inline-flex items-center justify-center rounded-xl border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200 transition-colors hover:border-slate-500 hover:bg-slate-900"
+                href="/login"
+              >
+                Open the simulator
+              </a>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {outcomes.map((item) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-4 text-sm text-slate-300"
+                >
+                  <span className="mr-2 text-blue-400">•</span>
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-2xl shadow-blue-950/20">
+            <div className="space-y-5">
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                  Example session
+                </p>
+                <div className="mt-4 space-y-4 text-sm">
+                  <div className="rounded-2xl rounded-bl-sm bg-slate-800 px-4 py-3 text-slate-100">
+                    I&apos;ve been feeling low for months. I can&apos;t enjoy anything anymore,
+                    and I&apos;m struggling to get out of bed.
+                  </div>
+                  <div className="ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-blue-600 px-4 py-3 text-white">
+                    What feels hardest for you when you wake up and realize the day is
+                    starting?
+                  </div>
+                  <div className="rounded-2xl rounded-bl-sm bg-slate-800 px-4 py-3 text-slate-100">
+                    Mostly that nothing seems worth the effort. It feels like I&apos;m already
+                    behind before I even begin.
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                  Guided support
+                </p>
+                <ul className="mt-4 space-y-3 text-sm text-slate-300">
+                  <li>• Suggested questions aligned with the chosen approach</li>
+                  <li>• Persona-specific realism through cognitive model prompting</li>
+                  <li>• Feedback focused on empathy, pacing, collaboration, and discovery</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        <section className="grid gap-5 lg:grid-cols-3">
+          {features.map((feature) => (
+            <article
+              key={feature.title}
+              className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6"
+            >
+              <h2 className="text-lg font-semibold text-white">{feature.title}</h2>
+              <p className="mt-3 text-sm leading-6 text-slate-400">
+                {feature.description}
+              </p>
+            </article>
+          ))}
+        </section>
+
+        <section className="rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-blue-950/50 p-8">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl">
+              <h2 className="text-2xl font-semibold text-white">
+                Built for psychology students who want more than peer role-play.
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-slate-300 sm:text-base">
+                Use PSKO to rehearse difficult conversations, compare therapeutic lenses,
+                and build confidence before supervised clinical work.
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <a
+                className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500"
+                href="/register"
+              >
+                Start practicing
+              </a>
+              <a
+                className="inline-flex items-center justify-center rounded-xl border border-slate-700 px-5 py-3 text-sm font-semibold text-slate-200 transition-colors hover:border-slate-500 hover:bg-slate-900"
+                href="/login"
+              >
+                Return to login
+              </a>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
   );
 }

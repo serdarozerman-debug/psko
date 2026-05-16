@@ -53,12 +53,13 @@ export async function POST(req: Request) {
     createdAt: m.createdAt,
   }))
 
-  // Stream patient response
+  // Stream AI response (patient in THERAPIST mode, therapist in CLIENT mode)
   const stream = streamPatientResponse(
     persona,
     session.therapeuticApproach as TherapeuticApproach,
     historyData,
-    content
+    content,
+    session.roleMode as 'THERAPIST' | 'CLIENT'
   )
 
   let fullResponse = ''

@@ -5,6 +5,12 @@ import { prisma } from '@/lib/db/prisma'
 import { personaLibrary } from '@/lib/personas'
 import { approaches } from '@/lib/approaches'
 import PersonaCard from '@/components/simulation/PersonaCard'
+import type { RoleMode } from '@/types'
+
+const ROLE_BADGES: Record<RoleMode, string> = {
+  THERAPIST: '🩺 Therapist',
+  CLIENT: '🎭 Client',
+}
 
 const DIFFICULTY_COLORS = {
   beginner: 'bg-green-900/50 text-green-300 border-green-700',
@@ -18,9 +24,17 @@ export default async function DashboardPage() {
   if (!user) redirect('/login')
 
   const recentSessions = await prisma.session.findMany({
-    where: { userId: user.id, endedAt: { not: null } },
+    where: { userId: user.id, endedAt: { not: null }, deletedAt: null },
     orderBy: { startedAt: 'desc' },
     take: 5,
+    select: {
+      id: true,
+      personaId: true,
+      therapeuticApproach: true,
+      roleMode: true,
+      startedAt: true,
+      feedback: true,
+    },
   }).catch(() => [])
 
   return (
@@ -76,7 +90,11 @@ export default async function DashboardPage() {
                       <span className="text-slate-400 mx-2">·</span>
                       <span className="text-slate-400 text-sm">{approach?.name}</span>
                     </div>
-                    <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4">
+                      {/* Role mode badge */}
+                      <span className="text-slate-400 text-xs border border-slate-700 px-2 py-0.5 rounded-full">
+                        {ROLE_BADGES[session.roleMode as RoleMode] ?? session.roleMode}
+                      </span>
                       {feedback?.overallScore !== undefined && (
                         <span className="text-blue-400 font-semibold">{feedback.overallScore}/100</span>
                       )}

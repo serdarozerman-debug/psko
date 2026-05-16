@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/db/prisma'
 import { getPersonaById } from '@/lib/personas'
 import { getApproach } from '@/lib/approaches'
-import type { TherapeuticApproach, SupervisorFeedback } from '@/types'
+import type { TherapeuticApproach, SupervisorFeedback, ClientDebrief, RoleMode } from '@/types'
 import SimulationChat from '@/components/simulation/SimulationChat'
 import FeedbackReport from '@/components/feedback/FeedbackReport'
 
@@ -25,8 +25,9 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
 
   if (!persona || !approach) notFound()
 
+  const roleMode = (session.roleMode ?? 'THERAPIST') as RoleMode
   const isEnded = !!session.endedAt
-  const feedback = session.feedback as SupervisorFeedback | null
+  const feedback = session.feedback as SupervisorFeedback | ClientDebrief | null
 
   if (isEnded && feedback) {
     return (
@@ -35,6 +36,7 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
         persona={persona}
         approach={approach}
         feedback={feedback}
+        roleMode={roleMode}
       />
     )
   }
@@ -52,6 +54,7 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
         createdAt: m.createdAt,
       }))}
       turnCount={session.turnCount}
+      roleMode={roleMode}
     />
   )
 }

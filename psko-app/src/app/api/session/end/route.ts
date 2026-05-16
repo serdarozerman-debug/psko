@@ -41,7 +41,8 @@ export async function POST(req: Request) {
   const feedback = await generateFeedback(
     persona,
     session.therapeuticApproach as TherapeuticApproach,
-    messages
+    messages,
+    session.roleMode as 'THERAPIST' | 'CLIENT'
   )
 
   const updated = await prisma.session.update({

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import type { PersonaData, ApproachConfig, MessageData } from '@/types'
+import type { PersonaData, ApproachConfig, MessageData, RoleMode } from '@/types'
 
 interface SimulationChatProps {
   sessionId: string
@@ -10,13 +10,20 @@ interface SimulationChatProps {
   approach: ApproachConfig
   initialMessages: MessageData[]
   turnCount: number
+  roleMode?: RoleMode
 }
 
 const MAX_TURNS = 60
 
 export default function SimulationChat({
-  sessionId, persona, approach, initialMessages, turnCount: initialTurnCount,
+  sessionId, persona, approach, initialMessages, turnCount: initialTurnCount, roleMode = 'THERAPIST',
 }: SimulationChatProps) {
+  const isClientMode = roleMode === 'CLIENT'
+  // In CLIENT mode the AI is the therapist, in THERAPIST mode the AI is the patient
+  const aiLabel = isClientMode ? 'Psychologist' : persona.name
+  const inputPlaceholder = isClientMode
+    ? 'Share what\'s on your mind as the client...'
+    : 'Type your response as the therapist...'
   const router = useRouter()
   const [messages, setMessages] = useState<MessageData[]>(initialMessages)
   const [input, setInput] = useState('')
@@ -101,6 +108,13 @@ export default function SimulationChat({
         <div>
           <span className="font-semibold">{persona.name}</span>
           <span className="text-slate-400 text-sm ml-3">{approach.name}</span>
+          <span className={`text-xs ml-3 px-2 py-0.5 rounded-full border ${
+            isClientMode
+              ? 'text-purple-300 border-purple-700 bg-purple-900/30'
+              : 'text-blue-300 border-blue-700 bg-blue-900/30'
+          }`}>
+            {isClientMode ? '🎭 Client Mode' : '🩺 Therapist Mode'}
+          </span>
           <span className="text-slate-600 text-xs ml-3">{turnCount}/{MAX_TURNS} turns</span>
         </div>
         <div className="flex gap-3">
@@ -126,12 +140,17 @@ export default function SimulationChat({
           <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
             {messages.map((msg) => (
               <div key={msg.id} className={`flex ${msg.role === 'student' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[70%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
-                  msg.role === 'student'
-                    ? 'bg-blue-600 text-white rounded-br-sm'
-                    : 'bg-slate-800 text-slate-100 rounded-bl-sm'
-                }`}>
-                  {msg.content}
+                <div className="max-w-[70%]">
+                  {msg.role !== 'student' && (
+                    <p className="text-xs text-slate-500 mb-1 ml-1">{aiLabel}</p>
+                  )}
+                  <div className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+                    msg.role === 'student'
+                      ? 'bg-blue-600 text-white rounded-br-sm'
+                      : 'bg-slate-800 text-slate-100 rounded-bl-sm'
+                  }`}>
+                    {msg.content}
+                  </div>
                 </div>
               </div>
             ))}
@@ -151,7 +170,7 @@ export default function SimulationChat({
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={turnCount >= MAX_TURNS ? 'Session limit reached' : 'Type your response as the therapist...'}
+              placeholder={turnCount >= MAX_TURNS ? 'Session limit reached' : inputPlaceholder}
               disabled={streaming || ending || turnCount >= MAX_TURNS}
               className="flex-1 bg-slate-800 border border-slate-700 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
             />
@@ -165,8 +184,8 @@ export default function SimulationChat({
           </form>
         </div>
 
-        {/* Guidance Panel */}
-        {showHints && (
+        {/* Guidance Panel — only shown in THERAPIST mode */}
+        {showHints && !isClientMode && (
           <div className="w-80 border-l border-slate-800 overflow-y-auto p-5 space-y-6">
             <div>
               <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">

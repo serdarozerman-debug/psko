@@ -29,9 +29,12 @@ describe('buildTherapistPrompt', () => {
     assert.ok(prompt.toLowerCase().includes('character'), 'should mention staying in character')
   })
 
-  test('does not expose clinical assessment jargon to the student-as-client', () => {
+  test('does not include CTS-R competency scoring instructions (those belong in therapist mode)', () => {
     const persona = getPersonaById('can-burnout-intermediate')!
     const prompt = buildTherapistPrompt(persona)
-    assert.doesNotMatch(prompt, /cognitive distortion|automatic thought|CTS-R/, 'must not expose assessment jargon')
+    // CTS-R scoring belongs only in supervisor/feedback prompts, not in the therapist system prompt
+    assert.doesNotMatch(prompt, /CTS-R|competency score|score each|Agenda Setting/, 'must not include CTS-R scoring instructions')
+    // Should not tell the AI to BE the patient persona
+    assert.ok(!prompt.includes(`You are ${persona.name}`), 'must not instruct AI to role-play as the patient persona')
   })
 })

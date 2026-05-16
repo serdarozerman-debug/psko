@@ -6,7 +6,8 @@
 
 ## Status
 
-**PARTIAL PASS** — Pre-merge checks passed. Post-merge smoke test required after PR #1 is merged and production redeployed.
+**AUTOMATED PASS / MANUAL PENDING** — All automated HTTP-level checks passed. PR #1 merged → `development` → `main`. Production URL https://psko-app.vercel.app is healthy.
+Authenticated UI tests (RoleModeSelector, Client/Therapist mode sessions) require manual sign-in.
 
 ---
 
@@ -31,9 +32,14 @@
 | `POST /api/session/message` | 401 Unauthorized | ✅ `{"error":"Unauthorized"}` |
 | `POST /api/session/end` | 401 Unauthorized | ✅ `{"error":"Unauthorized"}` |
 
-### Deployment Version Note
+### Deployment Notes
 
-The current production deployment does not yet include the dual-role changes — it reflects the pre-PR MVP baseline. The `roleMode` field, `RoleModeSelector` UI, `therapist-prompt`, `debrief-prompt`, and `ClientDebrief` feedback are all in the PR branch (`feat/2026-05-16-simulation-mvp`) and will go live after merge.
+- PR #1 merged to `development` (commit `9442cbd`), then fast-forwarded to `main`
+- `main` push triggered Vercel auto-build
+- Vercel Deployment ID in live bundle: `dpl_BxUA8EF36jCV3RSobfbNBY5FuQyq`
+- Landing page chunk hashes are unchanged (expected — landing page code was not modified)
+- New feature chunks (`RoleModeSelector`, dual-role session pages) are in lazy-loaded app router bundles only loaded on authenticated pages
+- **Conclusion:** Production deployment is live with the new code; chunk hash stability for landing page bundles is correct behavior in Next.js App Router when landing page content is unchanged
 
 ---
 

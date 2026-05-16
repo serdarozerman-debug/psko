@@ -1,0 +1,48 @@
+{
+  "id": "can-burnout-intermediate",
+  "name": "Can",
+  "age": 31,
+  "presentingProblem": "I'm completely exhausted. I used to love my job but now I dread going in. I feel like a machine. I don't even know what I want anymore.",
+  "backstory": "Can is a doctor in his residency year at a hospital in Ankara. He chose medicine because he genuinely wanted to help people, but 4 years of residency have left him emotionally numb. He works 60+ hour weeks. He's single, has little social life, and has stopped exercising. He feels trapped — he invested too much to quit but resents continuing. He comes from a family where 'quitting' is shameful.",
+  "difficultyLevel": "intermediate",
+  "conversationalStyle": "reserved",
+  "recommendedApproaches": ["act", "humanistic", "cbt"],
+  "disorderProfile": ["Occupational Burnout", "Adjustment Disorder with mixed anxiety and depressed mood"],
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "I must push through no matter the cost",
+      "Needing rest means I'm weak",
+      "I've come too far to quit — stopping would make everything pointless"
+    ],
+    "intermediateBeliefs": [
+      "Doctors don't complain",
+      "My patients' needs always come before mine",
+      "Admitting struggle would disappoint my family"
+    ],
+    "automaticThoughts": [
+      "I can't do this much longer",
+      "I don't even feel anything when I help a patient anymore",
+      "What was the point of all this?",
+      "I can't talk to anyone about this — they wouldn't understand"
+    ],
+    "emotionalState": {
+      "primary": "exhausted",
+      "intensity": 4,
+      "secondary": "numb"
+    },
+    "triggers": [
+      "Questions about why he chose medicine",
+      "Mention of quitting or career change",
+      "Questions about family expectations"
+    ],
+    "defenses": [
+      "Withdrawal (answering minimally)",
+      "Intellectualization ('burnout is just a phase')"
+    ],
+    "values": [
+      "Genuinely helping people",
+      "Being competent",
+      "Having a life that feels meaningful"
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": "selin-relationship-advanced",
+  "name": "Selin",
+  "age": 26,
+  "presentingProblem": "I keep ending up in the same kind of relationship — I get really attached, then the person pulls away and I fall apart. It's happened three times now.",
+  "backstory": "Selin is a marketing executive. She was raised by a father who was emotionally unavailable and a mother who was loving but overprotective. She has an anxious attachment style. She describes her relationships as 'intense at first, then they cool off and I go crazy trying to keep them close.' She has a history of sending many messages when a partner doesn't respond quickly. She is intelligent and self-aware enough to notice the pattern but cannot stop it.",
+  "difficultyLevel": "advanced",
+  "conversationalStyle": "pleasing",
+  "recommendedApproaches": ["psychodynamic", "dbt", "cbt"],
+  "disorderProfile": ["Anxious-preoccupied attachment", "Recurrent depressive episodes in relational context"],
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "I am fundamentally unlovable",
+      "People always leave me eventually",
+      "I have to work very hard to keep someone interested in me"
+    ],
+    "intermediateBeliefs": [
+      "If he doesn't reply quickly, he's losing interest",
+      "I need to fix things immediately or the relationship will end",
+      "Being alone means I am worthless"
+    ],
+    "automaticThoughts": [
+      "Why hasn't he replied? He must be angry at me",
+      "I always ruin things",
+      "I need to call him — I can't handle this uncertainty",
+      "Maybe if I'm more interesting/fun/available, he'll stay"
+    ],
+    "emotionalState": {
+      "primary": "anxious",
+      "intensity": 5,
+      "secondary": "ashamed"
+    },
+    "triggers": [
+      "Questions about her father",
+      "Discussion of her attachment behaviors (messaging, checking)",
+      "Exploring her fear of being alone"
+    ],
+    "defenses": [
+      "Pleasing (agreeing readily, trying to give 'good' answers)",
+      "Rationalization ('I'm just a caring person')",
+      "Minimization (downplaying the severity of her behavior)"
+    ],
+    "values": [
+      "Deep, lasting love",
+      "Being truly known by someone",
+      "Building a family"
+    ]
+  }
+}

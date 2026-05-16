@@ -84,6 +84,16 @@ export interface ApproachConfig {
 }
 ```
 
+## Role-Mode Branching Convention
+
+Sessions carry a `roleMode` field (`THERAPIST` | `CLIENT`) that drives both AI behaviour and feedback generation.
+
+- System prompt selection: `roleMode === 'CLIENT'` → `buildTherapistPrompt(persona)` else `buildPatientPrompt(persona, approach)`
+- Feedback selection: `roleMode === 'CLIENT'` → `ClientDebrief` else `SupervisorFeedback`
+- `Message.role` is always `student` (human) or `patient` (AI) — structural identifiers only
+- The AI's character (psychologist vs patient persona) is inferred from `Session.roleMode`, not from `Message.role`
+- New modes must add a branch in `patient-agent.ts` and `supervisor-agent.ts`; they do NOT require new API routes
+
 ## Testing Conventions
 
 - Unit tests for: prompt builders, persona schema validation, approach configs
@@ -91,6 +101,8 @@ export interface ApproachConfig {
 - E2E tests for: full simulation flow (Playwright)
 - Test files co-located: `patient-agent.test.ts` next to `patient-agent.ts`
 - No testing of UI snapshots — prefer behavior tests
+- **Test runner:** `node --require tsx/cjs --test src/**/*.test.ts` (node:test + tsx/cjs)
+  — vitest and jest hang on this codebase due to an esbuild IPC deadlock (macOS arm64, Node 20)
 
 ## Ethical Conventions
 

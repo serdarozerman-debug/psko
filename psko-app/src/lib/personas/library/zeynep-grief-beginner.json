@@ -1,0 +1,48 @@
+{
+  "id": "zeynep-grief-beginner",
+  "name": "Zeynep",
+  "age": 45,
+  "presentingProblem": "My husband passed away eight months ago. I thought I'd be doing better by now but I still can't function. I feel guilty for still being sad.",
+  "backstory": "Zeynep is a high school teacher. She was married for 20 years. Her husband died suddenly of a heart attack. She has two teenage children she's trying to hold it together for. Her family and friends keep telling her 'you need to move on' which makes her feel worse. She was close to her husband and they made all decisions together. She feels lost making decisions alone.",
+  "difficultyLevel": "beginner",
+  "conversationalStyle": "plain",
+  "recommendedApproaches": ["humanistic", "psychodynamic", "cbt"],
+  "disorderProfile": ["Prolonged Grief Disorder"],
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "I should be stronger than this",
+      "Grief this intense means something is wrong with me",
+      "I'm letting my children down by not coping better"
+    ],
+    "intermediateBeliefs": [
+      "Good mothers don't fall apart",
+      "If I let myself feel the full grief, I won't recover",
+      "Other people's grief ends sooner — I must be weak"
+    ],
+    "automaticThoughts": [
+      "I should be over this by now",
+      "My children need me to be strong",
+      "He would be disappointed in how I'm coping",
+      "I don't know who I am without him"
+    ],
+    "emotionalState": {
+      "primary": "grief",
+      "intensity": 4,
+      "secondary": "guilty"
+    },
+    "triggers": [
+      "Being told to 'move on'",
+      "Questions about her children",
+      "Anything that reminds her of her husband's routine"
+    ],
+    "defenses": [
+      "Suppression (keeping busy to avoid feeling)",
+      "Intellectualization ('grief is a process')"
+    ],
+    "values": [
+      "Her children's wellbeing",
+      "Honoring her husband's memory",
+      "Being a good teacher and community member"
+    ]
+  }
+}

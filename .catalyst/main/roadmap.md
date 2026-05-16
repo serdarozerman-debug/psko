@@ -1,26 +1,29 @@
 # Roadmap: PSKO
 
-## Phase 1 — Foundation (MVP) [Current]
+## Phase 1 — Foundation (MVP) ✅ Complete
 
 **Goal:** A working simulation loop with one therapeutic approach and a small persona library.
 
-- [ ] Project setup: Next.js + TypeScript + Tailwind + Supabase
-- [ ] User auth (sign up / sign in)
-- [ ] Persona engine: structured cognitive model (core beliefs, automatic thoughts, emotional state, disorder profile)
-- [ ] Simulation chat interface (student ↔ AI patient)
-- [ ] CBT approach guidance panel (suggested questions, technique prompts)
-- [ ] Basic session feedback (AI supervisor summary after session ends)
-- [ ] 5 initial personas covering: depression, anxiety, relationship issues, grief, workplace burnout
-- [ ] Deploy to Vercel
+- [x] Project setup: Next.js + TypeScript + Tailwind + Supabase
+- [x] User auth (sign up / sign in)
+- [x] Persona engine: structured cognitive model (core beliefs, automatic thoughts, emotional state, disorder profile)
+- [x] Simulation chat interface (student ↔ AI patient)
+- [x] CBT approach guidance panel (suggested questions, technique prompts)
+- [x] Basic session feedback (AI supervisor summary after session ends)
+- [x] 5 initial personas covering: depression, anxiety, relationship issues, grief, workplace burnout
+- [x] Deploy to Vercel — https://psko-app.vercel.app
+- [x] **Dual-role simulation modes** — student-as-client (PSKO plays psychologist) and student-as-therapist (PSKO plays patient); per-mode feedback (emotional debrief vs. CTS-R competency report)
 
-**Exit criteria:** A student can start a session, conduct a simulated intake interview, and receive feedback.
+**Exit criteria:** A student can start a session, conduct a simulated intake interview, and receive feedback. ✅ Met.
 
 ---
 
-## Phase 2 — Multi-Approach & Feedback Depth
+## Phase 2 — Multi-Approach & Feedback Depth [Next]
 
 **Goal:** Cover all major therapeutic approaches; richer, competency-based feedback.
 
+- [ ] **Next.js upgrade** — address HIGH severity CVEs in Next.js 14.x (DoS, cache poisoning, SSRF)
+- [ ] **E2E test suite** — Playwright automated tests for both simulation modes
 - [ ] Psychodynamic approach module (defense mechanisms, transference cues, childhood patterns)
 - [ ] Humanistic/Person-Centered module (empathy ladder, unconditional positive regard prompts)
 - [ ] ACT module (psychological flexibility, defusion, values clarification)

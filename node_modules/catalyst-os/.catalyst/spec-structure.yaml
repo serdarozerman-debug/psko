@@ -1,0 +1,319 @@
+# Spec Folder Structure
+# Single source of truth - all agents and commands reference this file
+
+version: 3
+
+folder_pattern: ".catalyst/specs/YYYY-MM-DD-{slug}/"
+
+files:
+  spec.md:
+    owner: scribe
+    purpose: Requirements + frontmatter (context assembly metadata)
+    created: catalyze-spec
+    updated_by: [scribe, arbiter]
+    note: |
+      Frontmatter enables cross-spec context assembly.
+      Body contains requirements and acceptance criteria.
+
+  research.md:
+    owner: scribe
+    purpose: All research findings (append-only)
+    created: catalyze-spec
+    updated_by: [scout, seer, oracle, scribe]
+    pattern: append
+
+  tasks.md:
+    owner: forger
+    purpose: DAG + progress + decisions + session context (THE living doc)
+    created: forge-spec
+    updated_by: [forger, forge-master, builders]
+    pattern: living
+    note: |
+      ONE FILE to read when resuming work.
+      Contains everything about execution state.
+
+  handoff.md:
+    owner: scribe
+    purpose: Human-readable summary (colleague walkthrough)
+    created: forge-spec (started), audit-spec (finalized)
+    updated_by: [scribe, arbiter]
+    pattern: narrative
+    note: |
+      Written like explaining to a colleague.
+      5 minutes to read, not 50.
+
+  validation.md:
+    owner: arbiter
+    purpose: Test results, quality checks
+    created: audit-spec
+    updated_by: [arbiter, enforcer, sentinel, inquisitor, watcher]
+
+  assets/:
+    owner: any
+    purpose: Images, diagrams, mockups
+    created: as-needed
+
+statuses:
+  - DRAFT
+  - IN_PROGRESS
+  - VALIDATING
+  - COMPLETE
+
+rules:
+  - spec.md has frontmatter for context assembly
+  - tasks.md is THE living document during build
+  - handoff.md is human-first, no heavy YAML
+  - One file to resume = tasks.md
+
+# =============================================================================
+# SPEC.MD SCHEMA
+# Requirements + frontmatter for context assembly
+# =============================================================================
+
+spec_schema:
+  frontmatter:
+    required:
+      spec: string          # YYYY-MM-DD-slug
+      status: enum          # draft | in_progress | validating | complete
+      domain: string        # auth, payments, ui, api, database, etc.
+
+    context_assembly:
+      provides:             # What this spec creates
+        - type: string
+      requires:             # Dependencies on other specs
+        - spec: string
+          needed: string
+      affects:              # What future work this impacts
+        - type: string
+
+    knowledge:
+      patterns_established: # Technical decisions (filled during/after build)
+        - type: string
+      key_files:            # Important files created
+        - type: string
+      key_decisions:        # Strategic choices with rationale
+        - type: string
+
+  example: |
+    ---
+    spec: 2025-01-11-user-auth
+    status: complete
+    domain: auth
+
+    provides:
+      - User model with password hashing
+      - JWT middleware
+      - Login/signup endpoints
+
+    requires: []
+
+    affects:
+      - All routes needing auth
+      - User-related features
+
+    patterns_established:
+      - argon2 for password hashing (not bcrypt)
+      - jose library for JWT
+      - httpOnly cookies for tokens
+
+    key_files:
+      - src/middleware/auth.ts
+      - src/api/auth/login.ts
+
+    key_decisions:
+      - JWT over sessions (stateless scaling)
+    ---
+
+    # User Authentication
+
+    ## Overview
+    ...requirements here...
+
+# =============================================================================
+# TASKS.MD SCHEMA
+# The ONE file to read when resuming - DAG + progress + decisions + context
+# =============================================================================
+
+tasks_schema:
+  sections:
+    - "## Build DAG"           # Task breakdown with phases
+    - "## Progress"            # Status table
+    - "## Current Session"     # Where we are, what's next
+    - "## Decisions"           # Decisions made during build
+
+  example: |
+    # Tasks: User Authentication
+
+    ## Build DAG
+
+    ### Phase 1: Red (enforcer)
+    | ID | Agent | Scope | Depends On |
+    |----|-------|-------|------------|
+    | tests-auth | enforcer | tests/api/auth/** | - |
+
+    ### Phase 2: Foundation (alchemist)
+    | ID | Agent | Scope | Depends On |
+    |----|-------|-------|------------|
+    | db-schema | alchemist | prisma/schema.prisma | tests-auth |
+
+    ### Phase 3: Parallel Backend (smith × 2)
+    | ID | Agent | Scope | Reads | Depends On |
+    |----|-------|-------|-------|------------|
+    | api-auth | smith-1 | src/api/auth/** | src/types/** | db-schema |
+    | api-user | smith-2 | src/api/user/** | src/types/** | db-schema |
+
+    ## Progress
+
+    | Task | Status | Tests | Commit | Notes |
+    |------|--------|-------|--------|-------|
+    | tests-auth | ✓ Done | 12 failing | a1b2c3d | RED phase complete |
+    | db-schema | ✓ Done | 12 passing | e4f5g6h | |
+    | api-auth | ⚡ Active | 8/12 | - | Working on refresh |
+    | api-user | ⏳ Waiting | - | - | Blocked by api-auth |
+
+    ## Current Session
+
+    **Phase:** 3 - Parallel Backend
+    **Active:** api-auth (smith-1)
+    **Working on:** Refresh token rotation
+    **File:** `src/api/auth/refresh.ts:45`
+    **Next:** Finish refresh, then api-user can start
+
+    ## Decisions
+
+    - **JWT over sessions** - Stateless for horizontal scaling
+    - **15-min access token** - Balance security vs UX
+    - **argon2 over bcrypt** - Better GPU resistance
+
+# =============================================================================
+# HANDOFF.MD TEMPLATE
+# Human-readable - colleague explaining over coffee
+# =============================================================================
+
+handoff_template: |
+  # Handoff: {Spec Name}
+
+  > Status: {status}
+
+  ## TL;DR
+
+  {One paragraph - what was built}
+
+  ## What Changed
+
+  - Change 1
+  - Change 2
+
+  ## Key Decisions
+
+  **Why X over Y?**
+  Rationale here.
+
+  ## How to Test
+
+  1. Step 1
+  2. Step 2
+
+  ## What's Next
+
+  - [ ] Next item
+
+  ## Gotchas
+
+  - Thing that might trip you up
+
+# =============================================================================
+# CONTEXT ASSEMBLY
+# =============================================================================
+
+context_assembly:
+  source: spec.md  # Read frontmatter from spec.md
+
+  on_new_spec:
+    - Scan .catalyst/specs/*/spec.md
+    - Parse YAML frontmatter only
+    - Match by: new spec domain vs existing "affects"
+    - Load: patterns_established, key_files, key_decisions
+    - Inject into agent prompts
+
+  on_resume:
+    - Read tasks.md "## Current Session" section
+    - Continue from recorded position
+
+# =============================================================================
+# BUILD DAG STRUCTURE
+# Used by Forger to create task breakdown
+# =============================================================================
+
+build_dag:
+  phases:
+    foundation:
+      agent: alchemist
+      sequential: true
+      description: "Database schema, core setup"
+
+    contracts:
+      agent: smith
+      sequential: true
+      description: "Shared types/interfaces before parallel work"
+
+    parallel:
+      agents: [smith, shaper]
+      multi_instance: true
+      description: "Scope-isolated parallel implementation"
+      rules:
+        - "Each agent has exclusive write scope"
+        - "Agents can read but not modify shared files"
+        - "No overlapping scopes between parallel tasks"
+
+    integration:
+      agent: enforcer
+      sequential: true
+      description: "Cross-boundary testing"
+
+  task_fields:
+    - id          # Unique identifier
+    - agent       # Which agent type (with instance: smith-1, shaper-2)
+    - scope       # Files with exclusive write access
+    - reads       # Files with read-only access
+    - depends_on  # Task IDs that must complete first
+    - blocks      # Task patterns this blocks (e.g., api-*, ui-*)
+    - acceptance  # How to verify completion
+    - estimate    # Time estimate (< 2 hours)
+
+# =============================================================================
+# PATTERN LIBRARY
+# Reusable patterns extracted from completed specs
+# =============================================================================
+
+library:
+  root: "library/"
+  description: "Reusable patterns extracted from completed specs"
+  created_by: "/seal-spec (optional)"
+
+  # Auto-detect patterns by keywords
+  pattern_detection:
+    payment-integration.md:
+      keywords: [stripe, payment, billing, subscription, checkout]
+    authentication.md:
+      keywords: [auth, oauth, login, sso, jwt, session]
+    file-storage.md:
+      keywords: [upload, s3, storage, file, media, image]
+    real-time-communication.md:
+      keywords: [websocket, realtime, socket, live, push]
+    notifications.md:
+      keywords: [email, notification, smtp, push, alert]
+    search-implementation.md:
+      keywords: [search, elasticsearch, algolia, fulltext]
+    caching-strategy.md:
+      keywords: [cache, redis, memcached, performance]
+    background-jobs.md:
+      keywords: [queue, job, worker, bull, async, cron]
+
+# =============================================================================
+# COMPLETED SPECS
+# =============================================================================
+
+completed:
+  location: "completed/"
+  description: "Specs moved here after /seal-spec"

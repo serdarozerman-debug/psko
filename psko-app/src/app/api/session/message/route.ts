@@ -54,36 +54,47 @@ export async function POST(req: Request) {
   }))
 
   // Stream AI response (patient in THERAPIST mode, therapist in CLIENT mode)
-  const stream = streamPatientResponse(
-    persona,
-    session.therapeuticApproach as TherapeuticApproach,
-    historyData,
-    content,
-    session.roleMode as 'THERAPIST' | 'CLIENT'
-  )
+  let stream
+  try {
+    stream = streamPatientResponse(
+      persona,
+      session.therapeuticApproach as TherapeuticApproach,
+      historyData,
+      content,
+      session.roleMode as 'THERAPIST' | 'CLIENT'
+    )
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[session/message] stream error:', msg)
+    return Response.json({ error: 'Failed to start AI response', detail: msg }, { status: 500 })
+  }
 
   let fullResponse = ''
 
   const readable = new ReadableStream({
     async start(controller) {
-      for await (const chunk of stream) {
-        if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
-          const text = chunk.delta.text
-          fullResponse += text
-          controller.enqueue(new TextEncoder().encode(text))
+      try {
+        for await (const chunk of stream) {
+          if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
+            const text = chunk.delta.text
+            fullResponse += text
+            controller.enqueue(new TextEncoder().encode(text))
+          }
         }
+
+        // Save AI response after stream completes
+        await prisma.message.create({
+          data: { sessionId, role: 'patient', content: fullResponse },
+        })
+        await prisma.session.update({
+          where: { id: sessionId },
+          data: { turnCount: { increment: 1 } },
+        })
+      } catch (err) {
+        console.error('[session/message] stream read error:', err)
+      } finally {
+        controller.close()
       }
-
-      // Save patient response after stream completes
-      await prisma.message.create({
-        data: { sessionId, role: 'patient', content: fullResponse },
-      })
-      await prisma.session.update({
-        where: { id: sessionId },
-        data: { turnCount: { increment: 1 } },
-      })
-
-      controller.close()
     },
   })
 

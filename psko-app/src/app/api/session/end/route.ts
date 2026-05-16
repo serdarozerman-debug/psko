@@ -3,7 +3,7 @@ import { prisma } from '@/lib/db/prisma'
 import { createClient } from '@/lib/supabase/server'
 import { getPersonaById } from '@/lib/personas'
 import { generateFeedback } from '@/lib/claude/supervisor-agent'
-import type { TherapeuticApproach, MessageData } from '@/types'
+import type { TherapeuticApproach, MessageData, RoleMode } from '@/types'
 
 const EndSessionSchema = z.object({
   sessionId: z.string(),
@@ -38,20 +38,26 @@ export async function POST(req: Request) {
     createdAt: m.createdAt,
   }))
 
-  const feedback = await generateFeedback(
-    persona,
-    session.therapeuticApproach as TherapeuticApproach,
-    messages,
-    session.roleMode as 'THERAPIST' | 'CLIENT'
-  )
+  try {
+    const feedback = await generateFeedback(
+      persona,
+      session.therapeuticApproach as TherapeuticApproach,
+      messages,
+      session.roleMode as RoleMode
+    )
 
-  const updated = await prisma.session.update({
-    where: { id: sessionId },
-    data: {
-      endedAt: new Date(),
-      feedback: feedback as object,
-    },
-  })
+    const updated = await prisma.session.update({
+      where: { id: sessionId },
+      data: {
+        endedAt: new Date(),
+        feedback: feedback as object,
+      },
+    })
 
-  return Response.json({ session: updated, feedback })
+    return Response.json({ session: updated, feedback })
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[session/end] error:', msg)
+    return Response.json({ error: 'Failed to end session', detail: msg }, { status: 500 })
+  }
 }

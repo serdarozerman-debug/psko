@@ -1,9 +1,10 @@
 import { z } from 'zod'
+import { RoleMode } from '@prisma/client'
 import { prisma } from '@/lib/db/prisma'
 import { createClient } from '@/lib/supabase/server'
 import { getPersonaById } from '@/lib/personas'
 import { getOpeningStatement } from '@/lib/claude/patient-agent'
-import type { TherapeuticApproach, RoleMode } from '@/types'
+import type { TherapeuticApproach } from '@/types'
 
 const StartSessionSchema = z.object({
   personaId: z.string(),
@@ -31,37 +32,46 @@ export async function POST(req: Request) {
     return Response.json({ error: 'Persona not found' }, { status: 404 })
   }
 
-  // Upsert user in DB
-  await prisma.user.upsert({
-    where: { email: user.email! },
-    update: {},
-    create: { id: user.id, email: user.email! },
-  })
+  try {
+    // Upsert user in DB
+    await prisma.user.upsert({
+      where: { email: user.email! },
+      update: {},
+      create: { id: user.id, email: user.email! },
+    })
 
-  const openingStatement = await getOpeningStatement(
-    persona,
-    therapeuticApproach as TherapeuticApproach,
-    roleMode as RoleMode
-  )
+    // Use Prisma's generated RoleMode enum directly to avoid type mismatches
+    const prismaRoleMode = roleMode === 'CLIENT' ? RoleMode.CLIENT : RoleMode.THERAPIST
 
-  const session = await prisma.session.create({
-    data: {
-      userId: user.id,
-      personaId,
-      therapeuticApproach,
-      roleMode: roleMode as RoleMode,
-    },
-  })
+    const openingStatement = await getOpeningStatement(
+      persona,
+      therapeuticApproach as TherapeuticApproach,
+      roleMode as 'CLIENT' | 'THERAPIST'
+    )
 
-  // The AI's message role is always 'patient' structurally (student = human, patient = AI).
-  // roleMode on the session determines the AI's *character* (psychologist vs patient persona).
-  const message = await prisma.message.create({
-    data: {
-      sessionId: session.id,
-      role: 'patient',
-      content: openingStatement,
-    },
-  })
+    const session = await prisma.session.create({
+      data: {
+        userId: user.id,
+        personaId,
+        therapeuticApproach,
+        roleMode: prismaRoleMode,
+      },
+    })
 
-  return Response.json({ sessionId: session.id, openingMessage: message })
+    // The AI's message role is always 'patient' structurally (student = human, patient = AI).
+    // roleMode on the session determines the AI's *character* (psychologist vs patient persona).
+    const message = await prisma.message.create({
+      data: {
+        sessionId: session.id,
+        role: 'patient',
+        content: openingStatement,
+      },
+    })
+
+    return Response.json({ sessionId: session.id, openingMessage: message })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error('[session/start] error:', message)
+    return Response.json({ error: 'Session creation failed', detail: message }, { status: 500 })
+  }
 }

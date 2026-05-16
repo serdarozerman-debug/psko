@@ -35,11 +35,17 @@ model Persona {
   @@map("personas")
 }
 
+enum RoleMode {
+  THERAPIST
+  CLIENT
+}
+
 model Session {
   id                  String    @id @default(uuid())
   userId              String    @map("user_id")
   personaId           String    @map("persona_id")
   therapeuticApproach String    @map("therapeutic_approach")
+  roleMode            RoleMode  @default(THERAPIST) @map("role_mode")
   startedAt           DateTime  @default(now()) @map("started_at")
   endedAt             DateTime? @map("ended_at")
   turnCount           Int       @default(0) @map("turn_count")

@@ -1,6 +1,6 @@
 ---
 spec: 2026-05-16-simulation-mvp
-status: in_progress
+status: validating
 domain: core
 
 provides:
@@ -33,7 +33,7 @@ key_decisions:
 
 # Simulation MVP
 
-> Status: IN_PROGRESS
+> Status: VALIDATING
 
 ## Overview
 

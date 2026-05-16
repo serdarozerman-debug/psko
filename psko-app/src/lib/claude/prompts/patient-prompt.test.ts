@@ -1,59 +1,59 @@
-import { describe, it, expect } from 'vitest'
+import { describe, test } from 'node:test'
+import assert from 'node:assert/strict'
 import { buildPatientPrompt } from './patient-prompt'
 import { getPersonaById, personaLibrary } from '@/lib/personas'
 
 describe('buildPatientPrompt', () => {
-  it('includes the persona name in the prompt', () => {
+  test('includes the persona name in the prompt', () => {
     const persona = getPersonaById('ayse-depression-beginner')!
     const prompt = buildPatientPrompt(persona, 'cbt')
-    expect(prompt).toContain('Ayşe')
+    assert.ok(prompt.includes('Ayşe'), 'prompt should include persona name')
   })
 
-  it('includes the presenting problem', () => {
+  test('includes the presenting problem', () => {
     const persona = getPersonaById('mert-anxiety-intermediate')!
     const prompt = buildPatientPrompt(persona, 'act')
-    expect(prompt).toContain(persona.presentingProblem)
+    assert.ok(prompt.includes(persona.presentingProblem), 'prompt should include presenting problem')
   })
 
-  it('includes the approach-specific instructions', () => {
+  test('includes the approach-specific instructions', () => {
     const persona = getPersonaById('zeynep-grief-beginner')!
     const prompt = buildPatientPrompt(persona, 'humanistic')
-    expect(prompt).toContain('Person-Centered')
+    assert.ok(prompt.includes('Person-Centered'), 'prompt should include approach name')
   })
 
-  it('never exposes the term "cognitive distortions" (anti-jargon check)', () => {
+  test('never exposes the term "cognitive distortions" (anti-jargon check)', () => {
     const persona = getPersonaById('ayse-depression-beginner')!
     const prompt = buildPatientPrompt(persona, 'cbt')
-    // The rule against jargon should be present
-    expect(prompt).toContain('clinical terminology')
+    assert.ok(prompt.includes('clinical terminology'), 'should contain anti-jargon rule')
   })
 
-  it('includes core beliefs', () => {
+  test('includes core beliefs', () => {
     const persona = getPersonaById('selin-relationship-advanced')!
     const prompt = buildPatientPrompt(persona, 'psychodynamic')
-    expect(prompt).toContain('I am fundamentally unlovable')
+    assert.ok(prompt.includes('I am fundamentally unlovable'), 'should include core belief')
   })
 })
 
 describe('personaLibrary', () => {
-  it('has 5 personas', () => {
-    expect(personaLibrary).toHaveLength(5)
+  test('has 5 personas', () => {
+    assert.strictEqual(personaLibrary.length, 5)
   })
 
-  it('each persona has required fields', () => {
+  test('each persona has required fields', () => {
     for (const persona of personaLibrary) {
-      expect(persona.id).toBeTruthy()
-      expect(persona.name).toBeTruthy()
-      expect(persona.cognitiveModel.coreBeliefs.length).toBeGreaterThan(0)
-      expect(persona.cognitiveModel.automaticThoughts.length).toBeGreaterThan(0)
-      expect(['beginner', 'intermediate', 'advanced']).toContain(persona.difficultyLevel)
-      expect(['plain', 'upset', 'reserved', 'verbose', 'pleasing', 'tangent']).toContain(persona.conversationalStyle)
+      assert.ok(persona.id, 'id should be truthy')
+      assert.ok(persona.name, 'name should be truthy')
+      assert.ok(persona.cognitiveModel.coreBeliefs.length > 0, 'should have core beliefs')
+      assert.ok(persona.cognitiveModel.automaticThoughts.length > 0, 'should have automatic thoughts')
+      assert.ok(['beginner', 'intermediate', 'advanced'].includes(persona.difficultyLevel), 'valid difficulty')
+      assert.ok(['plain', 'upset', 'reserved', 'verbose', 'pleasing', 'tangent'].includes(persona.conversationalStyle), 'valid style')
     }
   })
 
-  it('each persona has at least one recommended approach', () => {
+  test('each persona has at least one recommended approach', () => {
     for (const persona of personaLibrary) {
-      expect(persona.recommendedApproaches.length).toBeGreaterThan(0)
+      assert.ok(persona.recommendedApproaches.length > 0, 'should have recommended approaches')
     }
   })
 })

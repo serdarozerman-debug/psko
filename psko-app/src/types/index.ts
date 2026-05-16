@@ -2,6 +2,8 @@ export type TherapeuticApproach = 'cbt' | 'psychodynamic' | 'humanistic' | 'act'
 export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced'
 export type MessageRole = 'student' | 'patient'
 export type ConversationalStyle = 'plain' | 'upset' | 'reserved' | 'verbose' | 'pleasing' | 'tangent'
+/** THERAPIST = student plays the therapist; CLIENT = student plays the patient */
+export type RoleMode = 'THERAPIST' | 'CLIENT'
 
 export interface CognitiveModel {
   coreBeliefs: string[]
@@ -63,12 +65,31 @@ export interface SessionData {
   userId: string
   personaId: string
   therapeuticApproach: TherapeuticApproach
+  roleMode: RoleMode
   startedAt: Date
   endedAt?: Date
   turnCount: number
-  feedback?: SupervisorFeedback
+  feedback?: SupervisorFeedback | ClientDebrief
   persona?: PersonaData
   messages?: MessageData[]
+}
+
+/** Emotional experience debrief for CLIENT mode sessions */
+export interface ClientDebrief {
+  /** Discriminant: always 'client-debrief' so callers can narrow the union */
+  type: 'client-debrief'
+  /** Summary of the experience from the student-as-client perspective */
+  experienceSummary: string
+  /** What felt helpful during the session */
+  helpfulMoments: string[]
+  /** What felt challenging or unhelpful */
+  challengingMoments: string[]
+  /** Emotional themes that emerged */
+  emotionalThemes: string[]
+  /** Brief note on the therapeutic technique the AI therapist used */
+  techniqueUsed: string
+  /** Reflective prompts for the student to journal on */
+  reflectionPrompts: string[]
 }
 
 export interface ApproachConfig {

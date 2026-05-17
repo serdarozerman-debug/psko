@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import type { PersonaData, ApproachConfig, MessageData, RoleMode } from '@/types'
+import SessionGuidancePanel from './SessionGuidancePanel'
 
 interface SimulationChatProps {
   sessionId: string
@@ -184,39 +185,13 @@ export default function SimulationChat({
           </form>
         </div>
 
-        {/* Guidance Panel — only shown in THERAPIST mode */}
+        {/* Guidance Panel — dynamic phase-aware panel, only shown in THERAPIST mode */}
         {showHints && !isClientMode && (
-          <div className="w-80 border-l border-slate-800 overflow-y-auto p-5 space-y-6">
-            <div>
-              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
-                {approach.name} — Technique Hints
-              </h3>
-              <ul className="space-y-2">
-                {approach.guidanceHints.map((hint, i) => (
-                  <li key={i} className="text-slate-300 text-xs leading-relaxed bg-slate-900 rounded-lg p-3">
-                    {hint}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
-                Suggested Questions
-              </h3>
-              <ul className="space-y-2">
-                {approach.suggestedQuestions.map((q, i) => (
-                  <li
-                    key={i}
-                    className="text-slate-400 text-xs italic leading-relaxed cursor-pointer hover:text-slate-200 transition-colors bg-slate-900 rounded-lg p-3"
-                    onClick={() => setInput(q)}
-                  >
-                    &ldquo;{q}&rdquo;
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <SessionGuidancePanel
+            sessionId={sessionId}
+            approach={approach}
+            turnCount={turnCount}
+          />
         )}
       </div>
     </div>

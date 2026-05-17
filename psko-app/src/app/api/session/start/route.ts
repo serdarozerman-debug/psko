@@ -4,12 +4,15 @@ import { prisma } from '@/lib/db/prisma'
 import { createClient } from '@/lib/supabase/server'
 import { getPersonaById } from '@/lib/personas'
 import { getOpeningStatement } from '@/lib/claude/patient-agent'
-import type { TherapeuticApproach } from '@/types'
+import { buildCaseFormulation } from '@/lib/clinical/intake/formulation'
+import type { TherapeuticApproach, CaseFormulation } from '@/types'
 
 const StartSessionSchema = z.object({
   personaId: z.string(),
   therapeuticApproach: z.enum(['cbt', 'psychodynamic', 'humanistic', 'act', 'dbt']),
   roleMode: z.enum(['THERAPIST', 'CLIENT']).default('THERAPIST'),
+  /** Optional: pre-session intake answers */
+  intakeResponses: z.record(z.union([z.string(), z.number()])).optional(),
 })
 
 export async function POST(req: Request) {
@@ -26,7 +29,7 @@ export async function POST(req: Request) {
     return Response.json({ error: parsed.error.flatten() }, { status: 400 })
   }
 
-  const { personaId, therapeuticApproach, roleMode } = parsed.data
+  const { personaId, therapeuticApproach, roleMode, intakeResponses } = parsed.data
   const persona = getPersonaById(personaId)
   if (!persona) {
     return Response.json({ error: 'Persona not found' }, { status: 404 })
@@ -40,13 +43,24 @@ export async function POST(req: Request) {
       create: { id: user.id, email: user.email! },
     })
 
+    // Optional: build case formulation from intake answers
+    let formulation: CaseFormulation | null = null
+    if (intakeResponses && Object.keys(intakeResponses).length > 0) {
+      formulation = await buildCaseFormulation(
+        intakeResponses,
+        persona.name,
+        persona.presentingProblem
+      ).catch(() => null)
+    }
+
     // Use Prisma's generated RoleMode enum directly to avoid type mismatches
     const prismaRoleMode = roleMode === 'CLIENT' ? RoleMode.CLIENT : RoleMode.THERAPIST
 
     const openingStatement = await getOpeningStatement(
       persona,
       therapeuticApproach as TherapeuticApproach,
-      roleMode as 'CLIENT' | 'THERAPIST'
+      roleMode as 'CLIENT' | 'THERAPIST',
+      formulation?.clinicalContext
     )
 
     const session = await prisma.session.create({
@@ -57,6 +71,18 @@ export async function POST(req: Request) {
         roleMode: prismaRoleMode,
       },
     })
+
+    // Store intake response if present
+    if (formulation && intakeResponses) {
+      await prisma.intakeResponse.create({
+        data: {
+          sessionId: session.id,
+          responses: intakeResponses,
+          formulation: formulation as object,
+          recommendedApproach: therapeuticApproach,
+        },
+      }).catch(() => {/* non-critical */})
+    }
 
     // The AI's message role is always 'patient' structurally (student = human, patient = AI).
     // roleMode on the session determines the AI's *character* (psychologist vs patient persona).

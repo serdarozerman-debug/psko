@@ -6,6 +6,7 @@ import { personaLibrary } from '@/lib/personas'
 import { approaches } from '@/lib/approaches'
 import PersonaCard from '@/components/simulation/PersonaCard'
 import type { RoleMode } from '@/types'
+import { ALL_FRAMEWORKS } from '@/lib/clinical/frameworks'
 
 const ROLE_BADGES: Record<RoleMode, string> = {
   THERAPIST: '🩺 Therapist',
@@ -63,7 +64,7 @@ export default async function DashboardPage() {
               <PersonaCard
                 key={persona.id}
                 persona={persona}
-                approaches={Object.values(approaches)}
+                approaches={ALL_FRAMEWORKS}
                 difficultyColors={DIFFICULTY_COLORS}
               />
             ))}

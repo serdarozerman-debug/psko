@@ -5,6 +5,72 @@ export type ConversationalStyle = 'plain' | 'upset' | 'reserved' | 'verbose' | '
 /** THERAPIST = student plays the therapist; CLIENT = student plays the patient */
 export type RoleMode = 'THERAPIST' | 'CLIENT'
 
+// ─── Clinical Intelligence Engine Types ────────────────────────────────────
+
+/** A single phase in a therapeutic approach protocol */
+export interface ProtocolPhase {
+  /** 0-based index */
+  index: number
+  /** Short label shown in the guidance panel */
+  name: string
+  /** Clinical objective for this phase */
+  objective: string
+  /** Specific techniques to suggest to the student */
+  techniques: string[]
+  /** Things to watch for / diagnostic cues */
+  watchFor: string[]
+  /** Earliest turn count to consider transitioning to this phase */
+  triggerTurnMin: number
+}
+
+/** A single question in the intake questionnaire */
+export interface IntakeQuestion {
+  id: string
+  /** PHQ-9, GAD-7, or custom */
+  type: 'phq9' | 'gad7' | 'open' | 'scale'
+  text: string
+  /** For scale questions (0–3 or 0–10) */
+  scaleMax?: number
+  scaleLabels?: [string, string]
+}
+
+/** Claude-generated case formulation from intake answers */
+export interface CaseFormulation {
+  summary: string
+  primaryConcerns: string[]
+  /** Approach ID → short clinical rationale */
+  recommendedApproaches: Array<{
+    approachId: TherapeuticApproach
+    rationale: string
+    priority: 'first-line' | 'second-line'
+  }>
+  contraindicatedApproaches: Array<{
+    approachId: TherapeuticApproach
+    reason: string
+  }>
+  /** Key clinical anchors to inject into the session system prompt */
+  clinicalContext: string
+}
+
+/** Stored intake response record */
+export interface IntakeResponseData {
+  id: string
+  sessionId: string
+  responses: Record<string, string | number>
+  formulation: CaseFormulation
+  recommendedApproach: TherapeuticApproach
+  createdAt: Date
+}
+
+/** Real-time phase guidance returned by the phase API */
+export interface PhaseGuidance {
+  currentPhase: number
+  phase: ProtocolPhase | null
+  nextPhase: ProtocolPhase | null
+  /** Contextual suggestion for the student's very next move */
+  nextMove: string
+}
+
 export interface CognitiveModel {
   coreBeliefs: string[]
   intermediateBeliefs: string[]
@@ -66,12 +132,14 @@ export interface SessionData {
   personaId: string
   therapeuticApproach: TherapeuticApproach
   roleMode: RoleMode
+  currentPhase: number
   startedAt: Date
   endedAt?: Date
   turnCount: number
   feedback?: SupervisorFeedback | ClientDebrief
   persona?: PersonaData
   messages?: MessageData[]
+  intakeResponse?: IntakeResponseData
 }
 
 /** Emotional experience debrief for CLIENT mode sessions */
@@ -100,4 +168,6 @@ export interface ApproachConfig {
   guidanceHints: string[]
   supervisorCriteria: string[]
   suggestedQuestions: string[]
+  /** Phase-by-phase clinical protocol (optional — used by phase engine) */
+  phases?: ProtocolPhase[]
 }

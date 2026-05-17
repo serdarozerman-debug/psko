@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import type { PersonaData, ApproachConfig, RoleMode } from '@/types'
+import type { PersonaData, ApproachConfig, RoleMode, TherapeuticApproach } from '@/types'
 import RoleModeSelector from './RoleModeSelector'
+import IntakeFlow from '@/components/intake/IntakeFlow'
 
 interface PersonaCardProps {
   persona: PersonaData
@@ -16,18 +17,36 @@ export default function PersonaCard({ persona, approaches, difficultyColors }: P
   const [selectedApproach, setSelectedApproach] = useState(persona.recommendedApproaches[0])
   const [loading, setLoading] = useState(false)
   const [showModeSelector, setShowModeSelector] = useState(false)
+  const [showIntake, setShowIntake] = useState(false)
+  const [pendingRoleMode, setPendingRoleMode] = useState<RoleMode>('THERAPIST')
 
-  async function startSession(roleMode: RoleMode) {
-    setLoading(true)
+  function handleModeSelect(roleMode: RoleMode) {
+    setPendingRoleMode(roleMode)
     setShowModeSelector(false)
+    // Only show intake in THERAPIST mode (student is the therapist — they need clinical prep)
+    if (roleMode === 'THERAPIST') {
+      setShowIntake(true)
+    } else {
+      startSession(roleMode, selectedApproach, {})
+    }
+  }
+
+  async function startSession(
+    roleMode: RoleMode,
+    approach: TherapeuticApproach,
+    intakeResponses: Record<string, string | number>
+  ) {
+    setLoading(true)
+    setShowIntake(false)
     try {
       const res = await fetch('/api/session/start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           personaId: persona.id,
-          therapeuticApproach: selectedApproach,
+          therapeuticApproach: approach,
           roleMode,
+          intakeResponses: Object.keys(intakeResponses).length > 0 ? intakeResponses : undefined,
         }),
       })
       const data = await res.json()
@@ -87,9 +106,21 @@ export default function PersonaCard({ persona, approaches, difficultyColors }: P
       {showModeSelector && (
         <RoleModeSelector
           personaName={persona.name}
-          onSelect={startSession}
+          onSelect={handleModeSelect}
           onClose={() => setShowModeSelector(false)}
           loading={loading}
+        />
+      )}
+
+      {showIntake && (
+        <IntakeFlow
+          persona={persona}
+          approaches={approaches}
+          onComplete={(approach, responses) => {
+            setSelectedApproach(approach)
+            startSession(pendingRoleMode, approach, responses)
+          }}
+          onSkip={() => startSession(pendingRoleMode, selectedApproach, {})}
         />
       )}
     </>

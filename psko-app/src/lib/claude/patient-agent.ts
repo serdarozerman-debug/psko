@@ -48,17 +48,23 @@ export function streamPatientResponse(
 export async function getOpeningStatement(
   persona: PersonaData,
   approach: TherapeuticApproach,
-  roleMode: RoleMode = 'THERAPIST'
+  roleMode: RoleMode = 'THERAPIST',
+  clinicalContext?: string
 ): Promise<string> {
   const systemPrompt =
     roleMode === 'CLIENT'
       ? buildTherapistPrompt(persona)
       : buildPatientPrompt(persona, approach)
 
+  // Inject clinical context from intake formulation if available
+  const contextNote = clinicalContext
+    ? `\n\n[SUPERVISOR NOTE — for your awareness only, do not disclose: ${clinicalContext}]`
+    : ''
+
   const openingPrompt =
     roleMode === 'CLIENT'
-      ? '[SESSION START — please open the session as the therapist: welcome the client and invite them to share what brought them in]'
-      : '[SESSION START — please begin by introducing yourself and sharing what brought you here]'
+      ? `[SESSION START — please open the session as the therapist: welcome the client and invite them to share what brought them in]${contextNote}`
+      : `[SESSION START — please begin by introducing yourself and sharing what brought you here]${contextNote}`
 
   const response = await anthropic.messages.create({
     model: 'claude-opus-4-5',

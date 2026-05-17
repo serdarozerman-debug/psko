@@ -1,6 +1,7 @@
 ---
 spec: 2026-05-17-clinical-psychology-platform
-status: draft
+status: complete
+validated_at: 2026-05-18
 domain: simulation
 phase: 2
 language: English + Turkish (all AI responses)
@@ -38,7 +39,25 @@ patterns_established:
   - All AI responses honor Turkish language support (user preference)
   - Hybrid framework approach: clinically grounded but educationally appropriate (training tool, not diagnostic)
 
-key_files: []
+key_files:
+  - psko-app/prisma/schema.prisma                                  # IntakeResponse model + Session.currentPhase
+  - psko-app/prisma/migrations/20260516212341_add_clinical_intelligence_engine
+  - psko-app/src/types/index.ts                                    # ProtocolPhase, CaseFormulation, IntakeQuestion, PhaseGuidance
+  - psko-app/src/lib/clinical/frameworks/cbt.ts
+  - psko-app/src/lib/clinical/frameworks/psychodynamic.ts
+  - psko-app/src/lib/clinical/frameworks/act.ts
+  - psko-app/src/lib/clinical/frameworks/dbt.ts
+  - psko-app/src/lib/clinical/frameworks/humanistic.ts
+  - psko-app/src/lib/clinical/frameworks/index.ts                  # ALL_FRAMEWORKS + getClinicalFramework
+  - psko-app/src/lib/clinical/intake/questions.ts                  # PHQ-9 + GAD-7 + open + score helpers
+  - psko-app/src/lib/clinical/intake/formulation.ts                # Claude-driven CaseFormulation builder
+  - psko-app/src/lib/clinical/phase-engine/detect-phase.ts         # Turn-count phase detection
+  - psko-app/src/app/api/intake/analyze/route.ts
+  - psko-app/src/app/api/session/start/route.ts                    # Intake-aware session creation
+  - psko-app/src/app/api/session/message/route.ts                  # Threads clinicalContext per turn
+  - psko-app/src/app/api/session/phase/route.ts                    # Phase guidance polling + lazy persist
+  - psko-app/src/components/intake/IntakeFlow.tsx                  # 4-step wizard with folded-in formulation review
+  - psko-app/src/components/simulation/SessionGuidancePanel.tsx
 
 key_decisions:
   - Intake is optional but strongly encouraged (users can skip to direct session start)
@@ -52,7 +71,7 @@ key_decisions:
 
 # Clinical Psychology Platform — Phase 2
 
-> Status: DRAFT
+> Status: COMPLETE (validated 2026-05-18 — see validation.md, handoff.md)
 
 ## Overview
 

@@ -2,6 +2,8 @@
 spec: 2026-05-17-clinical-psychology-platform
 status: complete
 validated_at: 2026-05-18
+completed_date: 2026-05-18
+archived_at: 2026-05-18
 domain: simulation
 phase: 2
 language: English + Turkish (all AI responses)
@@ -57,6 +59,26 @@ key_files:
   - psko-app/src/app/api/session/message/route.ts                  # Threads clinicalContext per turn
   - psko-app/src/app/api/session/phase/route.ts                    # Phase guidance polling + lazy persist
   - psko-app/src/components/intake/IntakeFlow.tsx                  # 4-step wizard with folded-in formulation review
+  - psko-app/src/components/simulation/SessionGuidancePanel.tsx
+
+key_files_delivered:
+  - psko-app/src/types/index.ts                                         # ProtocolPhase, CaseFormulation, IntakeResponse, PhaseGuidance
+  - psko-app/prisma/schema.prisma                                       # IntakeResponse model + Session.currentPhase
+  - psko-app/prisma/migrations/20260516212341_add_clinical_intelligence_engine
+  - psko-app/src/lib/clinical/frameworks/cbt.ts
+  - psko-app/src/lib/clinical/frameworks/psychodynamic.ts
+  - psko-app/src/lib/clinical/frameworks/act.ts
+  - psko-app/src/lib/clinical/frameworks/dbt.ts
+  - psko-app/src/lib/clinical/frameworks/humanistic.ts
+  - psko-app/src/lib/clinical/frameworks/index.ts
+  - psko-app/src/lib/clinical/intake/questions.ts
+  - psko-app/src/lib/clinical/intake/formulation.ts
+  - psko-app/src/lib/clinical/phase-engine/detect-phase.ts
+  - psko-app/src/app/api/intake/analyze/route.ts
+  - psko-app/src/app/api/session/start/route.ts
+  - psko-app/src/app/api/session/message/route.ts
+  - psko-app/src/app/api/session/phase/route.ts
+  - psko-app/src/components/intake/IntakeFlow.tsx
   - psko-app/src/components/simulation/SessionGuidancePanel.tsx
 
 key_decisions:

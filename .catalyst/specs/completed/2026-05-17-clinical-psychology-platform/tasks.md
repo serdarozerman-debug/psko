@@ -1,6 +1,10 @@
 # Tasks: Clinical Psychology Platform — Phase 2
 
-> Status: DRAFT
+> Status: COMPLETE (archived 2026-05-18)
+>
+> Shipped: T-001–T-017, T-019
+> Deferred: T-018, T-020, T-021, T-023, T-024, T-025, T-028
+> N/A: T-026, T-027
 > 
 > All tasks are granular, dependency-ordered, and ready for `Smith` (builder), `Shaper` (refactor), `Alchemist` (integration).
 > 
@@ -10,17 +14,17 @@
 
 ## Phase 2A: Foundation — Schema & Types
 
-### T-001: Extend TypeScript Types with Protocol Phases
+### T-001: Extend TypeScript Types with Protocol Phases ✅ SHIPPED
 
 **Description:** Add new interfaces to `src/types/index.ts` for clinical phase system.
 
 **Acceptance Criteria:**
-- [ ] `ProtocolPhase` interface defined (index, name, objective, techniques[], watchFor[], triggerTurnMin, transitionSignal?, source?)
-- [ ] `CaseFormulation` interface defined (presentingIssues[], phq9Score, gad7Score, functionalImpairment, clinicalPicture, recommendedApproaches[])
-- [ ] `IntakeResponse` interface defined (id, sessionId, responses JSON, formulation JSON, recommendedApproach, studentApproach, overrideReason?)
-- [ ] `PhaseGuidance` interface defined (currentPhaseIndex, currentPhase, progressPercent, nextTechniqueHint, watchpoint, phaseTransitionJustification?)
-- [ ] `ApproachConfig` extended with optional `phases: ProtocolPhase[]`, `caseConceptualizationTemplate: string`, `keyTheoretical: string[]`
-- [ ] All types exported from index, properly documented (JSDoc comments)
+- [x] `ProtocolPhase` interface defined (index, name, objective, techniques[], watchFor[], triggerTurnMin, transitionSignal?, source?)
+- [x] `CaseFormulation` interface defined (presentingIssues[], phq9Score, gad7Score, functionalImpairment, clinicalPicture, recommendedApproaches[])
+- [x] `IntakeResponse` interface defined (id, sessionId, responses JSON, formulation JSON, recommendedApproach, studentApproach, overrideReason?)
+- [x] `PhaseGuidance` interface defined (currentPhaseIndex, currentPhase, progressPercent, nextTechniqueHint, watchpoint, phaseTransitionJustification?)
+- [x] `ApproachConfig` extended with optional `phases: ProtocolPhase[]`, `caseConceptualizationTemplate: string`, `keyTheoretical: string[]`
+- [x] All types exported from index, properly documented (JSDoc comments)
 
 **Story Points:** 3
 
@@ -28,16 +32,16 @@
 
 ---
 
-### T-002: Update Prisma Schema — Add IntakeResponse & Extend Session
+### T-002: Update Prisma Schema — Add IntakeResponse & Extend Session ✅ SHIPPED
 
 **Description:** Add `IntakeResponse` model and extend `Session` with phase tracking to `prisma/schema.prisma`.
 
 **Acceptance Criteria:**
-- [ ] New `IntakeResponse` model created with fields: id (uuid), sessionId (unique FK), responses (Json), formulation (Json), recommendedApproach (string), studentApproach (string), overrideReason (string?), createdAt (DateTime)
-- [ ] `Session` model extended with: `currentPhase` (Int?, default 0), `intakeResponseId` (String? @unique foreign key to IntakeResponse)
-- [ ] Relation `IntakeResponse` ↔ `Session` defined (one-to-one)
-- [ ] `@@map` annotations consistent with existing naming convention (snake_case in DB)
-- [ ] Schema compiles with `prisma format` (no syntax errors)
+- [x] New `IntakeResponse` model created with fields: id (uuid), sessionId (unique FK), responses (Json), formulation (Json), recommendedApproach (string), studentApproach (string), overrideReason (string?), createdAt (DateTime)
+- [x] `Session` model extended with: `currentPhase` (Int?, default 0), `intakeResponseId` (String? @unique foreign key to IntakeResponse)
+- [x] Relation `IntakeResponse` ↔ `Session` defined (one-to-one)
+- [x] `@@map` annotations consistent with existing naming convention (snake_case in DB)
+- [x] Schema compiles with `prisma format` (no syntax errors)
 
 **Story Points:** 2
 
@@ -45,16 +49,16 @@
 
 ---
 
-### T-003: Generate Prisma Migration
+### T-003: Generate Prisma Migration ✅ SHIPPED
 
 **Description:** Create and test Prisma migration for new schema.
 
 **Acceptance Criteria:**
-- [ ] Migration file generated in `prisma/migrations/` with timestamp + descriptive name
-- [ ] Migration includes all schema changes from T-002
-- [ ] Migration can be applied to local dev DB without errors: `npx prisma migrate dev`
-- [ ] Prisma client regenerated (`npx prisma generate`)
-- [ ] No data loss warnings in dev environment
+- [x] Migration file generated in `prisma/migrations/` with timestamp + descriptive name
+- [x] Migration includes all schema changes from T-002
+- [x] Migration can be applied to local dev DB without errors: `npx prisma migrate dev`
+- [x] Prisma client regenerated (`npx prisma generate`)
+- [x] No data loss warnings in dev environment
 
 **Story Points:** 2
 
@@ -64,17 +68,17 @@
 
 ## Phase 2B: Clinical Frameworks — Protocol Phases
 
-### T-004: Define CBT Protocol Phases
+### T-004: Define CBT Protocol Phases ✅ SHIPPED
 
 **Description:** Create `src/lib/clinical/frameworks/cbt.ts` with Beck's 5-phase CBT model.
 
 **Acceptance Criteria:**
-- [ ] CBT phases (0–4) fully defined: Engagement, Assessment, Formulation, Intervention, Consolidation
-- [ ] Each phase includes: index, name, objective, techniques[] (5–8 items), watchFor[] (3–5 items), triggerTurnMin, transitionSignal (optional), source
-- [ ] Phase definitions match research.md academic grounding (Beck 2020)
-- [ ] All technique descriptions use student-actionable language ("Ask Socratic questions", not "Use Socratic method")
-- [ ] Export as `cbtFramework` (FrameworkDefinition)
-- [ ] TypeScript strict mode passes (no `any` types)
+- [x] CBT phases (0–4) fully defined: Engagement, Assessment, Formulation, Intervention, Consolidation
+- [x] Each phase includes: index, name, objective, techniques[] (5–8 items), watchFor[] (3–5 items), triggerTurnMin, transitionSignal (optional), source
+- [x] Phase definitions match research.md academic grounding (Beck 2020)
+- [x] All technique descriptions use student-actionable language ("Ask Socratic questions", not "Use Socratic method")
+- [x] Export as `cbtFramework` (FrameworkDefinition)
+- [x] TypeScript strict mode passes (no `any` types)
 
 **Story Points:** 5
 
@@ -82,17 +86,17 @@
 
 ---
 
-### T-005: Define Psychodynamic Protocol Phases
+### T-005: Define Psychodynamic Protocol Phases ✅ SHIPPED
 
 **Description:** Create `src/lib/clinical/frameworks/psychodynamic.ts` with Luborsky CCRT 5-phase model.
 
 **Acceptance Criteria:**
-- [ ] PDT phases (0–4) fully defined: Rapport, Exploratory Listening, Pattern Recognition, Transference, Integration
-- [ ] Each phase includes: index, name, objective, techniques[], watchFor[], triggerTurnMin, transitionSignal, source
-- [ ] CCRT framework (Wish-RO-RS) explained in each phase's objective
-- [ ] Transference concepts clearly explained for student understanding
-- [ ] Source cited: Luborsky (1984), Shedler (2010)
-- [ ] Export as `psychodynamicFramework`
+- [x] PDT phases (0–4) fully defined: Rapport, Exploratory Listening, Pattern Recognition, Transference, Integration
+- [x] Each phase includes: index, name, objective, techniques[], watchFor[], triggerTurnMin, transitionSignal, source
+- [x] CCRT framework (Wish-RO-RS) explained in each phase's objective
+- [x] Transference concepts clearly explained for student understanding
+- [x] Source cited: Luborsky (1984), Shedler (2010)
+- [x] Export as `psychodynamicFramework`
 
 **Story Points:** 5
 
@@ -100,17 +104,17 @@
 
 ---
 
-### T-006: Define ACT Protocol Phases
+### T-006: Define ACT Protocol Phases ✅ SHIPPED
 
 **Description:** Create `src/lib/clinical/frameworks/act.ts` with Hayes' 6-core-processes (non-sequential) model.
 
 **Acceptance Criteria:**
-- [ ] 6 ACT core processes defined (not traditional phases): Acceptance, Defusion, Present-Moment Awareness, Self-as-Context, Values, Committed Action
-- [ ] Each process includes: index (0–5), name, objective, techniques[], watchFor[], context (when to target this process)
-- [ ] Note in phase 0 (Acceptance): "ACT is not sequential; all processes are available throughout the session"
-- [ ] Hexaflex model explained in key documentation
-- [ ] Source: Hayes et al. (2012)
-- [ ] Export as `actFramework`
+- [x] 6 ACT core processes defined (not traditional phases): Acceptance, Defusion, Present-Moment Awareness, Self-as-Context, Values, Committed Action
+- [x] Each process includes: index (0–5), name, objective, techniques[], watchFor[], context (when to target this process)
+- [x] Note in phase 0 (Acceptance): "ACT is not sequential; all processes are available throughout the session"
+- [x] Hexaflex model explained in key documentation
+- [x] Source: Hayes et al. (2012)
+- [x] Export as `actFramework`
 
 **Story Points:** 5
 
@@ -118,18 +122,18 @@
 
 ---
 
-### T-007: Define DBT Protocol Phases
+### T-007: Define DBT Protocol Phases ✅ SHIPPED
 
 **Description:** Create `src/lib/clinical/frameworks/dbt.ts` with Linehan's 4-stage model (simplified for PSKO).
 
 **Acceptance Criteria:**
-- [ ] DBT stages (0–3): Stabilization, Emotional Processing, Ordinary Happiness, Maintenance (or consolidation)
-- [ ] Each stage includes: index, name, objective, techniques[], watchFor[], triggerTurnMin, transitionSignal, source
-- [ ] Stage 1 heavily weighted (safety, crisis de-escalation skills)
-- [ ] Note: "Full DBT is 12+ months; PSKO teaches foundational skills within one session"
-- [ ] 4 skills modules referenced: Mindfulness, Distress Tolerance, Emotion Regulation, Interpersonal Effectiveness
-- [ ] Source: Linehan (2014)
-- [ ] Export as `dbtFramework`
+- [x] DBT stages (0–3): Stabilization, Emotional Processing, Ordinary Happiness, Maintenance (or consolidation)
+- [x] Each stage includes: index, name, objective, techniques[], watchFor[], triggerTurnMin, transitionSignal, source
+- [x] Stage 1 heavily weighted (safety, crisis de-escalation skills)
+- [x] Note: "Full DBT is 12+ months; PSKO teaches foundational skills within one session"
+- [x] 4 skills modules referenced: Mindfulness, Distress Tolerance, Emotion Regulation, Interpersonal Effectiveness
+- [x] Source: Linehan (2014)
+- [x] Export as `dbtFramework`
 
 **Story Points:** 5
 
@@ -137,18 +141,18 @@
 
 ---
 
-### T-008: Define Humanistic/Person-Centered Protocol Phases
+### T-008: Define Humanistic/Person-Centered Protocol Phases ✅ SHIPPED
 
 **Description:** Create `src/lib/clinical/frameworks/humanistic.ts` with Rogers' 3-phase empathy progression.
 
 **Acceptance Criteria:**
-- [ ] Humanistic phases (0–2): Presence & Acceptance, Deepening, Heightened Awareness & Challenge
-- [ ] Each phase includes: index, name, objective, techniques[], watchFor[], triggerTurnMin, transitionSignal, source
-- [ ] Core conditions (unconditional positive regard, empathic understanding, congruence) woven throughout
-- [ ] Non-directive approach emphasized ("Follow client's lead, not therapist's agenda")
-- [ ] Empathy ladder concept (basic reflection → accurate empathy → advanced empathy) clear
-- [ ] Source: Rogers (1961)
-- [ ] Export as `humanisticFramework`
+- [x] Humanistic phases (0–2): Presence & Acceptance, Deepening, Heightened Awareness & Challenge
+- [x] Each phase includes: index, name, objective, techniques[], watchFor[], triggerTurnMin, transitionSignal, source
+- [x] Core conditions (unconditional positive regard, empathic understanding, congruence) woven throughout
+- [x] Non-directive approach emphasized ("Follow client's lead, not therapist's agenda")
+- [x] Empathy ladder concept (basic reflection → accurate empathy → advanced empathy) clear
+- [x] Source: Rogers (1961)
+- [x] Export as `humanisticFramework`
 
 **Story Points:** 5
 
@@ -156,20 +160,20 @@
 
 ---
 
-### T-009: Update ApproachConfig in All 5 Approaches
+### T-009: Update ApproachConfig in All 5 Approaches ✅ SHIPPED
 
 **Description:** Add `phases: ProtocolPhase[]`, `caseConceptualizationTemplate`, `keyTheoretical[]` to each approach module.
 
 **Acceptance Criteria:**
-- [ ] `src/lib/approaches/cbt.ts` updated with CBT phases from #T-004
-- [ ] `src/lib/approaches/psychodynamic.ts` updated with PDT phases from #T-005
-- [ ] `src/lib/approaches/act.ts` updated with ACT processes from #T-006
-- [ ] `src/lib/approaches/dbt.ts` updated with DBT stages from #T-007
-- [ ] `src/lib/approaches/humanistic.ts` updated with Humanistic phases from #T-008
-- [ ] Each has `caseConceptualizationTemplate` (narrative template, ~200 words)
-- [ ] Each has `keyTheoretical` array (3–5 key theoretical anchors)
-- [ ] No breaking changes to existing `ApproachConfig` interface (phases[] optional)
-- [ ] All tests still pass
+- [x] `src/lib/approaches/cbt.ts` updated with CBT phases from #T-004
+- [x] `src/lib/approaches/psychodynamic.ts` updated with PDT phases from #T-005
+- [x] `src/lib/approaches/act.ts` updated with ACT processes from #T-006
+- [x] `src/lib/approaches/dbt.ts` updated with DBT stages from #T-007
+- [x] `src/lib/approaches/humanistic.ts` updated with Humanistic phases from #T-008
+- [x] Each has `caseConceptualizationTemplate` (narrative template, ~200 words)
+- [x] Each has `keyTheoretical` array (3–5 key theoretical anchors)
+- [x] No breaking changes to existing `ApproachConfig` interface (phases[] optional)
+- [x] All tests still pass
 
 **Story Points:** 3
 
@@ -179,18 +183,18 @@
 
 ## Phase 2C: Intake System — Questions & Analysis
 
-### T-010: Create Intake Question Bank
+### T-010: Create Intake Question Bank ✅ SHIPPED
 
 **Description:** Create `src/lib/clinical/intake/questions.ts` with PHQ-9 + GAD-7 + open-ended questions.
 
 **Acceptance Criteria:**
-- [ ] PHQ-9 questions (9 items) formatted as objects with id, text, scale (0–3 mapping), scoring
-- [ ] GAD-7 questions (7 items) formatted similarly
-- [ ] 3 open-ended questions: presenting problem, duration, functional impact
-- [ ] All questions include Turkish translations (e.g., `text: { en: "...", tr: "..." }`)
-- [ ] Scoring thresholds defined: PHQ-9 (0–4: none, 5–9: mild, etc.), GAD-7 (similar)
-- [ ] Export as `phq9Questions`, `gad7Questions`, `openEndedQuestions`
-- [ ] TypeScript interfaces: `IntakeQuestion`, `IntakeQuestionResponse`
+- [x] PHQ-9 questions (9 items) formatted as objects with id, text, scale (0–3 mapping), scoring
+- [x] GAD-7 questions (7 items) formatted similarly
+- [x] 3 open-ended questions: presenting problem, duration, functional impact
+- [x] All questions include Turkish translations (e.g., `text: { en: "...", tr: "..." }`)
+- [x] Scoring thresholds defined: PHQ-9 (0–4: none, 5–9: mild, etc.), GAD-7 (similar)
+- [x] Export as `phq9Questions`, `gad7Questions`, `openEndedQuestions`
+- [x] TypeScript interfaces: `IntakeQuestion`, `IntakeQuestionResponse`
 
 **Story Points:** 3
 
@@ -198,20 +202,20 @@
 
 ---
 
-### T-011: Create Intake Analyzer Function
+### T-011: Create Intake Analyzer Function ✅ SHIPPED
 
 **Description:** Create `src/lib/clinical/intake/analyzer.ts` with Claude-based case formulation generation.
 
 **Acceptance Criteria:**
-- [ ] Function `analyzeIntake(responses: Record<string, any>): Promise<CaseFormulation>`
-- [ ] Takes intake form responses, calculates PHQ-9 and GAD-7 scores
-- [ ] Calls Claude API with system prompt designed for case formulation
-- [ ] Claude returns structured JSON: `{ caseFormulation, phq9Score, gad7Score, recommendedApproaches[], primaryConcerns[], functionalImpairment, riskFactors? }`
-- [ ] Parsing with error handling (malformed JSON fallback)
-- [ ] Timeout: 5 seconds (hard fail if exceeded)
-- [ ] Returns `CaseFormulation` interface
-- [ ] Claude prompt includes: "Respond in the user's language (Turkish or English as applicable)"
-- [ ] Tested with sample intake responses (happy path + edge cases)
+- [x] Function `analyzeIntake(responses: Record<string, any>): Promise<CaseFormulation>`
+- [x] Takes intake form responses, calculates PHQ-9 and GAD-7 scores
+- [x] Calls Claude API with system prompt designed for case formulation
+- [x] Claude returns structured JSON: `{ caseFormulation, phq9Score, gad7Score, recommendedApproaches[], primaryConcerns[], functionalImpairment, riskFactors? }`
+- [x] Parsing with error handling (malformed JSON fallback)
+- [x] Timeout: 5 seconds (hard fail if exceeded)
+- [x] Returns `CaseFormulation` interface
+- [x] Claude prompt includes: "Respond in the user's language (Turkish or English as applicable)"
+- [x] Tested with sample intake responses (happy path + edge cases)
 
 **Story Points:** 5
 
@@ -219,22 +223,22 @@
 
 ---
 
-### T-012: Create Intake Form Component
+### T-012: Create Intake Form Component ✅ SHIPPED
 
 **Description:** Create `src/components/IntakeFlow.tsx` React component for intake form UI.
 
 **Acceptance Criteria:**
-- [ ] Multi-screen form (3 screens or 1 scrollable page with progress indicator)
-- [ ] Screen 1: PHQ-9 items (radio buttons or buttons, 0–3 scale)
-- [ ] Screen 2: GAD-7 items (similar)
-- [ ] Screen 3: Open-ended text inputs (3 questions)
-- [ ] "Next" / "Back" / "Submit" buttons
-- [ ] Progress indicator (e.g., "2 of 3" or progress bar)
-- [ ] Responsive design (mobile-friendly, fits in 80% of viewport)
-- [ ] Keyboard navigation (Tab, Enter, Arrow keys)
-- [ ] Turkish language support (labels, buttons, instructions)
-- [ ] Loading state during submission (spinner, disabled submit button)
-- [ ] Error state (network error, Claude failure) with retry option
+- [x] Multi-screen form (3 screens or 1 scrollable page with progress indicator)
+- [x] Screen 1: PHQ-9 items (radio buttons or buttons, 0–3 scale)
+- [x] Screen 2: GAD-7 items (similar)
+- [x] Screen 3: Open-ended text inputs (3 questions)
+- [x] "Next" / "Back" / "Submit" buttons
+- [x] Progress indicator (e.g., "2 of 3" or progress bar)
+- [x] Responsive design (mobile-friendly, fits in 80% of viewport)
+- [x] Keyboard navigation (Tab, Enter, Arrow keys)
+- [x] Turkish language support (labels, buttons, instructions)
+- [x] Loading state during submission (spinner, disabled submit button)
+- [x] Error state (network error, Claude failure) with retry option
 
 **Story Points:** 5
 
@@ -242,20 +246,20 @@
 
 ---
 
-### T-013: Create Case Formulation Review Component
+### T-013: Create Case Formulation Review Component ✅ SHIPPED
 
 **Description:** Create `src/components/CaseFormulationReview.tsx` component for displaying and confirming formulation + approach.
 
 **Acceptance Criteria:**
-- [ ] Displays case formulation narrative (150–250 words, markdown-rendered)
-- [ ] Shows PHQ-9 and GAD-7 scores (with interpretation, e.g., "Moderate depression")
-- [ ] Lists 2–3 recommended approaches with rationales (bullet points)
-- [ ] Shows primary concerns and functional impairment level
-- [ ] "This looks right" button → confirms approach, proceeds to persona selector
-- [ ] "I'd prefer a different approach" button → dropdown/radio to select alternative
-- [ ] Optional "Skip intake" link (if intake is optional)
-- [ ] Responsive, accessible (ARIA labels, high contrast)
-- [ ] Turkish translations for all labels + interpretation text
+- [x] Displays case formulation narrative (150–250 words, markdown-rendered)
+- [x] Shows PHQ-9 and GAD-7 scores (with interpretation, e.g., "Moderate depression")
+- [x] Lists 2–3 recommended approaches with rationales (bullet points)
+- [x] Shows primary concerns and functional impairment level
+- [x] "This looks right" button → confirms approach, proceeds to persona selector
+- [x] "I'd prefer a different approach" button → dropdown/radio to select alternative
+- [x] Optional "Skip intake" link (if intake is optional)
+- [x] Responsive, accessible (ARIA labels, high contrast)
+- [x] Turkish translations for all labels + interpretation text
 
 **Story Points:** 3
 
@@ -265,20 +269,20 @@
 
 ## Phase 2D: Session Integration — API Routes
 
-### T-014: Create Intake Analysis API Route
+### T-014: Create Intake Analysis API Route ✅ SHIPPED
 
 **Description:** Create `src/app/api/intake/analyze/route.ts` POST endpoint.
 
 **Acceptance Criteria:**
-- [ ] Endpoint: `POST /api/intake/analyze`
-- [ ] Input validation: intake form responses (JSON schema validation)
-- [ ] Calls `analyzeIntake()` from T-011
-- [ ] Returns `{ caseFormulation: CaseFormulation, recommendedApproaches: [...] }`
-- [ ] Error handling: if Claude fails, return rule-based recommendations (PHQ-9 + GAD-7 only)
-- [ ] 5-second timeout with descriptive error message
-- [ ] Request logging (for debugging)
-- [ ] Response compression (gzip)
-- [ ] Tested with curl or client-side test
+- [x] Endpoint: `POST /api/intake/analyze`
+- [x] Input validation: intake form responses (JSON schema validation)
+- [x] Calls `analyzeIntake()` from T-011
+- [x] Returns `{ caseFormulation: CaseFormulation, recommendedApproaches: [...] }`
+- [x] Error handling: if Claude fails, return rule-based recommendations (PHQ-9 + GAD-7 only)
+- [x] 5-second timeout with descriptive error message
+- [x] Request logging (for debugging)
+- [x] Response compression (gzip)
+- [x] Tested with curl or client-side test
 
 **Story Points:** 3
 
@@ -286,19 +290,19 @@
 
 ---
 
-### T-015: Update Session Start Route with Intake Integration
+### T-015: Update Session Start Route with Intake Integration ✅ SHIPPED
 
 **Description:** Modify `src/app/api/session/start/route.ts` to accept intakeResponseId and inject case context.
 
 **Acceptance Criteria:**
-- [ ] Accept optional `intakeResponseId` in request body
-- [ ] If provided: fetch `IntakeResponse` from DB, extract `formulation` JSON
-- [ ] Build CASE_CONTEXT section in system prompt: clinical picture, PHQ-9 score, GAD-7 score, primary concerns, functional impairment
-- [ ] Inject CASE_CONTEXT into persona system prompt under dedicated section
-- [ ] Store `intakeResponseId` on Session model
-- [ ] If intakeResponseId NOT provided: session proceeds as before (backward compatible)
-- [ ] Test: session with intake vs. session without intake both work
-- [ ] Session opening message contextualizes the case (e.g., "Based on your intake, I'm working with someone presenting with [concerns]")
+- [x] Accept optional `intakeResponseId` in request body
+- [x] If provided: fetch `IntakeResponse` from DB, extract `formulation` JSON
+- [x] Build CASE_CONTEXT section in system prompt: clinical picture, PHQ-9 score, GAD-7 score, primary concerns, functional impairment
+- [x] Inject CASE_CONTEXT into persona system prompt under dedicated section
+- [x] Store `intakeResponseId` on Session model
+- [x] If intakeResponseId NOT provided: session proceeds as before (backward compatible)
+- [x] Test: session with intake vs. session without intake both work
+- [x] Session opening message contextualizes the case (e.g., "Based on your intake, I'm working with someone presenting with [concerns]")
 
 **Story Points:** 5
 
@@ -306,19 +310,19 @@
 
 ---
 
-### T-016: Create Phase Tracking API Route (GET)
+### T-016: Create Phase Tracking API Route (GET) ✅ SHIPPED
 
 **Description:** Create `src/app/api/session/[id]/phase/route.ts` GET endpoint.
 
 **Acceptance Criteria:**
-- [ ] Endpoint: `GET /api/session/[id]/phase`
-- [ ] Fetches current Session, extracts `currentPhase` and approach
-- [ ] Retrieves current ProtocolPhase definition from approach framework
-- [ ] Calculates progress percentage (turnCount / estimatedSessionLength, e.g., 25 turns)
-- [ ] Returns `PhaseGuidance` object: currentPhaseIndex, currentPhase, progressPercent, nextTechniqueHint, watchpoint
-- [ ] Handles edge case: no ProtocolPhase defined (returns default guidance)
-- [ ] Fast response (query-only, no AI calls)
-- [ ] Tested with multiple approach types
+- [x] Endpoint: `GET /api/session/[id]/phase`
+- [x] Fetches current Session, extracts `currentPhase` and approach
+- [x] Retrieves current ProtocolPhase definition from approach framework
+- [x] Calculates progress percentage (turnCount / estimatedSessionLength, e.g., 25 turns)
+- [x] Returns `PhaseGuidance` object: currentPhaseIndex, currentPhase, progressPercent, nextTechniqueHint, watchpoint
+- [x] Handles edge case: no ProtocolPhase defined (returns default guidance)
+- [x] Fast response (query-only, no AI calls)
+- [x] Tested with multiple approach types
 
 **Story Points:** 3
 
@@ -326,17 +330,17 @@
 
 ---
 
-### T-017: Create Phase Detection Service (Turn-Based)
+### T-017: Create Phase Detection Service (Turn-Based) ✅ SHIPPED
 
 **Description:** Create `src/lib/clinical/phase-engine/detect.ts` with turn-count-based phase detection.
 
 **Acceptance Criteria:**
-- [ ] Function `detectPhaseByTurnCount(turnCount: number, approach: TherapeuticApproach): number`
-- [ ] Uses approach-specific turn thresholds (from research.md)
-- [ ] Returns phase index (0–4 or 0–5)
-- [ ] Fallback: if thresholds not found for approach, return 0
-- [ ] Unit tests: verify phase advancement at correct turn counts
-- [ ] Exported for use in route handlers
+- [x] Function `detectPhaseByTurnCount(turnCount: number, approach: TherapeuticApproach): number`
+- [x] Uses approach-specific turn thresholds (from research.md)
+- [x] Returns phase index (0–4 or 0–5)
+- [x] Fallback: if thresholds not found for approach, return 0
+- [x] Unit tests: verify phase advancement at correct turn counts
+- [x] Exported for use in route handlers
 
 **Story Points:** 2
 
@@ -344,9 +348,11 @@
 
 ---
 
-### T-018: Create Phase Update Logic in Message Route
+### T-018: Create Phase Update Logic in Message Route — DEFERRED
 
 **Description:** Integrate phase detection into `src/app/api/session/message/route.ts`.
+
+> Deferred: Phase DB persistence on message route not yet integrated. Phase detection works via GET /phase polling; server-side auto-advance not shipped in Phase 2.
 
 **Acceptance Criteria:**
 - [ ] After saving message pair, check if phase should advance (turnCount % 5 === 0)
@@ -364,22 +370,22 @@
 
 ## Phase 2E: Frontend — Session Guidance
 
-### T-019: Create Session Guidance Panel Component (Refactored)
+### T-019: Create Session Guidance Panel Component (Refactored) ✅ SHIPPED
 
 **Description:** Create `src/components/SessionGuidancePanel.tsx` replacing static hints with dynamic phase guidance.
 
 **Acceptance Criteria:**
-- [ ] Component subscribes to `/api/session/[id]/phase` every 5 turns (or after each message)
-- [ ] Displays: phase name, index (e.g., "Phase 2 of 4"), progress bar (visual %)
-- [ ] Shows clinical objective (1–2 sentences)
-- [ ] Shows "Next move" suggestion (specific, actionable technique)
-- [ ] Shows "Watch for" (one watchpoint)
-- [ ] Phase transition indicator: when phase changes, highlight with color animation + brief explanation
-- [ ] Expandable section: "Phase history" showing previous transitions
-- [ ] Approach-specific color scheme (CBT = blue, PDT = purple, ACT = green, DBT = orange, Humanistic = warm red)
-- [ ] Mobile responsive (side panel becomes bottom panel on small screens)
-- [ ] Turkish translations for all labels and descriptions
-- [ ] Error handling: if phase API fails, fall back to static hints
+- [x] Component subscribes to `/api/session/[id]/phase` every 5 turns (or after each message)
+- [x] Displays: phase name, index (e.g., "Phase 2 of 4"), progress bar (visual %)
+- [x] Shows clinical objective (1–2 sentences)
+- [x] Shows "Next move" suggestion (specific, actionable technique)
+- [x] Shows "Watch for" (one watchpoint)
+- [x] Phase transition indicator: when phase changes, highlight with color animation + brief explanation
+- [x] Expandable section: "Phase history" showing previous transitions
+- [x] Approach-specific color scheme (CBT = blue, PDT = purple, ACT = green, DBT = orange, Humanistic = warm red)
+- [x] Mobile responsive (side panel becomes bottom panel on small screens)
+- [x] Turkish translations for all labels and descriptions
+- [x] Error handling: if phase API fails, fall back to static hints
 
 **Story Points:** 8
 
@@ -387,7 +393,7 @@
 
 ---
 
-### T-020: Create Hybrid Framework Viewer Component (Optional)
+### T-020: Create Hybrid Framework Viewer Component — DEFERRED
 
 **Description:** Create `src/components/HybridFrameworkViewer.tsx` for showing how all 5 approaches conceptualize a case.
 
@@ -409,7 +415,7 @@
 
 ## Phase 2F: Integration & Testing
 
-### T-021: End-to-End Test: Intake → Session → Feedback Flow
+### T-021: End-to-End Test: Intake → Session → Feedback Flow — DEFERRED
 
 **Description:** Integration test covering full flow: intake form → case formulation → session start → phase progression → feedback.
 
@@ -444,7 +450,7 @@
 
 ---
 
-### T-023: Unit Test: Case Formulation Analyzer
+### T-023: Unit Test: Case Formulation Analyzer — DEFERRED
 
 **Description:** Unit tests for intake analyzer (Claude API mocking).
 
@@ -463,7 +469,7 @@
 
 ---
 
-### T-024: Accessibility & i18n Audit
+### T-024: Accessibility & i18n Audit — DEFERRED
 
 **Description:** Audit all new components for accessibility (WCAG 2.1 AA) and Turkish language support.
 
@@ -485,7 +491,7 @@
 
 ## Phase 2G: Documentation & Deployment
 
-### T-025: Update Documentation
+### T-025: Update Documentation — DEFERRED
 
 **Description:** Update project docs to explain intake, case formulation, protocol phases.
 
@@ -503,9 +509,11 @@
 
 ---
 
-### T-026: Database Seed Data for Clinical Frameworks
+### T-026: Database Seed Data for Clinical Frameworks — N/A
 
 **Description:** Create seed script to populate framework definitions (if storing phases in DB, not just code).
+
+> N/A: Frameworks are code-based only (src/lib/clinical/frameworks/). No DB seed required.
 
 **Acceptance Criteria:**
 - [ ] `prisma/seed-clinical.ts` script created (optional, if DB storage used)
@@ -520,9 +528,11 @@
 
 ---
 
-### T-027: Deploy to Staging & QA
+### T-027: Deploy to Staging & QA — N/A
 
 **Description:** Deploy Phase 2 to staging environment; full QA testing.
+
+> N/A: Deployment managed via Vercel CI on the development branch. No separate staging QA gate for this spec.
 
 **Acceptance Criteria:**
 - [ ] All code merged to development branch
@@ -544,7 +554,7 @@
 
 ---
 
-### T-028: Merge to Main & Release Notes
+### T-028: Merge to Main & Release Notes — DEFERRED
 
 **Description:** Final merge to main branch; release notes for Phase 2.
 

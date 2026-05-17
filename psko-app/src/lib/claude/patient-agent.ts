@@ -17,12 +17,19 @@ export function streamPatientResponse(
   approach: TherapeuticApproach,
   history: MessageData[],
   studentMessage: string,
-  roleMode: RoleMode = 'THERAPIST'
+  roleMode: RoleMode = 'THERAPIST',
+  clinicalContext?: string
 ): ReturnType<typeof anthropic.messages.stream> {
-  const systemPrompt =
+  const basePrompt =
     roleMode === 'CLIENT'
       ? buildTherapistPrompt(persona)
       : buildPatientPrompt(persona, approach)
+
+  // Inject case-formulation context throughout the session, not just the opening.
+  // This satisfies REQ-004 (CASE_CONTEXT in session AI system prompt).
+  const systemPrompt = clinicalContext
+    ? `${basePrompt}\n\n[CASE_CONTEXT — for your in-character awareness only, do not disclose: ${clinicalContext}]`
+    : basePrompt
 
   const messages: Anthropic.MessageParam[] = [
     ...history.map((m) => ({

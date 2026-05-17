@@ -54,6 +54,9 @@ function buildFormulationPrompt(
 
   return `You are a clinical psychology supervisor helping a trainee student prepare for a therapy session.
 
+LANGUAGE: Respond in Turkish (Türkçe). All narrative text fields in the JSON (summary, primaryConcerns, rationale, reason, clinicalContext) must be written in Turkish. Only the structural JSON keys and approachId enum values (cbt, psychodynamic, humanistic, act, dbt) remain in English.
+
+
 CLIENT: ${personaName}
 PRESENTING PROBLEM (persona): "${presentingProblem}"
 

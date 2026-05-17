@@ -3,7 +3,7 @@ import { prisma } from '@/lib/db/prisma'
 import { createClient } from '@/lib/supabase/server'
 import { getPersonaById } from '@/lib/personas'
 import { streamPatientResponse } from '@/lib/claude/patient-agent'
-import type { TherapeuticApproach, MessageData } from '@/types'
+import type { TherapeuticApproach, MessageData, CaseFormulation } from '@/types'
 
 const MessageSchema = z.object({
   sessionId: z.string(),
@@ -25,6 +25,7 @@ export async function POST(req: Request) {
 
   const session = await prisma.session.findFirst({
     where: { id: sessionId, userId: user.id, endedAt: null },
+    include: { intakeResponse: true },
   })
   if (!session) return Response.json({ error: 'Session not found' }, { status: 404 })
   if (session.turnCount >= MAX_TURNS) {
@@ -56,12 +57,16 @@ export async function POST(req: Request) {
   // Stream AI response (patient in THERAPIST mode, therapist in CLIENT mode)
   let stream
   try {
+    const formulation = session.intakeResponse?.formulation as CaseFormulation | undefined
+    const clinicalContext = formulation?.clinicalContext
+
     stream = streamPatientResponse(
       persona,
       session.therapeuticApproach as TherapeuticApproach,
       historyData,
       content,
-      session.roleMode as 'THERAPIST' | 'CLIENT'
+      session.roleMode as 'THERAPIST' | 'CLIENT',
+      clinicalContext
     )
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)

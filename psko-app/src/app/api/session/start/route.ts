@@ -12,7 +12,7 @@ const StartSessionSchema = z.object({
   therapeuticApproach: z.enum(['cbt', 'psychodynamic', 'humanistic', 'act', 'dbt']),
   roleMode: z.enum(['THERAPIST', 'CLIENT']).default('THERAPIST'),
   /** Optional: pre-session intake answers */
-  intakeResponses: z.record(z.union([z.string(), z.number()])).optional(),
+  intakeResponses: z.record(z.string(), z.union([z.string(), z.number()])).optional(),
 })
 
 export async function POST(req: Request) {
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
       await prisma.intakeResponse.create({
         data: {
           sessionId: session.id,
-          responses: intakeResponses,
+          responses: intakeResponses as object,
           formulation: formulation as object,
           recommendedApproach: therapeuticApproach,
         },

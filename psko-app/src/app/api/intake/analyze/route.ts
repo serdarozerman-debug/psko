@@ -6,7 +6,7 @@ import { INTAKE_QUESTIONS } from '@/lib/clinical/intake/questions'
 
 const AnalyzeIntakeSchema = z.object({
   personaId: z.string(),
-  responses: z.record(z.union([z.string(), z.number()])),
+  responses: z.record(z.string(), z.union([z.string(), z.number()])),
 })
 
 export async function POST(req: Request) {

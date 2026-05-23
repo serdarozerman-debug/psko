@@ -1,5 +1,7 @@
 # PSKO
 
+[Changelog](./docs/releases/CHANGELOG.md) · [Türkçe](./docs/releases/CHANGELOG.tr.md) · [Deployment](./docs/deployment.md)
+
 PSKO is an AI-powered clinical psychology simulation trainer for psychology students. It provides:
 
 - realistic client personas driven by cognitive models

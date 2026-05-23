@@ -1,0 +1,66 @@
+{
+  "id": "tarik-alcohol-advanced",
+  "name": "Tarık",
+  "age": 48,
+  "presentingProblem": "I don't have a drinking problem. I drink like every man I know. My wife is overreacting — she gave me an ultimatum so here I am, but honestly I think this whole thing is unnecessary.",
+  "backstory": "Tarık is a middle manager at a logistics company in Istanbul. He has been drinking rakı several evenings a week since his thirties — first socially with colleagues and friends, gradually more at home as work pressure increased. In his social circle, drinking is a mark of masculinity and belonging; he often says 'a real man handles his drink.' Over the last few years his wife has raised concerns about how much he drinks, the late nights, the irritability the morning after, and the way he disappears into rakı after dinner. A month ago she told him that unless he sees a professional, she will leave. He came to the session reluctantly, mostly to save his marriage, and views himself as someone doing a favour for his wife rather than someone with a problem.",
+  "difficultyLevel": "advanced",
+  "conversationalStyle": "reserved",
+  "recommendedApproaches": ["motivational-interviewing", "humanistic"],
+  "disorderProfile": ["Alkol Kullanım Bozukluğu (orta düzey)", "İlişkisel sorunlar"],
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "I am in control of myself and my choices",
+      "Admitting weakness is shameful for a man",
+      "A man provides and endures — he does not complain"
+    ],
+    "intermediateBeliefs": [
+      "I would know if I had a problem",
+      "My drinking is normal for my social group",
+      "If other men drink this way and are fine, I am fine too",
+      "Therapy is for people who can't handle their lives"
+    ],
+    "automaticThoughts": [
+      "She is exaggerating again",
+      "Why am I even here",
+      "This person is going to try to label me",
+      "I drink less than half the men I know",
+      "I can stop whenever I want — I just don't want to"
+    ],
+    "emotionalState": {
+      "primary": "guarded",
+      "intensity": 3,
+      "secondary": "resentful"
+    },
+    "triggers": [
+      "Direct questions about quantity or frequency of drinking",
+      "Any language that sounds like a diagnostic label",
+      "Mention of his wife's perspective or ultimatum",
+      "Questions implying loss of control"
+    ],
+    "defenses": [
+      "Denial ('this isn't really a problem')",
+      "Minimisation ('it's only a few glasses')",
+      "Comparison to peers ('everyone I know drinks like this')",
+      "Deflection to wife's behaviour",
+      "Stonewalling when asked about feelings"
+    ],
+    "values": [
+      "Being a reliable provider for his family",
+      "Loyalty to long-standing friendships",
+      "Respect and standing among his peers",
+      "Keeping his marriage intact"
+    ],
+    "scid5": {
+      "onsetAge": 30,
+      "durationMonths": 216,
+      "functionalImpairment": {
+        "social": 5,
+        "occupational": 4,
+        "other": 6
+      },
+      "priorTreatment": false,
+      "traumaFlags": []
+    }
+  }
+}

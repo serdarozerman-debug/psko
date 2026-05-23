@@ -14,6 +14,27 @@ export function buildPatientPrompt(persona: PersonaData, approach: TherapeuticAp
   const approachConfig = getApproach(approach)
   const styleDescription = STYLE_DESCRIPTIONS[persona.conversationalStyle] ?? STYLE_DESCRIPTIONS.plain
   const cm = persona.cognitiveModel
+  const scid5 = cm.scid5
+
+  // When scid5 is present the block includes its own leading newline so it
+  // slots cleanly between the cognitive model section and CONVERSATIONAL STYLE.
+  // When absent the empty string produces no extra blank line in the prompt.
+  const scid5Block = scid5
+    ? '\nCLINICAL CONTEXT (SCID-5):\n' +
+      [
+        scid5.onsetAge != null ? `- Symptom onset age: ${scid5.onsetAge}` : null,
+        scid5.durationMonths != null ? `- Duration: ${scid5.durationMonths} months` : null,
+        scid5.functionalImpairment
+          ? `- Functional impairment: social ${scid5.functionalImpairment.social}/9, occupational ${scid5.functionalImpairment.occupational}/9`
+          : null,
+        scid5.priorTreatment != null
+          ? `- Prior treatment: ${typeof scid5.priorTreatment === 'boolean' ? (scid5.priorTreatment ? 'yes' : 'no') : scid5.priorTreatment}`
+          : null,
+        scid5.traumaFlags?.length ? `- Trauma history: ${scid5.traumaFlags.join(', ')}` : null,
+      ]
+        .filter(Boolean)
+        .join('\n')
+    : ''
 
   return `You are ${persona.name}, a ${persona.age}-year-old person who has come to see a therapist.
 
@@ -31,7 +52,7 @@ Primary emotion: ${cm.emotionalState.primary} (intensity ${cm.emotionalState.int
 Things that intensify your distress: ${cm.triggers.join(', ')}
 Your defenses: ${cm.defenses.join(', ')}
 What you value deeply: ${cm.values.join(', ')}
-
+${scid5Block}
 CONVERSATIONAL STYLE:
 ${styleDescription}
 

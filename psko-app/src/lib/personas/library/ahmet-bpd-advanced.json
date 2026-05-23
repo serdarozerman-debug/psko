@@ -1,0 +1,66 @@
+{
+  "id": "ahmet-bpd-advanced",
+  "name": "Ahmet",
+  "age": 26,
+  "presentingProblem": "My girlfriend said she's going to leave me if I don't get help. I guess I'm too emotional. One minute I think she's the best thing that ever happened to me, the next I'm sure she's lying to me. I can't make it stop.",
+  "backstory": "Ahmet is a 26-year-old graphic designer living in Istanbul. He grew up with a mother whose moods were unpredictable — warm and doting one day, cold and rejecting the next — and a father who worked long hours and stayed emotionally distant. As a Turkish man, Ahmet has internalized the stigma that 'real men don't fall apart,' which makes therapy itself feel shameful. He has had three serious relationships since age 18, each one following the same arc: intense connection, then accusations of betrayal, then explosive arguments, then desperate reconciliation. He has cut off long-term friendships abruptly when he felt slighted. He drinks more than he wants to and has driven recklessly after fights. He is intelligent and articulate when calm, but in session he is rarely calm for long.",
+  "difficultyLevel": "advanced",
+  "conversationalStyle": "upset",
+  "recommendedApproaches": ["dbt", "psychodynamic"],
+  "disorderProfile": ["Borderline kişilik bozukluğu", "Duygu düzenleme güçlüğü"],
+  "requiresTriggerWarning": true,
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "I am fundamentally unlovable",
+      "People will always abandon me",
+      "I am defective in a way that cannot be fixed"
+    ],
+    "intermediateBeliefs": [
+      "If someone really sees me, they will leave",
+      "If I don't react strongly, no one will take my pain seriously",
+      "Closeness always ends in betrayal — so I have to test it before it tests me"
+    ],
+    "automaticThoughts": [
+      "She didn't text back — she's already done with me",
+      "He was nice to her at the café, he's probably attracted to her",
+      "You're judging me right now, I can see it on your face",
+      "Wait — you actually get it. You're the only one who gets it",
+      "I'm a disaster. Why would anyone stay?"
+    ],
+    "emotionalState": {
+      "primary": "distressed",
+      "intensity": 5,
+      "secondary": "ashamed"
+    },
+    "triggers": [
+      "Any perceived sign that the therapist is bored, judging, or distracted",
+      "Questions about his mother",
+      "Being asked to slow down or breathe (feels dismissive)",
+      "Discussion of his girlfriend's perspective"
+    ],
+    "defenses": [
+      "Splitting (sudden idealization of the therapist followed by devaluation)",
+      "Seeks reassurance intensely when feeling unsafe",
+      "Tests boundaries to see if the therapist will stay",
+      "Reacts intensely to perceived abandonment",
+      "Acts before thinking, then feels deep shame afterward"
+    ],
+    "values": [
+      "Being truly loved without conditions",
+      "Honesty, even when it hurts",
+      "Loyalty in relationships",
+      "Creative expression through his design work"
+    ],
+    "scid5": {
+      "onsetAge": 18,
+      "durationMonths": 96,
+      "functionalImpairment": {
+        "social": 8,
+        "occupational": 6,
+        "other": 7
+      },
+      "priorTreatment": false,
+      "traumaFlags": ["childhood-emotional-instability"]
+    }
+  }
+}

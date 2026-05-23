@@ -1,0 +1,66 @@
+{
+  "id": "elif-ptsd-intermediate",
+  "name": "Elif",
+  "age": 34,
+  "presentingProblem": "Something happened at the factory a year and a half ago. My body healed, but I still don't sleep, and I jump at every sound. I came because my husband asked me to.",
+  "backstory": "Elif worked for over a decade as a machine operator at a textile factory in Bursa before a serious industrial press injury changed her daily life. Although her physical recovery is complete, she has not returned to work and rarely leaves the house alone. Her extended family is loving but stoic, and she has been repeatedly told to be grateful that she survived, which has made it hard for her to name what she actually feels. Her husband is patient and supportive, but he does not understand why she still cannot sleep through the night or watch the evening news. She describes herself mostly through what she can no longer do.",
+  "difficultyLevel": "intermediate",
+  "conversationalStyle": "reserved",
+  "recommendedApproaches": ["cbt", "humanistic"],
+  "disorderProfile": [
+    "Travma Sonrası Stres Bozukluğu (TSSB), kronik",
+    "Eşlik eden uyku bozukluğu"
+  ],
+  "requiresTriggerWarning": true,
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "The world is not safe anymore",
+      "I should have been more careful",
+      "If I let my guard down, something terrible will happen again"
+    ],
+    "intermediateBeliefs": [
+      "Talking about it will only make it worse",
+      "A strong woman handles these things on her own",
+      "If I show how I really feel, I will burden my family"
+    ],
+    "automaticThoughts": [
+      "I can hear the machine again",
+      "Something is going to go wrong",
+      "Don't cry, not here",
+      "I am not the person I used to be"
+    ],
+    "emotionalState": {
+      "primary": "anxious",
+      "intensity": 4,
+      "secondary": "numb"
+    },
+    "triggers": [
+      "Mechanical or industrial sounds",
+      "News reports about workplace accidents",
+      "Being asked to describe what happened in detail",
+      "Bright fluorescent lighting similar to the factory floor"
+    ],
+    "defenses": [
+      "Avoidance of trauma-related places and conversations",
+      "Emotional numbing",
+      "Minimization (\"others have it worse\")",
+      "Somatic focus instead of emotional language"
+    ],
+    "values": [
+      "Family loyalty and being a reliable wife",
+      "Quiet dignity and self-reliance",
+      "Returning to a sense of ordinary daily life"
+    ],
+    "scid5": {
+      "onsetAge": 34,
+      "durationMonths": 18,
+      "functionalImpairment": {
+        "social": 6,
+        "occupational": 8,
+        "other": 4
+      },
+      "priorTreatment": false,
+      "traumaFlags": ["single-incident-trauma-work-accident"]
+    }
+  }
+}

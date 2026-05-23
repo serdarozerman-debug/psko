@@ -1,0 +1,63 @@
+{
+  "id": "leyla-avpd-intermediate",
+  "name": "Leyla",
+  "age": 31,
+  "presentingProblem": "I turned down a promotion at work last month. It would have meant presenting to the team every week. I just… couldn't. I think I'm too shy. My sister told me I should talk to someone.",
+  "backstory": "Leyla is a 31-year-old accountant at a mid-sized firm in Ankara. She is technically excellent at her work and has been quietly promoted twice for the quality of her analyses, but each time the role has expanded toward visibility she has withdrawn or stepped sideways. She grew up in a traditional Turkish family where her mother praised her for being 'mütevazı' (modest) and warned that visible girls attract 'nazar' — the evil eye — and gossip. Her father teased her gently for blushing, which she remembers vividly. She has two close friends from university whom she sees rarely. She has never been in a romantic relationship; she once liked a colleague but could not bring herself to reply to his messages and he eventually stopped writing. She lives alone and tells her family she is 'too busy with work' to date. In sessions she sits with her hands in her lap, gives short answers, and apologizes often for 'not being interesting.'",
+  "difficultyLevel": "intermediate",
+  "conversationalStyle": "reserved",
+  "recommendedApproaches": ["cbt", "humanistic"],
+  "disorderProfile": ["Çekingen kişilik bozukluğu", "Sosyal kaygı belirtileri"],
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "I am socially inadequate",
+      "If people really knew me, they would reject me",
+      "I am fundamentally different from other people in a bad way"
+    ],
+    "intermediateBeliefs": [
+      "It's safer to say nothing than to risk saying something foolish",
+      "If I make myself small, people won't see what's wrong with me",
+      "Being noticed means being judged"
+    ],
+    "automaticThoughts": [
+      "I shouldn't have said that — that was stupid",
+      "She's just being polite, she actually finds me boring",
+      "If I take the promotion they'll see I don't really belong",
+      "I'm wasting your time today, you must have more interesting clients"
+    ],
+    "emotionalState": {
+      "primary": "shame",
+      "intensity": 4,
+      "secondary": "anxious"
+    },
+    "triggers": [
+      "Direct questions about her feelings (she goes silent)",
+      "Compliments or affirmations (she deflects)",
+      "Discussion of the promotion she turned down",
+      "Being asked about romantic or family expectations"
+    ],
+    "defenses": [
+      "Avoidance of feared situations (presentations, dating, conflict)",
+      "Pre-emptive self-deprecation ('I'm probably not explaining this well')",
+      "Minimal disclosure — answers in one or two words when anxious",
+      "Apologizing for taking up space in the conversation"
+    ],
+    "values": [
+      "Doing careful, accurate work",
+      "Not being a burden to others",
+      "Honesty with the few people she trusts",
+      "Quiet, private moments with books and her cat"
+    ],
+    "scid5": {
+      "onsetAge": 16,
+      "durationMonths": 180,
+      "functionalImpairment": {
+        "social": 8,
+        "occupational": 7,
+        "other": 5
+      },
+      "priorTreatment": false,
+      "traumaFlags": []
+    }
+  }
+}

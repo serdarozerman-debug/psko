@@ -46,17 +46,32 @@ model Session {
   personaId           String    @map("persona_id")
   therapeuticApproach String    @map("therapeutic_approach")
   roleMode            RoleMode  @default(THERAPIST) @map("role_mode")
+  currentPhase        Int       @default(0) @map("current_phase")
   startedAt           DateTime  @default(now()) @map("started_at")
   endedAt             DateTime? @map("ended_at")
   turnCount           Int       @default(0) @map("turn_count")
   feedback            Json?
   deletedAt           DateTime? @map("deleted_at")
 
-  user                User      @relation(fields: [userId], references: [id])
-  persona             Persona   @relation(fields: [personaId], references: [id])
+  user                User           @relation(fields: [userId], references: [id])
+  persona             Persona        @relation(fields: [personaId], references: [id])
   messages            Message[]
+  intakeResponse      IntakeResponse?
 
   @@map("sessions")
+}
+
+model IntakeResponse {
+  id                  String   @id @default(uuid())
+  sessionId           String   @unique @map("session_id")
+  responses           Json
+  formulation         Json
+  recommendedApproach String   @map("recommended_approach")
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  session             Session  @relation(fields: [sessionId], references: [id])
+
+  @@map("intake_responses")
 }
 
 model Message {

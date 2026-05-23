@@ -4,8 +4,9 @@ import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/db/prisma'
 import { personaLibrary } from '@/lib/personas'
 import { approaches } from '@/lib/approaches'
-import PersonaCard from '@/components/simulation/PersonaCard'
+import { PersonaSelectClient } from '@/components/session/TriggerWarningModal'
 import type { RoleMode } from '@/types'
+import { ALL_FRAMEWORKS } from '@/lib/clinical/frameworks'
 
 const ROLE_BADGES: Record<RoleMode, string> = {
   THERAPIST: '🩺 Therapist',
@@ -60,10 +61,10 @@ export default async function DashboardPage() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {personaLibrary.map((persona) => (
-              <PersonaCard
+              <PersonaSelectClient
                 key={persona.id}
                 persona={persona}
-                approaches={Object.values(approaches)}
+                approaches={ALL_FRAMEWORKS}
                 difficultyColors={DIFFICULTY_COLORS}
               />
             ))}

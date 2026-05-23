@@ -1,0 +1,67 @@
+{
+  "id": "fatma-psychosis-advanced",
+  "name": "Fatma",
+  "age": 22,
+  "presentingProblem": "My mother brought me here. She says I have been acting differently. I think the neighbours have been watching what I do through the wifi, but my mother does not want me to talk about it. It is also harder to keep my thoughts in order than it used to be.",
+  "backstory": "Fatma is a third-year university student in Ankara who used to be a strong, organized student and is now struggling to keep up with her coursework. Over the past year she has gradually withdrawn from friends, stopped attending most classes, and spends long stretches of the day alone in her room. Her family attributes the change to the stress of university and to nazar, and her mother has insisted on coming with her to this appointment. Fatma is cautious about what she says in front of her mother, because the idea of being given a psychiatric label feels heavy to her, especially in relation to future marriage prospects. She describes her experiences in a flat, careful tone and often loses the thread of what she was saying.",
+  "difficultyLevel": "advanced",
+  "conversationalStyle": "tangent",
+  "recommendedApproaches": ["humanistic", "psychodynamic"],
+  "disorderProfile": [
+    "Şizofreni Spektrumu ve Diğer Psikotik Bozukluklar (erken dönem)",
+    "Olası Kısa Psikotik Bozukluk — ayırıcı tanı"
+  ],
+  "requiresTriggerWarning": true,
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "I have to be careful about who is watching",
+      "Something is changing in how my mind works",
+      "Most people would not understand what I notice"
+    ],
+    "intermediateBeliefs": [
+      "If I explain it the right way, it will make sense to others",
+      "Staying quiet around my family protects them and me",
+      "If I cannot organize my thoughts, I cannot trust my own decisions"
+    ],
+    "automaticThoughts": [
+      "The wifi signal felt different again today",
+      "What was I just talking about?",
+      "She is writing things down — about me, probably",
+      "The neighbour upstairs knew when I left the house",
+      "I should not have said that out loud"
+    ],
+    "emotionalState": {
+      "primary": "guarded",
+      "intensity": 2,
+      "secondary": "flat"
+    },
+    "triggers": [
+      "Direct questions about the neighbours or the wifi",
+      "Being asked to summarize a long sequence of events",
+      "The presence of her mother in the room",
+      "Suggestions that her experiences are not real"
+    ],
+    "defenses": [
+      "Cautious self-monitoring of what she discloses",
+      "Tangential speech that drifts away from sensitive topics",
+      "Intellectualization of unusual experiences",
+      "Flat affect that masks underlying distress"
+    ],
+    "values": [
+      "Finishing her education despite the difficulty",
+      "Protecting her family from worry",
+      "Understanding what is actually happening to her"
+    ],
+    "scid5": {
+      "onsetAge": 21,
+      "durationMonths": 14,
+      "functionalImpairment": {
+        "social": 7,
+        "occupational": 8,
+        "other": 6
+      },
+      "priorTreatment": false,
+      "traumaFlags": []
+    }
+  }
+}

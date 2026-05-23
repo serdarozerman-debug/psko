@@ -1,5 +1,5 @@
 /**
- * Seed script: upserts all 5 persona records from the static JSON library
+ * Seed script: upserts all persona records from the JSON library (currently 18)
  * into the `personas` table so that Session.personaId FK constraints resolve.
  *
  * Run: npx prisma db seed

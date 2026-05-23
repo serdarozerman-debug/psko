@@ -1,0 +1,11 @@
+# Migration: educator_features
+# Adds the Phase 3 educator data model:
+#   - Enums: UserRole, PersonaVisibility, MembershipStatus, ScoreAssessor
+#   - Extends users (role, institution_id), personas (created_by, is_custom,
+#     visibility, updated_at), sessions (assignment_id, LTI fields,
+#     instructor_annotation, overall_score)
+#   - New tables: cohorts, cohort_memberships, assignments,
+#     session_feedback_scores
+# All FK columns use TEXT to match existing PK type (TEXT, not UUID); the
+# @db.Uuid annotations from the spec were omitted to preserve referential
+# integrity with existing tables.

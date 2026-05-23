@@ -3,36 +3,29 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
-model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  sessions  Session[]
-
-  @@map("users")
+enum UserRole {
+  STUDENT
+  EDUCATOR
 }
 
-model Persona {
-  id                    String   @id @default(uuid())
-  name                  String
-  age                   Int
-  presentingProblem     String   @map("presenting_problem")
-  backstory             String
-  difficultyLevel       String   @map("difficulty_level")
-  conversationalStyle   String   @map("conversational_style")
-  recommendedApproaches String[] @map("recommended_approaches")
-  cognitiveModel        Json     @map("cognitive_model")
-  disorderProfile       String[] @map("disorder_profile")
-  createdAt             DateTime @default(now()) @map("created_at")
-  sessions              Session[]
+enum PersonaVisibility {
+  private
+  institution
+}
 
-  @@map("personas")
+enum MembershipStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ScoreAssessor {
+  ai
+  instructor
 }
 
 enum RoleMode {
@@ -40,23 +33,71 @@ enum RoleMode {
   CLIENT
 }
 
-model Session {
-  id                  String    @id @default(uuid())
-  userId              String    @map("user_id")
-  personaId           String    @map("persona_id")
-  therapeuticApproach String    @map("therapeutic_approach")
-  roleMode            RoleMode  @default(THERAPIST) @map("role_mode")
-  currentPhase        Int       @default(0) @map("current_phase")
-  startedAt           DateTime  @default(now()) @map("started_at")
-  endedAt             DateTime? @map("ended_at")
-  turnCount           Int       @default(0) @map("turn_count")
-  feedback            Json?
-  deletedAt           DateTime? @map("deleted_at")
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  role          UserRole @default(STUDENT)
+  institutionId String?  @map("institution_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
-  user                User           @relation(fields: [userId], references: [id])
-  persona             Persona        @relation(fields: [personaId], references: [id])
-  messages            Message[]
-  intakeResponse      IntakeResponse?
+  sessions           Session[]
+  cohorts            Cohort[]
+  cohortMemberships  CohortMembership[]
+  assignmentsCreated Assignment[]
+  customPersonas     Persona[]          @relation("PersonaCreator")
+
+  @@map("users")
+}
+
+model Persona {
+  id                    String            @id @default(uuid())
+  name                  String
+  age                   Int
+  presentingProblem     String            @map("presenting_problem")
+  backstory             String
+  difficultyLevel       String            @map("difficulty_level")
+  conversationalStyle   String            @map("conversational_style")
+  recommendedApproaches String[]          @map("recommended_approaches")
+  cognitiveModel        Json              @map("cognitive_model")
+  disorderProfile       String[]          @map("disorder_profile")
+  createdBy             String?           @map("created_by")
+  isCustom              Boolean           @default(false) @map("is_custom")
+  visibility            PersonaVisibility @default(private)
+  createdAt             DateTime          @default(now()) @map("created_at")
+  updatedAt             DateTime          @updatedAt @map("updated_at")
+
+  creator     User?        @relation("PersonaCreator", fields: [createdBy], references: [id], onDelete: SetNull)
+  sessions    Session[]
+  assignments Assignment[]
+
+  @@map("personas")
+}
+
+model Session {
+  id                   String    @id @default(uuid())
+  userId               String    @map("user_id")
+  personaId            String    @map("persona_id")
+  therapeuticApproach  String    @map("therapeutic_approach")
+  roleMode             RoleMode  @default(THERAPIST) @map("role_mode")
+  currentPhase         Int       @default(0) @map("current_phase")
+  startedAt            DateTime  @default(now()) @map("started_at")
+  endedAt              DateTime? @map("ended_at")
+  turnCount            Int       @default(0) @map("turn_count")
+  feedback             Json?
+  deletedAt            DateTime? @map("deleted_at")
+  assignmentId         String?   @map("assignment_id")
+  ltiLineItemUrl       String?   @map("lti_line_item_url") @db.VarChar(500)
+  ltiUserId            String?   @map("lti_user_id") @db.VarChar(255)
+  instructorAnnotation String?   @map("instructor_annotation")
+  overallScore         Int?      @map("overall_score")
+
+  user           User                   @relation(fields: [userId], references: [id])
+  persona        Persona                @relation(fields: [personaId], references: [id])
+  assignment     Assignment?            @relation(fields: [assignmentId], references: [id], onDelete: SetNull)
+  messages       Message[]
+  intakeResponse IntakeResponse?
+  feedbackScores SessionFeedbackScore[]
 
   @@map("sessions")
 }
@@ -69,7 +110,7 @@ model IntakeResponse {
   recommendedApproach String   @map("recommended_approach")
   createdAt           DateTime @default(now()) @map("created_at")
 
-  session             Session  @relation(fields: [sessionId], references: [id])
+  session Session @relation(fields: [sessionId], references: [id])
 
   @@map("intake_responses")
 }
@@ -81,7 +122,70 @@ model Message {
   content   String
   createdAt DateTime @default(now()) @map("created_at")
 
-  session   Session  @relation(fields: [sessionId], references: [id])
+  session Session @relation(fields: [sessionId], references: [id])
 
   @@map("messages")
+}
+
+model Cohort {
+  id              String   @id @default(uuid())
+  name            String   @db.VarChar(255)
+  instructorId    String   @map("instructor_id")
+  joinCode        String   @unique @map("join_code") @db.VarChar(6)
+  joinCodeEnabled Boolean  @default(true) @map("join_code_enabled")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  instructor  User               @relation(fields: [instructorId], references: [id])
+  memberships CohortMembership[]
+  assignments Assignment[]
+
+  @@map("cohorts")
+}
+
+model CohortMembership {
+  id        String           @id @default(uuid())
+  cohortId  String           @map("cohort_id")
+  studentId String           @map("student_id")
+  joinedAt  DateTime         @default(now()) @map("joined_at")
+  status    MembershipStatus @default(ACTIVE)
+
+  cohort  Cohort @relation(fields: [cohortId], references: [id])
+  student User   @relation(fields: [studentId], references: [id])
+
+  @@unique([cohortId, studentId])
+  @@map("cohort_memberships")
+}
+
+model Assignment {
+  id         String    @id @default(uuid())
+  cohortId   String    @map("cohort_id")
+  personaId  String    @map("persona_id")
+  approachId String?   @map("approach_id") @db.VarChar(50)
+  roleMode   RoleMode  @default(THERAPIST) @map("role_mode")
+  dueAt      DateTime? @map("due_at")
+  createdBy  String    @map("created_by")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  cohort   Cohort    @relation(fields: [cohortId], references: [id])
+  persona  Persona   @relation(fields: [personaId], references: [id])
+  creator  User      @relation(fields: [createdBy], references: [id])
+  sessions Session[]
+
+  @@map("assignments")
+}
+
+model SessionFeedbackScore {
+  id        String        @id @default(uuid())
+  sessionId String        @map("session_id")
+  domain    String        @db.VarChar(100)
+  score     Int
+  assessor  ScoreAssessor @default(ai)
+  createdAt DateTime      @default(now()) @map("created_at")
+
+  session Session @relation(fields: [sessionId], references: [id])
+
+  @@index([sessionId, domain])
+  @@map("session_feedback_scores")
 }

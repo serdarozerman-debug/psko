@@ -54,7 +54,7 @@
 | enforcer-1 | Enforcer | ⏳ pending | RED tests: role guard middleware, JWT app_metadata parsing, requireEducator/requireUser helpers |
 | smith-1 | Smith | ⏳ pending | Role system: UserRole enum in types, middleware /educator/* gating, server-component role helpers, Supabase custom access token hook SQL |
 | enforcer-2 | Enforcer | ⏳ pending | RED tests: cohort CRUD, join code regen, /api/join validation, ownership checks |
-| alchemist-2 | Alchemist | ⏳ pending | Seed: educator demo account, sample cohort, sample assignment; SQL for Supabase Custom Access Token Hook function |
+| alchemist-2 | Alchemist | ✓ Done | Seed already had educator demo account + Demo Cohort (DEMO01); added `prisma/sql/access_token_hook.sql` (SECURITY DEFINER, writes `app_metadata.role`, defaults STUDENT) + `supabase/README-auth-hook.md` covering registration and `db reset` re-apply. Commit 6d4be20. |
 | smith-2 | Smith | ⏳ pending | Cohort + membership API routes; join-code generator (32-char alphabet, exclude 0/O/1/I/l) |
 | enforcer-3 | Enforcer | ⏳ pending | RED tests: assignment create, progress query, async getPersonaById regression, session start with assignmentId |
 | smith-3 | Smith | ⏳ pending | Assignments API + session start (async persona) + student dashboard data fetcher |

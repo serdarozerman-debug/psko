@@ -5,14 +5,6 @@ import { actFramework } from './act'
 import { dbtFramework } from './dbt'
 import { humanisticFramework } from './humanistic'
 
-export const ALL_FRAMEWORKS: ApproachConfig[] = [
-  cbtFramework,
-  psychodynamicFramework,
-  actFramework,
-  dbtFramework,
-  humanisticFramework,
-]
-
 // Stub — full MI framework module is a separate workstream (spec § Out of Scope)
 const miFrameworkStub: ApproachConfig = {
   id: 'motivational-interviewing',
@@ -23,6 +15,17 @@ const miFrameworkStub: ApproachConfig = {
   supervisorCriteria: [],
   suggestedQuestions: [],
 }
+
+export const ALL_FRAMEWORKS: ApproachConfig[] = [
+  cbtFramework,
+  psychodynamicFramework,
+  actFramework,
+  dbtFramework,
+  humanisticFramework,
+  // MI stub included so dashboard approach-list rendering is consistent
+  // for personas that list motivational-interviewing in recommendedApproaches.
+  miFrameworkStub,
+]
 
 const FRAMEWORK_MAP: Record<TherapeuticApproach, ApproachConfig> = {
   cbt: cbtFramework,

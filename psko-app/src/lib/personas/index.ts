@@ -45,7 +45,12 @@ function loadPersonaLibrary(): PersonaData[] {
         `[persona-loader] Validation failed for ${fullPath} at "${issuePath}": ${issueMsg}`,
       )
     }
-    personas.push(result.data as PersonaData)
+    // result.data is PersonaDataParsed (Zod inferred). PersonaData is the
+    // hand-written interface in types/index.ts. They are structurally identical
+    // except for the priorTreatment migration window (boolean vs string|boolean).
+    // The cast is intentional until the type and JSON files are reconciled.
+    // See the comment in schema.ts for the follow-up task.
+    personas.push(result.data as unknown as PersonaData)
   }
 
   return personas

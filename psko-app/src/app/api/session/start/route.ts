@@ -98,6 +98,6 @@ export async function POST(req: Request) {
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
     console.error('[session/start] error:', message)
-    return Response.json({ error: 'Session creation failed', detail: message }, { status: 500 })
+    return Response.json({ error: 'Session creation failed' }, { status: 500 })
   }
 }

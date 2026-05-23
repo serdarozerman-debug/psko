@@ -85,7 +85,7 @@ describe('PersonaDataSchema', () => {
   test('test_PersonaDataSchema_missingRequiredFieldName_throwsZodError', () => {
     // FAIL: MODULE_NOT_FOUND — schema.ts does not exist yet.
     // A persona without the required 'name' field must throw a ZodError.
-    const { name: _, ...withoutName } = VALID_PERSONA_NO_SCID5
+    const withoutName = Object.fromEntries(Object.entries(VALID_PERSONA_NO_SCID5).filter(([k]) => k !== 'name'))
     assert.throws(
       () => PersonaDataSchema.parse(withoutName),
       (err: unknown) => {

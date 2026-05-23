@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "node --require tsx/cjs --test --test-reporter=spec $(find src -name '*.test.ts' -o -name '*.test.tsx' | sort)",
+    "test": "node --require tsx/cjs --test --test-reporter=spec $(find src \\( -name '*.test.ts' -o -name '*.test.tsx' \\) ! -name '*.route.test.ts' | sort)",
     "test:routes": "jest --config jest.config.js --runInBand --forceExit",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
@@ -43,6 +43,7 @@
     "ts-jest": "^29.4.9",
     "tsx": "^4.22.0",
     "typescript": "^5",
-    "vitest": "^2.1.9"
+    "vitest": "^2.1.9",
+    "@vitest/coverage-v8": "^2.1.9"
   }
 }

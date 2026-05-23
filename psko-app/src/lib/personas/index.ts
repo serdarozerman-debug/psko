@@ -14,7 +14,9 @@ import path from 'node:path'
 import type { PersonaData } from '@/types'
 import { PersonaDataSchema } from './schema'
 
-const LIBRARY_DIR = path.join(__dirname, 'library')
+// __dirname is unreliable in Next.js webpack bundles (resolves to the .next
+// output directory). process.cwd() is always the project root.
+const LIBRARY_DIR = path.join(process.cwd(), 'src/lib/personas/library')
 
 function loadPersonaLibrary(): PersonaData[] {
   const entries = fs

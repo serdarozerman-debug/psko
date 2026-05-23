@@ -36,8 +36,8 @@ describe('buildPatientPrompt', () => {
 })
 
 describe('personaLibrary', () => {
-  test('has 5 personas', () => {
-    assert.strictEqual(personaLibrary.length, 5)
+  test('has 18 personas', () => {
+    assert.strictEqual(personaLibrary.length, 18)
   })
 
   test('each persona has required fields', () => {

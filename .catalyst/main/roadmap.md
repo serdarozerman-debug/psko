@@ -18,22 +18,23 @@
 
 ---
 
-## Phase 2 — Clinical Intelligence Engine [Next]
+## Phase 2 — Clinical Intelligence Engine ✅ Complete
 
 **Goal:** Academically grounded clinical training — intake, case formulation, and real-time protocol guidance.
 
-### 2A — Infrastructure
-- [ ] **Next.js upgrade** — address HIGH severity CVEs in Next.js 14.x (DoS, cache poisoning, SSRF)
-- [ ] **E2E test suite** — Playwright automated tests for both simulation modes
+### 2A — Infrastructure ✅
+- [x] **Next.js upgrade** — 14.2.35 has 0 CVEs (patched in 14.2.x series)
+- [x] **E2E test suite** — Playwright: 4 scenarios + axe-core a11y + seed helper
 
-### 2B — Clinical Intelligence Engine (`spec: 2026-05-16-clinical-intelligence-engine`)
-- [ ] **Clinical Framework Library** — Per-approach protocol phases (CBT: Beck 5-phase; Psychodynamic: CCRT; ACT: Hexaflex; DBT: Linehan stages; Humanistic: Rogers empathy ladder) — all peer-reviewed
-- [ ] **Pre-session intake questionnaire** — PHQ-9 + GAD-7 inspired, Claude-analyzed → case formulation + approach recommendation
-- [ ] **Dynamic session guidance panel** — Phase-aware real-time guidance: current protocol phase, recommended next move, technique in use (updates every 5 turns)
-- [ ] **SCID-5 enriched personas** — Symptom onset timeline, functional impairment, trauma flags added to persona clinical anchors
+### 2B — Clinical Intelligence Engine ✅ (`spec: 2026-05-16-clinical-intelligence-engine`)
+- [x] **Clinical Framework Library** — CBT/Psychodynamic/ACT/DBT/Humanistic with full protocol phases
+- [x] **Pre-session intake questionnaire** — PHQ-9+GAD-7 inspired; Claude formulation + approach recommendation
+- [x] **Dynamic session guidance panel** — Phase-aware; server-authoritative with illegal-jump rejection
+- [x] **Phase 2 Hardening** — HybridFrameworkViewer, CI pipeline, API docs, coverage thresholds
 
-### 2C — Persona Expansion
+### 2C — Persona Expansion [Next]
 - [ ] Expand persona library to 20+ profiles (trauma, OCD, personality disorders, psychosis, addiction)
+- [ ] SCID-5 enrichment of all personas (symptom onset timeline, functional impairment, trauma flags)
 
 ---
 

@@ -8,7 +8,7 @@ provides:
   - Cohort creation and join-code-based student enrollment
   - Competency assessment reports (per-student and per-cohort)
   - Custom persona builder (educator-authored cases)
-  - LMS integration via CSV export and signed deep-link URLs
+  - LMS integration: CSV export, signed deep-link URLs, AND full LTI 1.3 (OIDC launch, deep-linking, AGS grade passback)
 
 requires:
   - 2026-05-16-clinical-intelligence-engine
@@ -18,7 +18,7 @@ affects:
   - Student dashboard (assigned personas section)
   - Session start flow (async persona lookup, assignment linkage)
   - Feedback pipeline (SessionFeedbackScore normalization)
-  - Phase 4 (LTI 1.3 builds on the deep-link token infrastructure)
+  - New service: lti.psko.app (Express + ltijs-postgresql)
 
 patterns_established: []
 key_files: []
@@ -29,7 +29,7 @@ key_decisions: []
 
 PSKO has demonstrated that individual students can independently use AI simulation to practice clinical skills. Phase 3 unlocks institutional adoption by adding the educator layer: cohort management, structured assessment reporting, the ability for educators to author their own clinical cases, and lightweight LMS interoperability. The goal is to make PSKO adoptable by a psychology program as a course tool — not just an individual student's personal practice app.
 
-Full LTI 1.3 integration is deferred to Phase 4. Phase 3 ships the minimum viable LMS surface: CSV grade export and signed deep-link URLs that educators can paste into any LMS.
+Phase 3 ships the full LMS surface: CSV grade export, signed deep-link URLs, and a complete LTI 1.3 integration (OIDC launch, deep-linking, and AGS grade passback) targeting Canvas and Moodle as primary platforms. LTI 1.3 is implemented as a separate `lti.psko.app` Express service using the `ltijs` library with `ltijs-postgresql`, communicating with the main Next.js app via signed internal API calls.
 
 ---
 
@@ -45,7 +45,6 @@ Full LTI 1.3 integration is deferred to Phase 4. Phase 3 ships the minimum viabl
 
 ## Non-Goals
 
-- LTI 1.3 / OAuth 2.0 launch protocol — deferred to Phase 4.
 - SAML or SCIM group synchronization with institutional identity providers.
 - PDF report export — CSV only in Phase 3.
 - Public persona sharing — educator personas are private or institution-scoped only.
@@ -169,6 +168,42 @@ Full LTI 1.3 integration is deferred to Phase 4. Phase 3 ships the minimum viabl
 
 ---
 
+### FR-7 — LTI 1.3 Integration
+
+LTI 1.3 is implemented as a **separate Express service** (`lti.psko.app`) using the `ltijs` npm package with the `ltijs-postgresql` database adapter. This service handles all LTI protocol traffic; the main Next.js app communicates with it via signed internal API calls.
+
+**FR-7.1 — Platform registration:** An educator (or super-admin) shall be able to register a new LMS platform (Canvas or Moodle) by providing: Platform URL, Client ID, Authentication Endpoint, Access Token Endpoint, and a Key Set URL. Registration is stored in the `lti_platforms` table managed by `ltijs-postgresql`.
+
+**FR-7.2 — OIDC login initiation:** The `lti.psko.app` service shall expose a `POST /lti/login` endpoint that handles the OIDC third-party login initiation as specified in LTI 1.3 § 4.1.1. It shall validate `iss`, `login_hint`, and `target_link_uri` claims.
+
+**FR-7.3 — LTI Launch:** After OIDC handshake, the service shall handle the `POST /lti/launch` callback. It shall verify the JWT id_token signature using the platform's public key set (cached, refreshed on 401). On success, it shall extract the LTI context claims (`sub`, `name`, `email`, `roles`, `context`, `lis`) and create or update the corresponding PSKO user record.
+
+**FR-7.4 — Role mapping:** IMS LTI roles shall map to PSKO roles as follows:
+- `http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor` → `EDUCATOR`
+- `http://purl.imsglobal.org/vocab/lis/v2/membership#Learner` → `STUDENT`
+- Other roles → `STUDENT` (safe default)
+
+**FR-7.5 — Session handoff:** After a successful LTI launch, the `lti.psko.app` service shall issue a short-lived (5-minute) signed handoff token and redirect the user to `app.psko.app/lti/callback?token=<handoff>`. The main Next.js app shall exchange the handoff token for a Supabase session (using service-role `signInWithEmail` if the user exists, or `createUser` + `signIn` on first launch). The handoff token is single-use and invalidated on exchange.
+
+**FR-7.6 — LTI Deep Linking:** The service shall support LTI Deep Linking 2.0 (`LtiDeepLinkingRequest` message type). When an instructor launches the tool in deep-link mode from their LMS, they shall be shown the assignment selection UI (choose persona + approach). On submit, the service shall construct a `LtiDeepLinkingResponse` JWT and post it back to the platform's `deep_link_return_url`.
+
+**FR-7.7 — Assignment and Grade Services (AGS):** After a student completes a session (session end route fires), if the session has an `ltiLineItemUrl` (populated at LTI launch from the `https://purl.imsglobal.org/spec/lti-ags/claim/endpoint` claim), the service shall POST a score to the platform's AGS endpoint:
+- `scoreGiven`: the session's `overallScore` (0–100)
+- `scoreMaximum`: 100
+- `activityProgress`: `Completed`
+- `gradingProgress`: `FullyGraded`
+- `timestamp`: ISO 8601 session end time
+
+**FR-7.8 — 3rd-party cookie workaround:** Safari and Chrome (with Privacy Sandbox) block third-party cookies, which breaks the default `ltijs` OIDC state cookie flow when the tool is loaded in an LMS iframe. The service shall implement the `ltijs` `cookieless` mode: OIDC state is stored server-side keyed by a `ltik` query parameter, which is forwarded through the OIDC redirect without relying on cookies.
+
+**FR-7.9 — Canvas integration:** Canvas shall be the primary tested LMS. The `lti.psko.app` service shall include a `canvas-config.json` endpoint returning the JSON configuration blob that Canvas administrators paste into their LTI developer key registration form (client_id, redirect_uris, scopes, public JWK).
+
+**FR-7.10 — Moodle integration:** Moodle shall be the secondary tested LMS. The service shall include documentation (not automated UI) for Moodle External Tool configuration. Moodle requires manual entry of the tool URL, consumer key, and shared secret for LTI 1.3 — no JSON config blob is used.
+
+**FR-7.11 — LTI data tables:** The `ltijs-postgresql` adapter manages its own tables (`lti_platforms`, `lti_idtoken`, `lti_contexttoken`, `lti_accesstoken`). These shall be created in the same Supabase PostgreSQL database under a separate `lti` schema to avoid naming conflicts with the PSKO application tables.
+
+---
+
 ## Non-Functional Requirements
 
 **NFR-1 — Security:** All `/educator/*` routes and all educator API endpoints (`/api/educator/*`) must reject requests where the authenticated user's `app_metadata.role` is not `EDUCATOR`. Return HTTP 403.
@@ -184,6 +219,12 @@ Full LTI 1.3 integration is deferred to Phase 4. Phase 3 ships the minimum viabl
 **NFR-6 — Token security:** Deep-link JWTs shall use `HS256` minimum. The signing secret shall be stored in environment variables, never in source code.
 
 **NFR-7 — Audit trail:** `CohortMembership` status changes and assignment creation/deletion shall be logged with `createdAt` / `updatedAt` timestamps on all tables.
+
+**NFR-8 — LTI service isolation:** The `lti.psko.app` Express service shall be deployable independently of the Next.js app. It shall expose a `/health` endpoint. Downtime of the LTI service shall not affect students who accessed PSKO directly (non-LTI path).
+
+**NFR-9 — LTI JWT verification:** All LTI id_token JWTs shall be verified against the platform's public JWK set fetched from the platform's `jwks_uri`. Key sets shall be cached in memory with a 1-hour TTL and refreshed on verification failure. No `alg: none` or symmetric-key tokens shall be accepted.
+
+**NFR-10 — AGS reliability:** Grade passback failures (network error, 401, 5xx from platform) shall be retried up to 3 times with exponential backoff (1s, 4s, 16s). Persistent failures shall be logged server-side with the `sessionId` and `ltiLineItemUrl` so they can be manually replayed. Grade passback failure must not surface as an error to the student.
 
 ---
 
@@ -208,6 +249,14 @@ Full LTI 1.3 integration is deferred to Phase 4. Phase 3 ships the minimum viabl
 **AC-9** The existing session flow (non-assignment) continues to work unchanged after the `getPersonaById()` async refactor.
 
 **AC-10** Regenerating a join code invalidates the old code. A student attempting to use the old code after regeneration receives an error.
+
+**AC-11** A Canvas admin registers PSKO as an LTI 1.3 tool using the `canvas-config.json` blob. An instructor launches the tool from a Canvas course. They are redirected through OIDC, land on the PSKO educator dashboard authenticated as `EDUCATOR` role, with their Canvas course context available.
+
+**AC-12** A student launches PSKO from a Canvas assignment link. They complete a session. The Canvas gradebook shows their `overallScore` as the grade for that assignment within 60 seconds of session end.
+
+**AC-13** When PSKO is loaded in a Canvas iframe in Safari, the OIDC launch completes successfully without cookie-related errors (cookieless mode active).
+
+**AC-14** An instructor uses LTI Deep Linking from Moodle to add a PSKO assignment to a Moodle course. The persona + approach selection UI appears, they confirm, and the resulting Moodle activity link launches the correct PSKO session for students.
 
 ---
 
@@ -304,6 +353,81 @@ All new educator endpoints require `app_metadata.role === 'EDUCATOR'` and return
 
 ---
 
+## LTI 1.3 Service Architecture
+
+### Service: `lti.psko.app`
+
+A standalone Express 4 service deployed to Vercel (or Railway as an alternative) alongside the main Next.js app.
+
+```
+psko-app/           ← Next.js app (app.psko.app)
+lti-service/        ← Express + ltijs service (lti.psko.app)
+  src/
+    index.ts        ← ltijs setup, route registration
+    routes/
+      launch.ts     ← POST /lti/launch handler
+      deeplink.ts   ← deep-link response builder
+      grades.ts     ← AGS passback client
+      config.ts     ← GET /lti/canvas-config.json
+    middleware/
+      handoff.ts    ← handoff token issue + exchange
+  package.json
+  Dockerfile        ← optional, for Railway
+```
+
+### Key dependencies
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `ltijs` | `^5.9` | LTI 1.3 platform + provider abstraction |
+| `ltijs-postgresql` | `^3.2` | PostgreSQL adapter for ltijs state tables |
+| `jsonwebtoken` | `^9` | Handoff token signing (HS256, 5-min TTL) |
+| `express` | `^4` | HTTP server |
+| `pg` | `^8` | Direct PostgreSQL for handoff token invalidation |
+
+### Communication between services
+
+```
+Canvas/Moodle
+    │  POST /lti/login (OIDC init)
+    │  POST /lti/launch (id_token)
+    ▼
+lti.psko.app
+    │  issues handoff token (JWT, 5min, single-use)
+    │  redirects → app.psko.app/lti/callback?token=<handoff>
+    ▼
+app.psko.app (Next.js)
+    │  verifies handoff token (shared HANDOFF_SECRET env var)
+    │  calls Supabase admin.createUser / signIn
+    │  sets Supabase session cookie
+    │  redirects → /dashboard or /session/[id]
+    │
+    └─ on session end → POST lti.psko.app/internal/grades
+         (signed with INTERNAL_API_SECRET, includes sessionId + score)
+    ▼
+lti.psko.app → AGS endpoint (platform)
+```
+
+### Environment variables (lti-service)
+
+| Variable | Description |
+|----------|-------------|
+| `DATABASE_URL` | Same Supabase PostgreSQL connection string |
+| `LTI_HOST` | `https://lti.psko.app` |
+| `APP_HOST` | `https://app.psko.app` |
+| `HANDOFF_SECRET` | Shared with Next.js app for handoff JWT |
+| `INTERNAL_API_SECRET` | Shared secret for app→lti grade passback calls |
+| `LTI_ENCRYPTION_KEY` | 32-byte key for ltijs state encryption |
+
+### Modified table: `sessions`
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `ltiLineItemUrl` | `varchar(500)?` | AGS endpoint URL from LTI launch; NULL for non-LTI sessions |
+| `ltiUserId` | `varchar(255)?` | Platform `sub` claim; used for grade passback correlation |
+
+---
+
 ## Integration Points
 
 ### 1. Persona Loader (`src/lib/personas/index.ts` and `loader.ts`)
@@ -390,6 +514,14 @@ PSKO's primary market is Turkish universities. Turkey's **Kişisel Verilerin Kor
 **OQ-5 — Custom persona lifecycle with archived cohorts:** If a cohort is archived (all students INACTIVE), and it has sessions against a custom persona, should the educator be allowed to delete the custom persona? Proposal: block deletion if any session (active or ended) references the persona; instead offer an archive/hide flag.
 
 **OQ-6 — CSV export encoding for Turkish characters:** Turkish student names include characters outside ASCII (ğ, ş, ç, ı, ö, ü). The Canvas gradebook CSV importer requires UTF-8 with BOM. Confirm the export pipeline emits UTF-8 BOM (`﻿`) to prevent mojibake in Excel on Windows.
+
+**OQ-7 — LTI service deployment target:** `lti.psko.app` is a long-running Express server (not serverless), because `ltijs` maintains in-memory JWK caches and connection pools. Vercel Serverless Functions have cold starts and no persistent memory. Options: (a) Vercel Edge Functions are also unsuitable; use **Railway** for the LTI service, keeping the Next.js app on Vercel. (b) Deploy everything to a single Railway project. Recommendation: Railway for `lti.psko.app`, Vercel for `app.psko.app` — they share the same Supabase DB.
+
+**OQ-8 — Handoff token storage for single-use invalidation:** The handoff token (5-min, single-use) needs a fast invalidation store. Options: (a) A `lti_handoff_tokens` table in PostgreSQL with a `usedAt` column — simple, consistent with existing DB, slight latency. (b) Upstash Redis — fast, zero-latency, but adds a new dependency. Recommendation: PostgreSQL table in Phase 3; migrate to Redis if concurrency becomes an issue.
+
+**OQ-9 — LTI service canvas-config endpoint authentication:** The `GET /lti/canvas-config.json` endpoint returns the tool registration blob. Should it be public (any Canvas admin can fetch it) or require a temporary admin token? Public is standard practice for LTI tool providers and simplifies Canvas admin setup. Recommendation: public, but rate-limited.
+
+**OQ-10 — AGS scope negotiation:** Canvas requires the tool to request `https://purl.imsglobal.org/spec/lti-ags/scope/score` during platform registration to enable grade passback. This scope must be listed in `canvas-config.json`. If an institution's Canvas admin did not grant this scope, AGS calls will return 401. The service should detect this at launch time (check `endpoint.scope` in the LTI claims) and log a warning rather than silently failing passback.
 
 ---
 

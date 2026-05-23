@@ -52,15 +52,15 @@
 |------|-------|--------|-------------|
 | alchemist-1 | Alchemist | ✓ Done | Prisma schema: enums (UserRole, PersonaVisibility, MembershipStatus, RoleMode, ScoreAssessor), extend users/personas/sessions, add cohorts/cohort_memberships/assignments/session_feedback_scores; lti columns on sessions — schema valid, migration SQL at `20260523000001_educator_features`. NOTE: FK columns use TEXT (not @db.Uuid) to match existing PK type. |
 | enforcer-1 | Enforcer | ✓ Done | RED tests: getRoleFromJwt (5 cases), requireEducator (4 cases), requireUser (2 cases) — all FAIL MODULE_NOT_FOUND. Commit c584c7b. |
-| smith-1 | Smith | ⏳ pending | Role system: UserRole enum in types, middleware /educator/* gating, server-component role helpers, Supabase custom access token hook SQL |
-| enforcer-2 | Enforcer | ⏳ pending | RED tests: cohort CRUD, join code regen, /api/join validation, ownership checks |
+| smith-1 | Smith | ✓ Done | Role system: getRoleFromJwt, requireEducator, requireUser, middleware /educator/* gating — all 11 enforcer-1 tests GREEN. Commit ed48530. |
+| enforcer-2 | Enforcer | 🔄 in progress | RED tests: cohort CRUD, join code regen, /api/join validation, ownership checks |
 | alchemist-2 | Alchemist | ✓ Done | Seed already had educator demo account + Demo Cohort (DEMO01); added `prisma/sql/access_token_hook.sql` (SECURITY DEFINER, writes `app_metadata.role`, defaults STUDENT) + `supabase/README-auth-hook.md` covering registration and `db reset` re-apply. Commit 6d4be20. |
 | smith-2 | Smith | ⏳ pending | Cohort + membership API routes; join-code generator (32-char alphabet, exclude 0/O/1/I/l) |
-| enforcer-3 | Enforcer | ⏳ pending | RED tests: assignment create, progress query, async getPersonaById regression, session start with assignmentId |
+| enforcer-3 | Enforcer | 🔄 in progress | RED tests: assignment create, progress query, async getPersonaById regression, session start with assignmentId |
 | smith-3 | Smith | ⏳ pending | Assignments API + session start (async persona) + student dashboard data fetcher |
-| enforcer-4 | Enforcer | ⏳ pending | RED tests: session end writes SessionFeedbackScore rows, student/cohort report shape, instructor annotation |
+| enforcer-4 | Enforcer | 🔄 in progress | RED tests: session end writes SessionFeedbackScore rows, student/cohort report shape, instructor annotation |
 | smith-4 | Smith | ⏳ pending | Session end normalization → SessionFeedbackScore; student + cohort report endpoints; instructor annotation |
-| enforcer-5 | Enforcer | ⏳ pending | RED tests: custom persona create wizard validation against Zod schema, visibility scoping, merged /api/personas |
+| enforcer-5 | Enforcer | 🔄 in progress | RED tests: custom persona create wizard validation against Zod schema, visibility scoping, merged /api/personas |
 | smith-5 | Smith | ⏳ pending | Custom persona builder API + persona loader async refactor + merged GET /api/personas |
 | smith-6 | Smith | ⏳ pending | CSV export (Canvas format, UTF-8 BOM); deep-link JWT mint/verify; /api/session/join/[token] route |
 | shaper-1 | Shaper | ⏳ pending | Educator dashboard shell (/educator), cohort sidebar, roster table, join-code chip, member status toggle |

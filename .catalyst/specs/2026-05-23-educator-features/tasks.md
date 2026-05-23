@@ -51,7 +51,7 @@
 | Task | Agent | Status | Description |
 |------|-------|--------|-------------|
 | alchemist-1 | Alchemist | ✓ Done | Prisma schema: enums (UserRole, PersonaVisibility, MembershipStatus, RoleMode, ScoreAssessor), extend users/personas/sessions, add cohorts/cohort_memberships/assignments/session_feedback_scores; lti columns on sessions — schema valid, migration SQL at `20260523000001_educator_features`. NOTE: FK columns use TEXT (not @db.Uuid) to match existing PK type. |
-| enforcer-1 | Enforcer | ⏳ pending | RED tests: role guard middleware, JWT app_metadata parsing, requireEducator/requireUser helpers |
+| enforcer-1 | Enforcer | ✓ Done | RED tests: getRoleFromJwt (5 cases), requireEducator (4 cases), requireUser (2 cases) — all FAIL MODULE_NOT_FOUND. Commit c584c7b. |
 | smith-1 | Smith | ⏳ pending | Role system: UserRole enum in types, middleware /educator/* gating, server-component role helpers, Supabase custom access token hook SQL |
 | enforcer-2 | Enforcer | ⏳ pending | RED tests: cohort CRUD, join code regen, /api/join validation, ownership checks |
 | alchemist-2 | Alchemist | ✓ Done | Seed already had educator demo account + Demo Cohort (DEMO01); added `prisma/sql/access_token_hook.sql` (SECURITY DEFINER, writes `app_metadata.role`, defaults STUDENT) + `supabase/README-auth-hook.md` covering registration and `db reset` re-apply. Commit 6d4be20. |
@@ -488,11 +488,11 @@ alchemist-1
 
 ## Current Session
 
-**Phase:** Schema landed — ready for parallel tracks
+**Phase:** Role system RED tests complete — ready for smith-1
 **Active:** none
-**Working on:** alchemist-1 complete; schema + migration in place
-**File:** psko-app/prisma/schema.prisma, psko-app/prisma/migrations/20260523000001_educator_features/
-**Next:** enforcer-1 (RED tests for role guard) + smith-1 (role system) — both unblocked by alchemist-1
+**Working on:** enforcer-1 complete (c584c7b); RED tests for getRoleFromJwt, requireEducator, requireUser all confirmed failing
+**File:** psko-app/src/lib/auth/__tests__/getRoleFromJwt.test.ts, requireEducator.test.ts, requireUser.test.ts
+**Next:** smith-1 (implement getRoleFromJwt, requireEducator, requireUser, middleware /educator/* gating) — unblocked by enforcer-1
 
 ---
 

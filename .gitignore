@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Claude loop scripts output
+claude-loop.log
+claude-loop.out
+.claude-loop.pid
+
+# Node
+node_modules/
+
+# Vercel worktrees (created by claude agents)
+.claude/worktrees/

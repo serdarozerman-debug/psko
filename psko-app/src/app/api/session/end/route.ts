@@ -27,7 +27,7 @@ export async function POST(req: Request) {
   if (!session) return Response.json({ error: 'Session not found' }, { status: 404 })
   if (session.endedAt) return Response.json({ error: 'Session already ended' }, { status: 400 })
 
-  const persona = getPersonaById(session.personaId)
+  const persona = await getPersonaById(session.personaId, prisma)
   if (!persona) return Response.json({ error: 'Persona not found' }, { status: 404 })
 
   const messages: MessageData[] = session.messages.map((m) => ({

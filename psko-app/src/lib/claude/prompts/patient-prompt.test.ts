@@ -4,32 +4,32 @@ import { buildPatientPrompt } from './patient-prompt'
 import { getPersonaById, personaLibrary } from '@/lib/personas'
 
 describe('buildPatientPrompt', () => {
-  test('includes the persona name in the prompt', () => {
-    const persona = getPersonaById('ayse-depression-beginner')!
+  test('includes the persona name in the prompt', async () => {
+    const persona = (await getPersonaById('ayse-depression-beginner'))!
     const prompt = buildPatientPrompt(persona, 'cbt')
     assert.ok(prompt.includes('Ayşe'), 'prompt should include persona name')
   })
 
-  test('includes the presenting problem', () => {
-    const persona = getPersonaById('mert-anxiety-intermediate')!
+  test('includes the presenting problem', async () => {
+    const persona = (await getPersonaById('mert-anxiety-intermediate'))!
     const prompt = buildPatientPrompt(persona, 'act')
     assert.ok(prompt.includes(persona.presentingProblem), 'prompt should include presenting problem')
   })
 
-  test('includes the approach-specific instructions', () => {
-    const persona = getPersonaById('zeynep-grief-beginner')!
+  test('includes the approach-specific instructions', async () => {
+    const persona = (await getPersonaById('zeynep-grief-beginner'))!
     const prompt = buildPatientPrompt(persona, 'humanistic')
     assert.ok(prompt.includes('Person-Centered'), 'prompt should include approach name')
   })
 
-  test('never exposes the term "cognitive distortions" (anti-jargon check)', () => {
-    const persona = getPersonaById('ayse-depression-beginner')!
+  test('never exposes the term "cognitive distortions" (anti-jargon check)', async () => {
+    const persona = (await getPersonaById('ayse-depression-beginner'))!
     const prompt = buildPatientPrompt(persona, 'cbt')
     assert.ok(prompt.includes('clinical terminology'), 'should contain anti-jargon rule')
   })
 
-  test('includes core beliefs', () => {
-    const persona = getPersonaById('selin-relationship-advanced')!
+  test('includes core beliefs', async () => {
+    const persona = (await getPersonaById('selin-relationship-advanced'))!
     const prompt = buildPatientPrompt(persona, 'psychodynamic')
     assert.ok(prompt.includes('I am fundamentally unlovable'), 'should include core belief')
   })

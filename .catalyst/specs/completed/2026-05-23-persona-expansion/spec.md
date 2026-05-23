@@ -1,6 +1,6 @@
 ---
 spec: 2026-05-23-persona-expansion
-status: draft
+status: complete
 domain: personas
 
 provides:

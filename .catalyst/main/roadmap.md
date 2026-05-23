@@ -32,9 +32,11 @@
 - [x] **Dynamic session guidance panel** — Phase-aware; server-authoritative with illegal-jump rejection
 - [x] **Phase 2 Hardening** — HybridFrameworkViewer, CI pipeline, API docs, coverage thresholds
 
-### 2C — Persona Expansion [Next]
-- [ ] Expand persona library to 20+ profiles (trauma, OCD, personality disorders, psychosis, addiction)
-- [ ] SCID-5 enrichment of all personas (symptom onset timeline, functional impairment, trauma flags)
+### 2C — Persona Expansion ✅ (`spec: 2026-05-23-persona-expansion`)
+- [x] Expand persona library to 18 profiles (trauma, OCD, personality disorders, psychosis, addiction)
+- [x] SCID-5 enrichment of all new personas (onset age, functional impairment, trauma flags)
+- [x] Auto-registration via directory scan + Zod validation
+- [x] Trigger warning modal for trauma/psychosis personas; debrief reminder for advanced personas
 
 ---
 

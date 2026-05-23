@@ -57,21 +57,18 @@ db-schema (alchemist)
 
 | Task | Status | Agent | Tests | Commit | Notes |
 |------|--------|-------|-------|--------|-------|
-| db-schema | ⏳ Waiting | alchemist | — | — | |
-| api-types | ⏳ Waiting | smith | — | — | Depends: db-schema |
-| clinical-frameworks | ⏳ Waiting | smith-1 | — | — | Depends: api-types |
-| api-routes | ⏳ Waiting | smith-2 | — | — | Depends: api-types |
-| ui-intake | ⏳ Waiting | shaper-1 | — | — | Depends: clinical-frameworks |
-| ui-session-panel | ⏳ Waiting | shaper-2 | — | — | Depends: api-routes |
-| tests | ⏳ Waiting | enforcer | — | — | Depends: clinical-frameworks |
-| build | ⏳ Waiting | enforcer | — | — | Depends: all |
+| db-schema | ✅ Done | alchemist | — | 8aac032 | IntakeResponse + currentPhase in schema.prisma |
+| api-types | ✅ Done | smith | — | 8aac032 | src/types/index.ts |
+| clinical-frameworks | ✅ Done | smith-1 | ✅ | 8aac032 | frameworks/, intake/, phase-engine/ |
+| api-routes | ✅ Done | smith-2 | — | 8aac032 | intake/analyze + session/phase (GET+POST) |
+| ui-intake | ✅ Done | shaper-1 | — | 8aac032 | src/components/intake/IntakeFlow.tsx |
+| ui-session-panel | ✅ Done | shaper-2 | — | 8aac032 | src/components/simulation/SessionGuidancePanel.tsx |
+| tests | ✅ Done | enforcer | ✅ | 8aac032 | detect-phase.test.ts + validate-transition.test.ts |
+| build | ✅ Done | enforcer | — | — | Deployed to Vercel |
 
-## Current Session
-
-**Phase:** 1 — Foundation
-**Active:** db-schema
-**Working on:** Adding currentPhase + IntakeResponse to Prisma schema
-**Next:** api-types (contracts)
+## Synced
+**Date:** 2026-05-23
+**Method:** /sync-project (batch archive)
 
 ## Decisions
 

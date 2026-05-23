@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import type { PersonaData, ApproachConfig, SupervisorFeedback, ClientDebrief, RoleMode } from '@/types'
+import type { PersonaData, ApproachConfig, SupervisorFeedback, ClientDebrief, RoleMode, TherapeuticApproach } from '@/types'
+import { HybridFrameworkViewer } from '@/components/session/HybridFrameworkViewer'
 
 interface FeedbackReportProps {
   session: { id: string; startedAt: Date; endedAt: Date | null; turnCount: number }
@@ -223,6 +224,23 @@ export default function FeedbackReport({ session, persona, approach, feedback, r
                 </div>
               )}
             </>
+          )
+        })()}
+
+        {/* Yaklaşım karşılaştırması — sadece THERAPIST modunda göster */}
+        {!isDebrief && (() => {
+          const usedApproach = approach.id as TherapeuticApproach
+          const alternatives = persona.recommendedApproaches
+            .filter((a) => a !== usedApproach)
+            .slice(0, 2)
+          const approaches: TherapeuticApproach[] = [usedApproach, ...alternatives]
+          return (
+            <div className="[&_section]:bg-slate-900 [&_section]:border-slate-700 [&_h2]:text-white [&_article]:bg-slate-800 [&_article]:border-slate-700">
+              <HybridFrameworkViewer
+                approaches={approaches}
+                heading="Yaklaşım Karşılaştırması"
+              />
+            </div>
           )
         })()}
 

@@ -1,6 +1,6 @@
 ---
 spec: 2026-05-18-phase2-hardening
-status: draft
+status: in_progress
 domain: hardening
 
 provides:

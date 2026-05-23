@@ -1,6 +1,7 @@
 ---
 spec: 2026-05-16-clinical-intelligence-engine
-status: draft
+status: complete
+completed: 2026-05-23
 domain: simulation
 
 provides:

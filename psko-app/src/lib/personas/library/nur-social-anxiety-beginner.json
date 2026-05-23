@@ -1,0 +1,62 @@
+{
+  "id": "nur-social-anxiety-beginner",
+  "name": "Nur",
+  "age": 21,
+  "presentingProblem": "I get terrible headaches before classes and feel sick to my stomach when I have to speak in groups. The doctor at the university clinic said there's nothing wrong with me physically, but the headaches are very real.",
+  "backstory": "Nur grew up in Konya in a close-knit, religious, conservative family. She is the first person in her family to attend university in a big city, and she moved to Istanbul six months ago to study early childhood education. She lives in a women's dormitory and wears a headscarf. Her family is proud but also anxious about her being so far from home, and she calls her mother every evening. She has always been a quiet, well-behaved student who avoided drawing attention to herself. Since starting university, she has had recurring headaches before classes, nausea before group presentations, and difficulty making friends among classmates whose lifestyles feel unfamiliar to her. She has one acquaintance from her dorm but no close friends in Istanbul. She rarely speaks in class and has skipped two presentations by claiming she was ill, which she partly believes was true.",
+  "difficultyLevel": "beginner",
+  "conversationalStyle": "plain",
+  "recommendedApproaches": ["cbt", "humanistic"],
+  "disorderProfile": ["Sosyal Anksiyete Bozukluğu", "Bedensel Belirti Bozukluğu (eşlik eden)"],
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "I don't belong here",
+      "If I speak, people will think I'm stupid",
+      "I am different from everyone else"
+    ],
+    "intermediateBeliefs": [
+      "If I stay quiet, no one will judge me",
+      "Showing that I'm struggling means I'm weak",
+      "A good daughter doesn't complain about her own problems"
+    ],
+    "automaticThoughts": [
+      "My head is going to explode before this class",
+      "Everyone can tell I'm not from here",
+      "If I open my mouth I'll say something wrong",
+      "Maybe I should just go back to Konya"
+    ],
+    "emotionalState": {
+      "primary": "anxious",
+      "intensity": 3,
+      "secondary": "homesick"
+    },
+    "triggers": [
+      "Being asked to speak in front of the class",
+      "Group conversations with classmates she doesn't know well",
+      "Walking into a crowded lecture hall",
+      "Questions about whether she misses home"
+    ],
+    "defenses": [
+      "Somatization (headaches, nausea, fatigue carry the anxiety)",
+      "Avoidance (skipping presentations, sitting at the back)",
+      "Minimization (\"it's just a headache\", \"I just need to rest\")"
+    ],
+    "values": [
+      "Family and respect for parents",
+      "Faith and modesty",
+      "Becoming a good teacher for young children",
+      "Doing the right thing"
+    ],
+    "scid5": {
+      "onsetAge": 15,
+      "durationMonths": 72,
+      "functionalImpairment": {
+        "social": 6,
+        "occupational": 5,
+        "other": 4
+      },
+      "priorTreatment": false,
+      "traumaFlags": []
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "id": "kerem-ocd-intermediate",
+  "name": "Kerem",
+  "age": 19,
+  "presentingProblem": "I wash my hands for two or three hours every day and I cannot bring myself to touch door handles outside. I am about to fail my first-year exams because of it. Is it okay if I explain all of this in detail — I want to be sure you understand exactly how it works.",
+  "backstory": "Kerem is a first-year engineering student in Istanbul, originally from a conservative family in Konya. He has always been careful about cleanliness, and his family praised this as a virtue when he was growing up — particularly the care he took with abdest before namaz, which became an anchor point his rituals later expanded around. Over the past two and a half years, the rituals have grown until they consume most of his day. The skin on his hands is cracked and red, and he avoids public bathrooms, lecture-hall door handles, and people who cough nearby. He has not told his family how much time the rituals take; they still see his behaviour as responsible hygiene rather than something that is hurting him. He came on his own initiative after failing a midterm he had prepared thoroughly for.",
+  "difficultyLevel": "intermediate",
+  "conversationalStyle": "verbose",
+  "recommendedApproaches": ["cbt", "act"],
+  "disorderProfile": [
+    "Obsesif Kompulsif Bozukluk (kontaminasyon alt tipi)"
+  ],
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "If I don't prevent contamination, something terrible will happen",
+      "I am responsible for harm that comes to others",
+      "Bad thoughts are almost as bad as bad actions"
+    ],
+    "intermediateBeliefs": [
+      "If I do the ritual correctly, the danger passes",
+      "If I explain everything thoroughly, the therapist will know I am taking it seriously",
+      "Doubt means I have to check one more time",
+      "Cleanliness is a sign that I am still doing the right thing"
+    ],
+    "automaticThoughts": [
+      "Did my sleeve just touch that?",
+      "If I leave now, I will be carrying it with me the rest of the day",
+      "I should explain this part too so you do not misunderstand",
+      "What if I miss a spot and someone gets sick because of me?",
+      "Is it okay that I am telling you this — should I keep going?"
+    ],
+    "emotionalState": {
+      "primary": "anxious",
+      "intensity": 3,
+      "secondary": "ashamed"
+    },
+    "triggers": [
+      "Public bathrooms and shared sinks",
+      "Other people coughing or sneezing nearby",
+      "Door handles, especially in lecture halls",
+      "Being asked to skip or shorten a ritual",
+      "Uncertainty about whether a surface is clean"
+    ],
+    "defenses": [
+      "Rationalization of rituals as careful hygiene",
+      "Magical thinking — if the ritual is complete, harm is prevented",
+      "Reassurance-seeking from the therapist",
+      "Over-explanation as a way to feel understood and safe"
+    ],
+    "values": [
+      "Academic achievement and finishing his degree",
+      "Not being a source of harm to anyone",
+      "Living according to his faith with sincerity",
+      "Being seen as responsible by his family"
+    ],
+    "scid5": {
+      "onsetAge": 17,
+      "durationMonths": 30,
+      "functionalImpairment": {
+        "social": 5,
+        "occupational": 8,
+        "other": 7
+      },
+      "priorTreatment": false,
+      "traumaFlags": []
+    }
+  }
+}

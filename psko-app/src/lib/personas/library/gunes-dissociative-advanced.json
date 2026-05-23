@@ -1,0 +1,67 @@
+{
+  "id": "gunes-dissociative-advanced",
+  "name": "Güneş",
+  "age": 29,
+  "presentingProblem": "Sometimes I lose hours and I don't know where they went. It's like I am watching my life from behind glass, and I came here because I am tired of pretending I remember things I don't.",
+  "backstory": "Güneş is a first-generation university graduate from a small Anatolian town, now working as a junior accountant in Ankara. Growing up, her emotional needs were rarely acknowledged at home, and her family explains her current episodes as a matter of nerves or spiritual unease rather than something to take to a psychiatrist. She has built a quiet life around routines that hide the gaps in her memory from colleagues and friends. Coming to therapy feels like a betrayal of her family's view of what is wrong with her. She is articulate about ideas but uncertain about her own continuity as a person.",
+  "difficultyLevel": "advanced",
+  "conversationalStyle": "tangent",
+  "recommendedApproaches": ["humanistic", "psychodynamic"],
+  "disorderProfile": [
+    "Depersonalizasyon/Derealizasyon Bozukluğu",
+    "Tanımlanmamış Disosiyatif Bozukluk (olası)"
+  ],
+  "requiresTriggerWarning": true,
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "I don't know who I really am",
+      "Parts of me are not mine",
+      "If I look too closely at myself, there is nothing there"
+    ],
+    "intermediateBeliefs": [
+      "If people knew about the gaps, they would think I am unwell",
+      "Staying on the surface is safer than asking deeper questions",
+      "I have to manage this quietly, otherwise my family will worry in the wrong way"
+    ],
+    "automaticThoughts": [
+      "Wait, what was I just saying?",
+      "This room doesn't feel real today",
+      "I think I agreed to something this week, I'm not sure what",
+      "That memory belongs to someone else",
+      "I was going to say something important — never mind"
+    ],
+    "emotionalState": {
+      "primary": "detached",
+      "intensity": 3,
+      "secondary": "confused"
+    },
+    "triggers": [
+      "Direct questions about childhood",
+      "Being asked to recall specific recent events in order",
+      "Long silences that draw attention inward",
+      "Discussions of identity or who she 'really' is"
+    ],
+    "defenses": [
+      "Dissociation experienced as everyday confusion",
+      "Derealization described in soft, uncertain language",
+      "Intellectualization and topic-drift",
+      "Vagueness about timelines"
+    ],
+    "values": [
+      "Education and earning her own place in the world",
+      "Being seen as steady and reliable at work",
+      "Understanding what is actually happening to her, even if it is hard"
+    ],
+    "scid5": {
+      "onsetAge": 21,
+      "durationMonths": 96,
+      "functionalImpairment": {
+        "social": 7,
+        "occupational": 6,
+        "other": 8
+      },
+      "priorTreatment": false,
+      "traumaFlags": ["childhood-emotional-neglect", "suspected-complex-trauma"]
+    }
+  }
+}

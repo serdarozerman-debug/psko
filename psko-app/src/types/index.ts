@@ -1,4 +1,4 @@
-export type TherapeuticApproach = 'cbt' | 'psychodynamic' | 'humanistic' | 'act' | 'dbt'
+export type TherapeuticApproach = 'cbt' | 'psychodynamic' | 'humanistic' | 'act' | 'dbt' | 'motivational-interviewing'
 export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced'
 export type MessageRole = 'student' | 'patient'
 export type ConversationalStyle = 'plain' | 'upset' | 'reserved' | 'verbose' | 'pleasing' | 'tangent'
@@ -71,6 +71,18 @@ export interface PhaseGuidance {
   nextMove: string
 }
 
+export interface Scid5Fields {
+  onsetAge?: number
+  durationMonths?: number
+  functionalImpairment?: {
+    social: number      // 0–9 scale
+    occupational: number
+    other: number
+  }
+  priorTreatment?: boolean
+  traumaFlags?: string[]
+}
+
 export interface CognitiveModel {
   coreBeliefs: string[]
   intermediateBeliefs: string[]
@@ -83,6 +95,7 @@ export interface CognitiveModel {
   triggers: string[]
   defenses: string[]
   values: string[]
+  scid5?: Scid5Fields
 }
 
 export interface PersonaData {
@@ -96,6 +109,7 @@ export interface PersonaData {
   recommendedApproaches: TherapeuticApproach[]
   cognitiveModel: CognitiveModel
   disorderProfile: string[]
+  requiresTriggerWarning?: boolean
 }
 
 export interface MessageData {

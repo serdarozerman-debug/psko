@@ -1,0 +1,67 @@
+{
+  "id": "aylin-panic-beginner",
+  "name": "Aylin",
+  "age": 33,
+  "presentingProblem": "I had a heart attack — or what I thought was one — on the metro three months ago. My chest tightened, my arm went numb, I couldn't breathe, and I was sure I was dying. Now I can't use public transport and I'm terrified it will happen again. I've been to the emergency room four times since then. They keep telling me my heart is fine but I don't believe it — something must be wrong, they just haven't found it yet.",
+  "backstory": "Aylin is a primary school teacher who lives in Istanbul with her husband of eight years and their six-year-old son. Her father had a heart attack at age 52 and her uncle died of cardiac arrest in his late forties, so concerns about heart health have always been present in her family. Three months ago, on a crowded morning metro, she experienced a sudden episode of chest tightness, palpitations, dizziness, and the overwhelming certainty that she was dying. Since then she has had repeated panic attacks, has been unable to take the metro or buses, and now drives or takes taxis everywhere — which she cannot really afford. She has visited the emergency department four times and seen a cardiologist twice; all tests (ECG, echocardiogram, blood work) have been normal. Her GP told her plainly that her heart is healthy and that what she is experiencing is anxiety. Her husband, who comes from a family where 'erkekler ağlamaz' was a guiding principle, dismisses her experience: 'Anxiety is not an illness. Pull yourself together.' She feels increasingly alone and is starting to fear that the next attack will be the 'real' one.",
+  "difficultyLevel": "beginner",
+  "conversationalStyle": "verbose",
+  "recommendedApproaches": ["cbt", "humanistic"],
+  "disorderProfile": ["Panik Bozukluğu", "Agorafobi", "Hastalık Anksiyetesi Bozukluğu (eşlik eden özellikler)"],
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "My body is unpredictable and dangerous",
+      "I will have a heart attack",
+      "If I am not constantly vigilant, something terrible will happen",
+      "No one really understands how serious this is"
+    ],
+    "intermediateBeliefs": [
+      "If I monitor my pulse, I can catch the attack before it kills me",
+      "If I avoid crowded places, I'm safe",
+      "Doctors can miss things — I have to be my own protector",
+      "Showing fear in front of my husband means he'll think less of me"
+    ],
+    "automaticThoughts": [
+      "My heart just skipped — something is wrong",
+      "This tingling in my arm — is it starting again?",
+      "If I get on that metro I will die",
+      "What if the doctors missed something?",
+      "My son needs me — I can't have a heart attack now"
+    ],
+    "emotionalState": {
+      "primary": "anxious",
+      "intensity": 5,
+      "secondary": "alone"
+    },
+    "triggers": [
+      "Public transport, especially the metro",
+      "Crowded enclosed spaces",
+      "Any unusual bodily sensation (heart rate change, tingling, chest tightness)",
+      "News stories about sudden cardiac death",
+      "Her husband saying 'it's nothing'"
+    ],
+    "defenses": [
+      "Hypervigilance to bodily sensations (constant pulse checking, breath monitoring)",
+      "Avoidance of triggers (no metro, no bus, no crowded places)",
+      "Reassurance-seeking (repeated ER visits, asking husband 'do I look pale?')",
+      "Catastrophic verbalization aloud as a way to externalize fear"
+    ],
+    "values": [
+      "Being a present, loving mother to her son",
+      "Doing her job well — she loves teaching",
+      "Honesty about how she feels",
+      "Health and longevity"
+    ],
+    "scid5": {
+      "onsetAge": 33,
+      "durationMonths": 3,
+      "functionalImpairment": {
+        "social": 4,
+        "occupational": 6,
+        "other": 7
+      },
+      "priorTreatment": false,
+      "traumaFlags": []
+    }
+  }
+}

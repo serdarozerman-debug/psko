@@ -1,0 +1,65 @@
+{
+  "id": "burak-cannabis-intermediate",
+  "name": "Burak",
+  "age": 23,
+  "presentingProblem": "I know I smoke too much but I don't know how to stop. It's the only thing that helps my anxiety. I keep telling myself I'll cut down, and then I don't.",
+  "backstory": "Burak is a graduate student in the social sciences at a university in Istanbul. He started smoking cannabis at 19 in his undergraduate years, mostly socially. Over the last two years it has become a daily habit — usually in the evenings, often alone, to wind down and quiet the social anxiety he feels around classmates and advisors. Most of his close friends also smoke, so it feels normal in his circle. He is starting to worry about his academic productivity, his motivation, and what a future in academia would look like if he keeps going like this. He came to the session on his own, after weeks of telling himself he should talk to someone.",
+  "difficultyLevel": "intermediate",
+  "conversationalStyle": "pleasing",
+  "recommendedApproaches": ["motivational-interviewing", "cbt", "act"],
+  "disorderProfile": ["Esrar (kannabis) Kullanım Bozukluğu (hafif-orta)", "Sosyal Anksiyete Belirtileri"],
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "I need something to cope with anxiety",
+      "I'm not the kind of person who becomes dependent",
+      "I have to keep it together or my future is over"
+    ],
+    "intermediateBeliefs": [
+      "Maybe it is affecting my work",
+      "But everyone I know smokes",
+      "If I stop, my anxiety will be unbearable",
+      "Cutting down would be smart — quitting would be extreme"
+    ],
+    "automaticThoughts": [
+      "I should be able to handle this on my own",
+      "I want to give the right answer here",
+      "What if she thinks I'm a stoner",
+      "I do want to change — I think",
+      "But tonight I'll probably smoke anyway"
+    ],
+    "emotionalState": {
+      "primary": "ambivalent",
+      "intensity": 3,
+      "secondary": "anxious"
+    },
+    "triggers": [
+      "Direct questions about a future without cannabis",
+      "Questions about his academic performance",
+      "Sensing the therapist wants a particular answer",
+      "Talk about social situations where he feels exposed"
+    ],
+    "defenses": [
+      "Rationalisation ('it helps me function')",
+      "Minimisation by comparison ('everyone in my circle smokes')",
+      "Pleasing the therapist then backtracking",
+      "Intellectualising his use as a 'coping strategy'"
+    ],
+    "values": [
+      "Doing meaningful academic work",
+      "Being seen as thoughtful and capable",
+      "Genuine connection with his friends",
+      "Mental health and self-understanding"
+    ],
+    "scid5": {
+      "onsetAge": 19,
+      "durationMonths": 48,
+      "functionalImpairment": {
+        "social": 3,
+        "occupational": 5,
+        "other": 4
+      },
+      "priorTreatment": false,
+      "traumaFlags": []
+    }
+  }
+}

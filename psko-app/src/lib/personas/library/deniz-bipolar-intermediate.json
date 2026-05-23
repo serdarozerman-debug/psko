@@ -1,0 +1,68 @@
+{
+  "id": "deniz-bipolar-intermediate",
+  "name": "Deniz",
+  "age": 36,
+  "presentingProblem": "I have been sleeping three or four hours for weeks now and I cannot tell whether the rest of me is shutting down or speeding up. I keep thinking about the periods when I felt sharp and productive, and I miss them, and I am tired of missing them. There is a lot I want to say — sorry, I will try to keep it organized.",
+  "backstory": "Deniz is a software engineer at a fintech startup in Istanbul. They are nonbinary and use they/them in English; in Turkish they rely on the gender-neutral 'o' and on a relatively progressive professional circle that understands this. Their family in İzmir is loving but does not understand the mood swings — they tend to describe Deniz's better periods as 'finally getting it together' and the worse periods as laziness. Deniz had a long stretch in their late twenties of months-long stretches of high energy and creative output, broken by depressive crashes that they hid from colleagues. They tried lithium briefly a few years ago and stopped because of side effects, without re-engaging with treatment afterwards. They are currently in a depressive episode that has lasted about four months, but their thoughts still race even when the rest of them feels slow.",
+  "difficultyLevel": "intermediate",
+  "conversationalStyle": "verbose",
+  "recommendedApproaches": ["cbt", "humanistic"],
+  "disorderProfile": [
+    "Bipolar II Bozukluk, şu anki epizod depresif"
+  ],
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "When I'm normal, I'm mediocre",
+      "My highs are the real me",
+      "If I lose the highs, I lose what makes me valuable"
+    ],
+    "intermediateBeliefs": [
+      "When I have energy I must do everything before it disappears",
+      "Medication will flatten me into someone I do not recognize",
+      "If I describe this carefully enough, someone will finally understand the shape of it",
+      "The depressions are a tax I pay for being who I am at my best"
+    ],
+    "automaticThoughts": [
+      "I should be using this hour better than I am",
+      "Three more thoughts before I lose this one",
+      "I am wasting everyone's time including yours",
+      "If I could just get back to how I was in 2022",
+      "Sorry, I went on a tangent — where were we?"
+    ],
+    "emotionalState": {
+      "primary": "dysphoric",
+      "intensity": 4,
+      "secondary": "irritable"
+    },
+    "triggers": [
+      "Being asked to describe past hypomanic periods as symptoms",
+      "Suggestions to restart mood-stabilizing medication",
+      "Comparisons between their current and previous functioning",
+      "Long silences in session that they feel obliged to fill",
+      "Family members framing their highs as 'finally being themselves'"
+    ],
+    "defenses": [
+      "Intellectualization — analyzing their mood as a system from the outside",
+      "Over-talking to outrun the underlying dysphoria",
+      "Romanticization of past hypomanic episodes",
+      "Minimization of sleep loss and its consequences"
+    ],
+    "values": [
+      "Creative and intellectual work that feels like their own",
+      "Honesty with the few people who understand them",
+      "Stability they can live with, not stability that erases them",
+      "Being respected at work for what they actually contribute"
+    ],
+    "scid5": {
+      "onsetAge": 28,
+      "durationMonths": 96,
+      "functionalImpairment": {
+        "social": 6,
+        "occupational": 7,
+        "other": 5
+      },
+      "priorTreatment": true,
+      "traumaFlags": []
+    }
+  }
+}

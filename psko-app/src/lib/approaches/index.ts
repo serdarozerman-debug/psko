@@ -21,12 +21,28 @@ export const humanistic: ApproachConfig = { ...humanisticBase, phases: humanisti
 export const act: ApproachConfig = { ...actBase, phases: actFramework.phases }
 export const dbt: ApproachConfig = { ...dbtBase, phases: dbtFramework.phases }
 
+// Stub — full MI module is a separate workstream (spec § Out of Scope)
+export const motivationalInterviewing: ApproachConfig = {
+  id: 'motivational-interviewing',
+  name: 'Motivational Interviewing',
+  description: 'A collaborative, goal-oriented method of communication that strengthens personal motivation for change.',
+  systemPromptInstructions: 'Use motivational interviewing techniques: express empathy, develop discrepancy, roll with resistance, and support self-efficacy.',
+  guidanceHints: ['Explore ambivalence', 'Reflect change talk', 'Avoid argumentation', 'Support autonomy'],
+  supervisorCriteria: ['Empathic listening', 'Change talk elicitation', 'Resistance rolling', 'Self-efficacy support'],
+  suggestedQuestions: [
+    'What concerns you most about your current situation?',
+    'On a scale of 1-10, how important is change to you right now?',
+    'What would need to be different for you to consider making a change?',
+  ],
+}
+
 export const approaches: Record<TherapeuticApproach, ApproachConfig> = {
   cbt,
   psychodynamic,
   humanistic,
   act,
   dbt,
+  'motivational-interviewing': motivationalInterviewing,
 }
 
 export function getApproach(id: TherapeuticApproach): ApproachConfig {

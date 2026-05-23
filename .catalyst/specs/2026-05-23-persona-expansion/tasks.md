@@ -145,32 +145,27 @@ All content tasks read but never modify `src/types/index.ts` or existing persona
 
 | Task | Status | Tests | Commit | Notes |
 |------|--------|-------|--------|-------|
-| schema | ⏳ Waiting | — | — | Blocks all |
-| persona-loader | ⏳ Waiting | loader.test.ts, schema.test.ts | — | smith-1 |
-| prompt-update | ⏳ Waiting | patient-prompt.test.ts | — | smith-2 |
-| personas-trauma | ⏳ Waiting | — | — | smith-3, 2 files |
-| personas-personality | ⏳ Waiting | — | — | smith-4, 3 files |
-| personas-clinical | ⏳ Waiting | — | — | smith-5, 3 files |
-| personas-addiction | ⏳ Waiting | — | — | smith-6, 2 files |
-| personas-somatic | ⏳ Waiting | — | — | smith-7, 3 files |
-| ui-trigger-warnings | ⏳ Waiting | — | — | shaper-1, depends persona-loader |
-| tests | 🔴 Red | loader.test.ts, schema.test.ts, patient-prompt-scid5.test.ts written — 11 failing, 2 passing (regression guards) | — | enforcer-1 |
-| seed-verify | ⏳ Waiting | — | — | enforcer-2, gate after content |
-| integration | ⏳ Waiting | personas.spec.ts | — | enforcer-3, final gate |
+| schema | ✅ Done | tsc --noEmit clean | — | Scid5Fields, requiresTriggerWarning, motivational-interviewing added |
+| persona-loader | ✅ Done | loader.test.ts 7/7 pass, schema.test.ts 5/5 pass, tsc --noEmit clean | — | smith-1: dynamic fs.readdirSync scan + Zod validation; schema.ts created; priorTreatment accepts string\|boolean during type/spec migration window |
+| prompt-update | ✅ Done | patient-prompt-scid5.test.ts — 5/5 pass | — | smith-2: conditional SCID-5 block injected after COGNITIVE MODEL; byte-identical output when scid5 absent; tsc --noEmit clean |
+| personas-trauma | ✅ Done | AC-9 pass (Zod + integration) | — | smith-3: elif-ptsd-intermediate + gunes-dissociative-advanced; requiresTriggerWarning: true on both |
+| personas-personality | ✅ Done | AC-9 pass | — | smith-4: ahmet-bpd-advanced + leyla-avpd-intermediate + hasan-npd-advanced; no "manipulative" in BPD |
+| personas-clinical | ✅ Done | AC-9 pass | — | smith-5: fatma-psychosis-advanced + kerem-ocd-intermediate + deniz-bipolar-intermediate |
+| personas-addiction | ✅ Done | AC-9 pass | — | smith-6: tarik-alcohol-advanced + burak-cannabis-intermediate; TTM stages encoded; no forbidden terms |
+| personas-somatic | ✅ Done | AC-9 pass | — | smith-7: nur-social-anxiety-beginner + aylin-panic-beginner + irem-anorexia-intermediate; no weight numbers |
+| ui-trigger-warnings | ✅ Done | tsc clean | — | shaper-1: TriggerWarningModal + PersonaSelectClient; debrief reminder on advanced personas |
+| tests | ✅ Done | 50/50 pass (loader 7, schema 5, prompt 5, integration 33) | — | enforcer-1 + enforcer-3; all ACs verified |
+| seed-verify | ✅ Done | 18/18 upserted exit 0 (live DB); ethical guardrails clean | — | enforcer-2: report at scripts/seed-verify-report.md |
+| integration | ✅ Done | personas.spec.ts 33/33 pass | — | enforcer-3: all 6 ACs + NFR-1 verified; red-check confirmed |
 
 ---
 
 ## Current Session
 
-**Phase:** RED phase complete — failing tests written for `tests` task
+**Phase:** ALL PHASES COMPLETE ✅
 **Active:** none
-**Working on:** awaiting `schema` task kickoff (alchemist)
-**Next:** dispatch `schema` (Phase 1) — alchemist updates `src/types/index.ts` with `Scid5Fields`, `requiresTriggerWarning`, and `motivational-interviewing` approach. On completion, fan out Phase 2 (`persona-loader` + `prompt-update`) and all 5 `personas-*` tasks in parallel.
-
-**Tests written (RED phase):**
-- `psko-app/src/lib/personas/loader.test.ts` — 7 tests, all failing (getPersonaLibrary not exported, 18 personas not present, upset/tangent styles missing)
-- `psko-app/src/lib/personas/schema.test.ts` — 5 tests, all failing (MODULE_NOT_FOUND: schema.ts does not exist)
-- `psko-app/src/lib/claude/prompts/patient-prompt-scid5.test.ts` — 5 tests: 3 failing (SCID-5 injection not implemented), 2 passing (regression guards)
+**Working on:** —
+**Next:** `/audit-spec` → `/seal-spec`
 
 ---
 

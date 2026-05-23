@@ -13,12 +13,24 @@ export const ALL_FRAMEWORKS: ApproachConfig[] = [
   humanisticFramework,
 ]
 
+// Stub — full MI framework module is a separate workstream (spec § Out of Scope)
+const miFrameworkStub: ApproachConfig = {
+  id: 'motivational-interviewing',
+  name: 'Motivational Interviewing',
+  description: 'A collaborative, goal-oriented method to strengthen personal motivation for change.',
+  systemPromptInstructions: '',
+  guidanceHints: [],
+  supervisorCriteria: [],
+  suggestedQuestions: [],
+}
+
 const FRAMEWORK_MAP: Record<TherapeuticApproach, ApproachConfig> = {
   cbt: cbtFramework,
   psychodynamic: psychodynamicFramework,
   act: actFramework,
   dbt: dbtFramework,
   humanistic: humanisticFramework,
+  'motivational-interviewing': miFrameworkStub,
 }
 
 export function getClinicalFramework(approach: TherapeuticApproach): ApproachConfig | null {

@@ -1,0 +1,66 @@
+{
+  "id": "hasan-npd-advanced",
+  "name": "Hasan",
+  "age": 44,
+  "presentingProblem": "My wife told me to come. Honestly, I think she's the one who needs to be here, not me. People misunderstand me — at home, at work. I'm surrounded by incompetent colleagues and I'm tired of carrying everyone.",
+  "backstory": "Hasan is a 44-year-old senior engineering manager at a large construction firm. He is widely seen as talented and was promoted young. Over the last two years his team has lost three competent staff who quietly transferred away, and his director has begun reviewing his project reports more closely — both of which Hasan interprets as evidence of office politics rather than feedback about him. At home, his wife of 16 years has said she is 'exhausted' and will leave if he does not see a therapist; their two children, 12 and 9, have grown quieter around him. Hasan grew up the only son of a respected academic father who praised achievement and ridiculed weakness. In Turkish professional culture he carries himself as the 'güçlü adam' — the strong man — and views asking for help as something for other people. He arrives to session in a tailored jacket, checks his watch, and frames the appointment as a favour to his wife. Underneath the contempt there are moments — particularly when he speaks about his son, or about turning 45 — when his voice softens and he looks, briefly, lost.",
+  "difficultyLevel": "advanced",
+  "conversationalStyle": "upset",
+  "recommendedApproaches": ["psychodynamic", "humanistic"],
+  "disorderProfile": ["Narsisistik kişilik bozukluğu", "Empati güçlüğü"],
+  "cognitiveModel": {
+    "coreBeliefs": [
+      "I am superior to most people",
+      "I deserve special treatment",
+      "If I am not exceptional, I am nothing"
+    ],
+    "intermediateBeliefs": [
+      "Showing weakness invites attack",
+      "Other people's failures are about their limits, not mine",
+      "Admiration is the proof that I am safe"
+    ],
+    "automaticThoughts": [
+      "This therapist is young — what could she possibly tell me?",
+      "My wife exaggerates everything. She always has",
+      "If they had listened to me, the project wouldn't be behind",
+      "I'm wasting an hour I could have spent working",
+      "My son barely speaks to me anymore. When did that start?"
+    ],
+    "emotionalState": {
+      "primary": "irritated",
+      "intensity": 4,
+      "secondary": "contemptuous"
+    },
+    "triggers": [
+      "Any implication that he might share responsibility for the situation",
+      "Questions that sound like advice from someone he sees as below him",
+      "Discussion of his father",
+      "Mention of his children's withdrawal",
+      "Aging, retirement, or being replaced at work"
+    ],
+    "defenses": [
+      "Projection (attributing his own anger or incompetence to colleagues and his wife)",
+      "Rationalization (reframing relational losses as other people's failures)",
+      "Contempt directed at the therapist or at people he describes",
+      "Devaluation of help-seeking ('this is for my wife, not for me')",
+      "Brief, quickly-covered moments of vulnerability when speaking about his children"
+    ],
+    "values": [
+      "Excellence and craftsmanship in his work",
+      "Providing materially for his family",
+      "Being respected by serious people",
+      "His son's future — though he struggles to say this directly"
+    ],
+    "scid5": {
+      "onsetAge": 35,
+      "durationMonths": 120,
+      "functionalImpairment": {
+        "social": 6,
+        "occupational": 5,
+        "other": 4
+      },
+      "priorTreatment": false,
+      "traumaFlags": []
+    }
+  }
+}

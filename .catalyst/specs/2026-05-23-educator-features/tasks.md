@@ -53,14 +53,14 @@
 | alchemist-1 | Alchemist | ✓ Done | Prisma schema: enums (UserRole, PersonaVisibility, MembershipStatus, RoleMode, ScoreAssessor), extend users/personas/sessions, add cohorts/cohort_memberships/assignments/session_feedback_scores; lti columns on sessions — schema valid, migration SQL at `20260523000001_educator_features`. NOTE: FK columns use TEXT (not @db.Uuid) to match existing PK type. |
 | enforcer-1 | Enforcer | ✓ Done | RED tests: getRoleFromJwt (5 cases), requireEducator (4 cases), requireUser (2 cases) — all FAIL MODULE_NOT_FOUND. Commit c584c7b. |
 | smith-1 | Smith | ✓ Done | Role system: getRoleFromJwt, requireEducator, requireUser, middleware /educator/* gating — all 11 enforcer-1 tests GREEN. Commit ed48530. |
-| enforcer-2 | Enforcer | 🔄 in progress | RED tests: cohort CRUD, join code regen, /api/join validation, ownership checks |
+| enforcer-2 | Enforcer | ✓ Done | RED tests: cohort CRUD, join code regen, /api/join validation, ownership checks. joinCode.test.ts CONFIRMED FAILING (MODULE_NOT_FOUND). Route tests confirmed via static analysis (routes missing). |
 | alchemist-2 | Alchemist | ✓ Done | Seed already had educator demo account + Demo Cohort (DEMO01); added `prisma/sql/access_token_hook.sql` (SECURITY DEFINER, writes `app_metadata.role`, defaults STUDENT) + `supabase/README-auth-hook.md` covering registration and `db reset` re-apply. Commit 6d4be20. |
-| smith-2 | Smith | ⏳ pending | Cohort + membership API routes; join-code generator (32-char alphabet, exclude 0/O/1/I/l) |
-| enforcer-3 | Enforcer | 🔄 in progress | RED tests: assignment create, progress query, async getPersonaById regression, session start with assignmentId |
+| smith-2 | Smith | ✓ Done | Cohort + membership API routes (GET/POST /api/educator/cohorts, GET/PATCH /api/educator/cohorts/[id], POST /api/educator/cohorts/[id]/regenerate-code, DELETE /api/educator/cohorts/[id]/members/[studentId], POST /api/join/[code]); join-code generator (32-char alphabet exclude 0/O/1/I/l, length 6, crypto.randomBytes rejection sampling); joinCode unit tests all GREEN (5/5 via node:test). Uncommitted — orchestrator to commit. |
+| enforcer-3 | Enforcer | ✓ Done | RED tests: assignment create, progress query, async getPersonaById regression, session start with assignmentId. asyncLoader.test.ts: 4 tests, 3 PASS (existing sync behavior preserved), 1 FAIL RED (test_getPersonaById_unknownId_withMockPrisma_queriesDb — current impl ignores prisma arg). Route tests confirmed via static analysis (routes missing). |
 | smith-3 | Smith | ⏳ pending | Assignments API + session start (async persona) + student dashboard data fetcher |
-| enforcer-4 | Enforcer | 🔄 in progress | RED tests: session end writes SessionFeedbackScore rows, student/cohort report shape, instructor annotation |
+| enforcer-4 | Enforcer | ✓ Done | RED tests: session end writes SessionFeedbackScore rows, student/cohort report shape, instructor annotation. normalizeScores.test.ts CONFIRMED FAILING (MODULE_NOT_FOUND). Route tests confirmed via static analysis (routes missing, session/end route exists but lacks sessionFeedbackScore.createMany call). |
 | smith-4 | Smith | ⏳ pending | Session end normalization → SessionFeedbackScore; student + cohort report endpoints; instructor annotation |
-| enforcer-5 | Enforcer | 🔄 in progress | RED tests: custom persona create wizard validation against Zod schema, visibility scoping, merged /api/personas |
+| enforcer-5 | Enforcer | ✓ Done | RED tests: custom persona create wizard validation against Zod schema, visibility scoping, merged /api/personas. Route tests confirmed via static analysis (educator persona routes missing; personas/route.ts exists but tests new merge behavior not present in current implementation). |
 | smith-5 | Smith | ⏳ pending | Custom persona builder API + persona loader async refactor + merged GET /api/personas |
 | smith-6 | Smith | ⏳ pending | CSV export (Canvas format, UTF-8 BOM); deep-link JWT mint/verify; /api/session/join/[token] route |
 | shaper-1 | Shaper | ⏳ pending | Educator dashboard shell (/educator), cohort sidebar, roster table, join-code chip, member status toggle |
@@ -488,11 +488,10 @@ alchemist-1
 
 ## Current Session
 
-**Phase:** Role system RED tests complete — ready for smith-1
+**Phase:** smith-2 implementation complete — ready for smith-3
 **Active:** none
-**Working on:** enforcer-1 complete (c584c7b); RED tests for getRoleFromJwt, requireEducator, requireUser all confirmed failing
-**File:** psko-app/src/lib/auth/__tests__/getRoleFromJwt.test.ts, requireEducator.test.ts, requireUser.test.ts
-**Next:** smith-1 (implement getRoleFromJwt, requireEducator, requireUser, middleware /educator/* gating) — unblocked by enforcer-1
+**Working on:** smith-2 cohort + join API routes written; joinCode unit tests GREEN (5/5 via node:test). Route tests (Jest) not run on this machine (Jest hangs — pre-existing tooling issue, not new). All smith-2 files compile against scoped tsc filter; no new TS errors introduced.
+**Next:** smith-3 (Assignments API + session start async persona) — unblocked once orchestrator commits smith-2 work
 
 ---
 

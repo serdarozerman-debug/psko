@@ -13,6 +13,14 @@ Before any action, read `.claude/skills/using-skills/SKILL.md` and follow it.
 - Never re-ask anything that is already answered in this file, in `AGENTS.md`, in `.catalyst/main/*`, or earlier in the session.
 - When in doubt between two reasonable options, pick the one that better matches the conventions already in the codebase and move on.
 
+## Stop Hook — End-of-Turn Contract
+
+A Stop hook (`.claude/hooks/stop-auto-continue.sh`) auto-continues every turn. Because of this:
+
+- **When the work is actually finished, just say it's done in one short line and STOP.** Do not invent new tasks, do not propose follow-ups, do not start a new feature unprompted.
+- Saying "done" is enough — the user will provide the next instruction. The auto-continue exists to avoid manual nudges *within* a task, not to perpetually generate new work.
+- If you genuinely have a useful next step in the same task (e.g. running tests after implementing), do it. If the task is complete, stop generating.
+
 ## Standing Decisions (do not re-ask)
 
 These are already decided. Do not ask the user to re-confirm them.
@@ -42,9 +50,21 @@ For multi-hour features, start Claude Code via the wrapper so that if the 5-hour
 ./claude-loop.sh --continue
 ```
 
-The wrapper runs `claude -p` for the first attempt, detects rate-limit errors,
-parses the reset time (or falls back to 5h), sleeps, then calls `claude --continue -p`
-to pick up the same session. Logs go to `./claude-loop.log`.
+The wrapper has two automation paths:
+
+1. **Rate-limit / usage-window** — detects the limit error, parses the reset time
+   (or falls back to 5h), sleeps, then calls `claude --continue -p` to pick up
+   the same session.
+2. **Auto-continue on checkpoint** — if Claude's successful output contains a
+   pause-state marker (e.g. "ready for next session continuation",
+   "ready for the next step", "awaiting next instruction", "shall I proceed"),
+   the wrapper immediately fires `claude --continue -p "continue with the next step"`
+   to advance — no manual nudge needed. Capped at `CLAUDE_LOOP_MAX_ITERATIONS=50`
+   for safety.
+
+Disable auto-continue with `--no-auto-continue`. Override patterns/nudge prompt
+via `CLAUDE_LOOP_CONTINUATION_PATTERNS` and `CLAUDE_LOOP_CONTINUE_PROMPT`. Logs
+go to `./claude-loop.log`.
 
 ### Detached background mode (survives terminal close and idle sleep)
 

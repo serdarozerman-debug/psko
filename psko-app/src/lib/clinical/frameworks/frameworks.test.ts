@@ -1,6 +1,8 @@
 import { describe, test } from 'node:test'
 import assert from 'node:assert/strict'
 import { getClinicalFramework, ALL_FRAMEWORKS } from './index'
+import { getPhaseForTurn } from '../phase-engine/detect-phase'
+import { INTAKE_QUESTIONS } from '../intake/questions'
 
 describe('Clinical Framework Library', () => {
   test('all 5 approaches have a framework defined', () => {
@@ -54,21 +56,21 @@ describe('Clinical Framework Library', () => {
 
 describe('Phase Engine', () => {
   test('getPhaseForTurn returns phase 0 at turn 0', async () => {
-    const { getPhaseForTurn } = await import('../phase-engine/detect-phase')
+    // getPhaseForTurn imported statically above
     const result = getPhaseForTurn('cbt', 0)
     assert.strictEqual(result.currentPhase, 0)
     assert.ok(result.phase !== null, 'phase should not be null at turn 0')
   })
 
   test('getPhaseForTurn advances phase as turns increase', async () => {
-    const { getPhaseForTurn } = await import('../phase-engine/detect-phase')
+    // getPhaseForTurn imported statically above
     const early = getPhaseForTurn('cbt', 0)
     const later = getPhaseForTurn('cbt', 20)
     assert.ok(later.currentPhase >= early.currentPhase, 'phase should not decrease')
   })
 
   test('getPhaseForTurn returns nextMove string', async () => {
-    const { getPhaseForTurn } = await import('../phase-engine/detect-phase')
+    // getPhaseForTurn imported statically above
     const result = getPhaseForTurn('cbt', 5)
     assert.ok(result.nextMove.length > 0, 'nextMove should not be empty')
   })
@@ -76,19 +78,19 @@ describe('Phase Engine', () => {
 
 describe('Intake Questions', () => {
   test('PHQ-9 block has 9 questions', async () => {
-    const { INTAKE_QUESTIONS } = await import('../intake/questions')
+    // INTAKE_QUESTIONS imported statically above
     const phq9 = INTAKE_QUESTIONS.filter((q) => q.type === 'phq9')
     assert.strictEqual(phq9.length, 9)
   })
 
   test('GAD-7 block has 7 questions', async () => {
-    const { INTAKE_QUESTIONS } = await import('../intake/questions')
+    // INTAKE_QUESTIONS imported statically above
     const gad7 = INTAKE_QUESTIONS.filter((q) => q.type === 'gad7')
     assert.strictEqual(gad7.length, 7)
   })
 
   test('all questions have non-empty text', async () => {
-    const { INTAKE_QUESTIONS } = await import('../intake/questions')
+    // INTAKE_QUESTIONS imported statically above
     for (const q of INTAKE_QUESTIONS) {
       assert.ok(q.text.length > 0, `Question ${q.id} has empty text`)
     }

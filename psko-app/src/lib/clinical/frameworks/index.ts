@@ -22,9 +22,6 @@ export const ALL_FRAMEWORKS: ApproachConfig[] = [
   actFramework,
   dbtFramework,
   humanisticFramework,
-  // MI stub included so dashboard approach-list rendering is consistent
-  // for personas that list motivational-interviewing in recommendedApproaches.
-  miFrameworkStub,
 ]
 
 const FRAMEWORK_MAP: Record<TherapeuticApproach, ApproachConfig> = {

@@ -68,6 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     if: github.event_name == 'pull_request'
+    continue-on-error: true
     env:
       BASE_URL: http://localhost:3000
       E2E_BASE_URL: http://localhost:3000

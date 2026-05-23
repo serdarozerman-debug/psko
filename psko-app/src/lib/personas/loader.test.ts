@@ -17,19 +17,7 @@ import assert from 'node:assert/strict'
 // getPersonaLibrary is not yet exported from index.ts — it does not exist.
 // The import itself will not fail at module load (named export just resolves to
 // undefined), but each test that calls it will FAIL because it is undefined.
-import { personaLibrary, getPersonaById } from './index'
-
-// ─── Helper ───────────────────────────────────────────────────────────────────
-
-/**
- * getPersonaLibrary() is the new export the persona-loader task must add.
- * It is required here via CommonJS require so the test documents the contract
- * without using top-level await (incompatible with tsx/cjs transform).
- * Until the export exists it resolves to `undefined`, causing every test
- * that calls it to throw "getPersonaLibrary is not a function".
- */
-// eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-explicit-any
-const { getPersonaLibrary } = require('./index') as any
+import { personaLibrary, getPersonaById, getPersonaLibrary } from './index'
 
 // ─── Suite ────────────────────────────────────────────────────────────────────
 

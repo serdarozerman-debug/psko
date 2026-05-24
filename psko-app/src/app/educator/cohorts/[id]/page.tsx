@@ -103,7 +103,7 @@ export default async function CohortDetailPage({
                       {new Date(m.joinedAt).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      {m.status !== 'REMOVED' && (
+                      {m.status !== 'INACTIVE' && (
                         <RemoveMemberButton
                           cohortId={cohort.id}
                           studentId={m.student.id}

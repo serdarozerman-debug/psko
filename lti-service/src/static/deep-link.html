@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>PSKO — Configure assignment</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 32px; max-width: 540px; margin: auto; }
+    label { display: block; margin-top: 16px; font-weight: 600; }
+    select, button { font: inherit; padding: 8px; margin-top: 4px; width: 100%; box-sizing: border-box; }
+    button { margin-top: 24px; background: #1e3a8a; color: white; border: 0; border-radius: 4px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Add a PSKO assignment</h1>
+  <form method="POST" action="/lti/deep-link/submit">
+    <label>
+      Persona
+      <select name="personaId" required>
+        <option value="default-anxiety">Anxiety — Generalised</option>
+        <option value="default-depression">Depression — Major</option>
+        <option value="default-trauma">Trauma — PTSD</option>
+      </select>
+    </label>
+    <label>
+      Therapeutic approach
+      <select name="approach" required>
+        <option value="cbt">Cognitive Behavioural Therapy</option>
+        <option value="psychodynamic">Psychodynamic</option>
+        <option value="humanistic">Humanistic</option>
+      </select>
+    </label>
+    <button type="submit">Add to course</button>
+  </form>
+</body>
+</html>

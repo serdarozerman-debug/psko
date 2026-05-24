@@ -71,6 +71,31 @@ export async function POST(req: Request) {
       })
     }
 
+    // AGS grade passback (FR-6, AC-14). If this session was launched via LTI
+    // and carries a lineitem URL, forward the score to lti-service which owns
+    // the LMS access token. Fire-and-forget — AGS failures must not break the
+    // student-facing session-end response.
+    const ltiLineItemUrl = (session as { ltiLineItemUrl?: string | null }).ltiLineItemUrl
+    const ltiServiceUrl = process.env.LTI_SERVICE_URL
+    const internalSecret = process.env.LTI_INTERNAL_SECRET ?? process.env.ADMIN_SECRET
+    if (ltiLineItemUrl && ltiServiceUrl && internalSecret && overallScore !== null) {
+      void fetch(`${ltiServiceUrl}/ags/score`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'x-internal-secret': internalSecret,
+        },
+        body: JSON.stringify({
+          ltiLineItemUrl,
+          userId: user.id,
+          score: overallScore,
+          scoreMaximum: 100,
+        }),
+      }).catch((err) => {
+        console.error('[session/end] ags forward failed:', err)
+      })
+    }
+
     return Response.json({ session: updated, feedback })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)

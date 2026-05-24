@@ -46,9 +46,19 @@ jest.mock('@/lib/db/prisma', () => ({
 // ── Auth mock ─────────────────────────────────────────────────────────────────
 const mockRequireEducator = jest.fn()
 
-jest.mock('@/lib/auth', () => ({
-  requireEducator: (...args: unknown[]) => mockRequireEducator(...args),
-}))
+jest.mock('@/lib/auth', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { NextResponse } = require('next/server')
+  return {
+    requireEducator: (...args: unknown[]) => mockRequireEducator(...args),
+    mapAuthError: (err: unknown) => {
+      const msg = err instanceof Error ? err.message : String(err)
+      if (/forbidden/i.test(msg)) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+      if (/unauthenticated/i.test(msg)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return null
+    },
+  }
+})
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 

@@ -1,20 +1,27 @@
 import { test, expect } from '@playwright/test'
 import { checkA11y } from './helpers/a11y'
 
-const E2E_EMAIL = process.env.E2E_USER_EMAIL ?? 'e2e-student@psko.local'
-const E2E_PASSWORD = process.env.E2E_USER_PASSWORD ?? 'e2e-password'
-
+/**
+ * Student happy-path E2E spec.
+ *
+ * Requires a live Supabase instance with a seeded E2E user plus the app server
+ * running.  The `auth-setup` Playwright project runs first and saves session
+ * state to tests/e2e/.auth/student.json; by the time this spec runs the browser
+ * context is already authenticated.
+ *
+ * When E2E_USER_EMAIL is not set (e.g. pure unit-test CI runs) the test skips
+ * itself rather than failing.
+ */
 test.describe('Student happy path', () => {
-  // Requires a live Supabase instance with a seeded E2E user and a real DB.
-  // Cannot run in CI without those external dependencies — skipped.
-  test.skip('signs in, completes intake, runs a session, sees summary', async ({ page }) => {
-    await page.goto('/auth/sign-in')
-    await checkA11y(page, 'sign-in')
+  test('signs in, completes intake, runs a session, sees summary', async ({ page }) => {
+    test.skip(
+      !process.env.E2E_USER_EMAIL,
+      'E2E_USER_EMAIL not set — skipping authenticated E2E tests',
+    )
 
-    await page.getByLabel(/e-?posta/i).fill(E2E_EMAIL)
-    await page.getByLabel(/şifre|parola/i).fill(E2E_PASSWORD)
-    await page.getByRole('button', { name: /giriş|oturum aç/i }).click()
-
+    // Browser context is pre-authenticated via storageState (auth.setup.ts).
+    // Navigate to the post-login landing point.
+    await page.goto('/dashboard')
     await expect(page).toHaveURL(/\/(intake|dashboard)/)
     await checkA11y(page, 'post-signin')
 

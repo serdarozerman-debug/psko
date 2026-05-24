@@ -5,6 +5,7 @@ import { prisma } from '@/lib/db/prisma'
 import { personaLibrary } from '@/lib/personas'
 import { approaches } from '@/lib/approaches'
 import { PersonaSelectClient } from '@/components/session/TriggerWarningModal'
+import { AssignedPersonas } from '@/components/dashboard/AssignedPersonas'
 import type { RoleMode } from '@/types'
 import { ALL_FRAMEWORKS } from '@/lib/clinical/frameworks'
 
@@ -70,6 +71,9 @@ export default async function DashboardPage() {
             ))}
           </div>
         </section>
+
+        {/* Assigned to you */}
+        <AssignedPersonas />
 
         {/* Recent Sessions */}
         {recentSessions.length > 0 && (

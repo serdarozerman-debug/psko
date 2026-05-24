@@ -5,7 +5,8 @@ export type ConversationalStyle = 'plain' | 'upset' | 'reserved' | 'verbose' | '
 
 // ─── Prisma enum re-exports ────────────────────────────────────────────────
 // THERAPIST = student plays the therapist; CLIENT = student plays the patient
-export type { UserRole, PersonaVisibility, MembershipStatus, RoleMode, ScoreAssessor } from '@prisma/client'
+import type { UserRole, PersonaVisibility, MembershipStatus, RoleMode, ScoreAssessor } from '@prisma/client'
+export type { UserRole, PersonaVisibility, MembershipStatus, RoleMode, ScoreAssessor }
 
 // ─── Educator / cohort domain types ────────────────────────────────────────
 

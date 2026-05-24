@@ -1,15 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { createClient } from '@/lib/supabase/server'
-import { requireUser } from '@/lib/auth'
-
-function mapAuthError(err: unknown): NextResponse | null {
-  const message = err instanceof Error ? err.message : String(err)
-  if (/unauthenticated/i.test(message)) {
-    return NextResponse.json({ error: message }, { status: 401 })
-  }
-  return null
-}
+import { requireUser, mapAuthError } from '@/lib/auth'
 
 export type StudentAssignmentStatus = 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED'
 

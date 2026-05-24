@@ -2,14 +2,7 @@ import { NextResponse } from 'next/server'
 import { MembershipStatus } from '@prisma/client'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/db/prisma'
-import { requireUser } from '@/lib/auth'
-
-function mapAuthError(err: unknown) {
-  if (err instanceof Error && /unauthenticated/i.test(err.message)) {
-    return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 })
-  }
-  return null
-}
+import { requireUser, mapAuthError } from '@/lib/auth'
 
 type RouteContext = { params: { code: string } }
 

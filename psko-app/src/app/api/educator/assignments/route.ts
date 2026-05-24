@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { RoleMode } from '@prisma/client'
 import { prisma } from '@/lib/db/prisma'
 import { createClient } from '@/lib/supabase/server'
-import { requireEducator } from '@/lib/auth'
+import { requireEducator, mapAuthError } from '@/lib/auth'
 
 const CreateAssignmentSchema = z.object({
   cohortId: z.string().min(1),
@@ -12,17 +12,6 @@ const CreateAssignmentSchema = z.object({
   approachId: z.string().optional(),
   dueAt: z.string().datetime().optional(),
 })
-
-function mapAuthError(err: unknown): NextResponse | null {
-  const message = err instanceof Error ? err.message : String(err)
-  if (/forbidden/i.test(message)) {
-    return NextResponse.json({ error: message }, { status: 403 })
-  }
-  if (/unauthenticated/i.test(message)) {
-    return NextResponse.json({ error: message }, { status: 401 })
-  }
-  return null
-}
 
 export async function GET(_req: Request) {
   const supabase = await createClient()

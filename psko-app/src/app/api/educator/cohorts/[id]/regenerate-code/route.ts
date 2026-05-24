@@ -1,20 +1,8 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/db/prisma'
-import { requireEducator } from '@/lib/auth'
+import { requireEducator, mapAuthError } from '@/lib/auth'
 import { generateJoinCode } from '@/lib/cohorts/joinCode'
-
-function mapAuthError(err: unknown) {
-  if (err instanceof Error) {
-    if (/forbidden/i.test(err.message)) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-    }
-    if (/unauthenticated/i.test(err.message)) {
-      return NextResponse.json({ error: 'Unauthenticated' }, { status: 401 })
-    }
-  }
-  return null
-}
 
 type RouteContext = { params: { id: string } }
 

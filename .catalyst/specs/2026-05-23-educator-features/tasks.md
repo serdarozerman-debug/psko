@@ -57,16 +57,16 @@
 | alchemist-2 | Alchemist | ✓ Done | Seed already had educator demo account + Demo Cohort (DEMO01); added `prisma/sql/access_token_hook.sql` (SECURITY DEFINER, writes `app_metadata.role`, defaults STUDENT) + `supabase/README-auth-hook.md` covering registration and `db reset` re-apply. Commit 6d4be20. |
 | smith-2 | Smith | ✓ Done | Cohort + membership API routes (GET/POST /api/educator/cohorts, GET/PATCH /api/educator/cohorts/[id], POST /api/educator/cohorts/[id]/regenerate-code, DELETE /api/educator/cohorts/[id]/members/[studentId], POST /api/join/[code]); join-code generator (32-char alphabet exclude 0/O/1/I/l, length 6, crypto.randomBytes rejection sampling); joinCode unit tests all GREEN (5/5 via node:test). Uncommitted — orchestrator to commit. |
 | enforcer-3 | Enforcer | ✓ Done | RED tests: assignment create, progress query, async getPersonaById regression, session start with assignmentId. asyncLoader.test.ts: 4 tests, 3 PASS (existing sync behavior preserved), 1 FAIL RED (test_getPersonaById_unknownId_withMockPrisma_queriesDb — current impl ignores prisma arg). Route tests confirmed via static analysis (routes missing). |
-| smith-3 | Smith | ⏳ pending | Assignments API + session start (async persona) + student dashboard data fetcher |
+| smith-3 | Smith | ✓ Done | Assignments API + session start (async persona) + student dashboard data fetcher. Commit 329dc36. |
 | enforcer-4 | Enforcer | ✓ Done | RED tests: session end writes SessionFeedbackScore rows, student/cohort report shape, instructor annotation. normalizeScores.test.ts CONFIRMED FAILING (MODULE_NOT_FOUND). Route tests confirmed via static analysis (routes missing, session/end route exists but lacks sessionFeedbackScore.createMany call). |
-| smith-4 | Smith | ⏳ pending | Session end normalization → SessionFeedbackScore; student + cohort report endpoints; instructor annotation |
+| smith-4 | Smith | ✓ Done | Session end normalization → SessionFeedbackScore; student + cohort report endpoints; instructor annotation. Commit cb85afe. |
 | enforcer-5 | Enforcer | ✓ Done | RED tests: custom persona create wizard validation against Zod schema, visibility scoping, merged /api/personas. Route tests confirmed via static analysis (educator persona routes missing; personas/route.ts exists but tests new merge behavior not present in current implementation). |
-| smith-5 | Smith | ⏳ pending | Custom persona builder API + persona loader async refactor + merged GET /api/personas |
-| smith-6 | Smith | ⏳ pending | CSV export (Canvas format, UTF-8 BOM); deep-link JWT mint/verify; /api/session/join/[token] route |
-| shaper-1 | Shaper | ⏳ pending | Educator dashboard shell (/educator), cohort sidebar, roster table, join-code chip, member status toggle |
-| shaper-2 | Shaper | ⏳ pending | Recharts reports: LineChart (trends), RadarChart (profile vs cohort), BarChart (cohort compare); per-student + per-cohort views; student self-report |
-| shaper-3 | Shaper | ⏳ pending | 4-step custom persona wizard (Identity, Clinical, Cognitive, SCID-5 optional) with live PersonaCard preview |
-| shaper-4 | Shaper | ⏳ pending | Student dashboard "Assigned to you" section, status badges, due-date flag, debrief reminder hook |
+| smith-5 | Smith | ✓ Done | Custom persona builder API + persona loader async refactor + merged GET /api/personas. Commit 6951dff. |
+| smith-6 | Smith | ✓ Done | CSV export (UTF-8 BOM); deep-link JWT (jose) mint/verify; /api/session/join/[token] route. Commit 6951dff. |
+| shaper-1 | Shaper | ✓ Done | Educator dashboard shell (/educator), cohort sidebar, roster table, join-code chip, member status toggle. Commit 6951dff. |
+| shaper-2 | Shaper | 🔄 in progress | Recharts reports: LineChart (trends), RadarChart (profile vs cohort), BarChart (cohort compare); per-student + per-cohort views; student self-report |
+| shaper-3 | Shaper | 🔄 in progress | 4-step custom persona wizard (Identity, Clinical, Cognitive, SCID-5 optional) with live PersonaCard preview |
+| shaper-4 | Shaper | ✓ Done | Student dashboard "Assigned to you" section: GET /api/student/assignments + AssignedPersonas client component (status/due-date badges, Start/Resume Session CTA) wired into /dashboard. Commit 6951dff. |
 | smith-7 | Smith | ⏳ pending | LTI 1.3 Express service (`lti-service/`) using ltijs + ltijs-postgresql: OIDC, launch, deep-link, AGS, cookieless, handoff token exchange in Next.js |
 
 ---

@@ -1,24 +1,15 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/db/prisma'
-import { requireEducator } from '@/lib/auth'
-
-function mapAuthError(err: unknown): NextResponse | null {
-  const message = err instanceof Error ? err.message : String(err)
-  if (/forbidden/i.test(message)) {
-    return NextResponse.json({ error: message }, { status: 403 })
-  }
-  if (/unauthenticated/i.test(message)) {
-    return NextResponse.json({ error: message }, { status: 401 })
-  }
-  return null
-}
+import { requireEducator, mapAuthError } from '@/lib/auth'
 
 function csvEscape(value: string): string {
-  if (/[",\n\r]/.test(value)) {
-    return `"${value.replace(/"/g, '""')}"`
+  // Prefix formula-injection characters so spreadsheet apps don't execute them
+  const sanitized = /^[=+\-@\t\r]/.test(value) ? `'${value}` : value
+  if (/[",\n\r]/.test(sanitized)) {
+    return `"${sanitized.replace(/"/g, '""')}"`
   }
-  return value
+  return sanitized
 }
 
 export async function GET(

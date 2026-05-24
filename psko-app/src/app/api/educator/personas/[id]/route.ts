@@ -2,14 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/db/prisma'
-import { requireEducator } from '@/lib/auth'
-
-function mapAuthError(err: unknown): NextResponse | null {
-  const msg = err instanceof Error ? err.message : String(err)
-  if (/forbidden/i.test(msg)) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-  if (/unauthenticated/i.test(msg)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  return null
-}
+import { requireEducator, mapAuthError } from '@/lib/auth'
 
 // Partial-update schema — allow any subset of mutable persona fields.
 const UpdatePersonaSchema = z

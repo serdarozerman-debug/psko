@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { createClient } from '@/lib/supabase/server'
-import { requireEducator } from '@/lib/auth'
+import { requireEducator, mapAuthError } from '@/lib/auth'
 
 type ProgressStatus = 'completed' | 'in_progress' | 'not_started'
 
@@ -20,17 +20,6 @@ interface AssignmentWithMembers {
   id: string
   cohort: { members?: MemberShape[]; memberships?: Array<{ studentId: string; student?: { id: string; email: string } | null }> }
   sessions: SessionShape[]
-}
-
-function mapAuthError(err: unknown): NextResponse | null {
-  const message = err instanceof Error ? err.message : String(err)
-  if (/forbidden/i.test(message)) {
-    return NextResponse.json({ error: message }, { status: 403 })
-  }
-  if (/unauthenticated/i.test(message)) {
-    return NextResponse.json({ error: message }, { status: 401 })
-  }
-  return null
 }
 
 export async function GET(

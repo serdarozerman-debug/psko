@@ -94,6 +94,30 @@ Sessions carry a `roleMode` field (`THERAPIST` | `CLIENT`) that drives both AI b
 - The AI's character (psychologist vs patient persona) is inferred from `Session.roleMode`, not from `Message.role`
 - New modes must add a branch in `patient-agent.ts` and `supervisor-agent.ts`; they do NOT require new API routes
 
+## Educator / Auth Conventions
+
+- Route auth guards: call `requireEducator(supabase, prisma)` inside a try/catch; map auth errors with `mapAuthError(err)` (returns NextResponse or null)
+- All `/api/educator/*` routes must call `requireEducator` — never rely solely on middleware
+- `getRoleFromJwt(jwt)` reads `app_metadata.role` from Supabase JWT; returns `UserRole` enum or `STUDENT` as default
+- Supabase custom access token hook (`prisma/sql/access_token_hook.sql`) must be enabled in Supabase dashboard → Database → Functions after every `db reset`
+
+## Join Code Conventions
+
+- Join codes use a 32-char alphabet: `ABCDEFGHJKLMNPQRSTUVWXYZ23456789` (excludes 0/O/1/I/l to avoid visual ambiguity)
+- Length: 6 characters; generated via `crypto.randomBytes` + rejection sampling (no modulo bias)
+- Codes stored uppercase; `/api/join/[code]` normalises input with `.toUpperCase()` before lookup
+
+## Deep-Link JWT Conventions
+
+- Deep-link tokens: HS256, 7-day expiry, signed with `DEEPLINK_JWT_SECRET` env var (throws on missing — no fallback)
+- Payload: `{ assignmentId: string, cohortId: string }`
+- Mint: `mintDeepLinkToken(payload)` — Verify: `verifyDeepLinkToken(token)` (returns null on any failure)
+
+## CSV Export Conventions
+
+- Always write UTF-8 BOM (`﻿`) at start of CSV for Excel compatibility
+- Use `Content-Disposition: attachment; filename="..."` response header
+
 ## Testing Conventions
 
 - Unit tests for: prompt builders, persona schema validation, approach configs

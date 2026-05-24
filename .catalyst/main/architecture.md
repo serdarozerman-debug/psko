@@ -212,6 +212,39 @@ TRANSCRIPT:
 Return structured JSON feedback.
 ```
 
+## Educator Layer (Phase 3)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   Educator Dashboard (/educator/*)           │
+│                                                             │
+│  Cohorts → Assignments → Reports → Custom Personas          │
+└─────────────────────────┬───────────────────────────────────┘
+                          │ JWT role claim (EDUCATOR)
+┌─────────────────────────▼───────────────────────────────────┐
+│              Next.js API Routes (Educator)                   │
+│                                                             │
+│  /api/educator/cohorts/**    — CRUD, join code regen, CSV   │
+│  /api/educator/assignments/**— create, progress             │
+│  /api/educator/students/**   — individual reports           │
+│  /api/educator/personas/**   — custom persona builder       │
+│  /api/join/[code]            — student enrolment            │
+│  /api/session/end            — writes SessionFeedbackScore  │
+│  /api/educator/assignments/[id]/deep-link — JWT mint        │
+└─────────────────────────────────────────────────────────────┘
+
+Key files added in Phase 3:
+- src/lib/auth/index.ts           — getRoleFromJwt, requireEducator, requireUser
+- src/middleware.ts               — /educator/* gating via JWT role claim
+- src/lib/cohorts/joinCode.ts     — generateJoinCode (crypto rejection sampling)
+- src/lib/cohorts/queries.ts      — cohort DB helpers
+- src/lib/reports/normalizeScores.ts — SessionFeedbackScore normalisation
+- src/lib/deeplink/index.ts       — JWT deep-link mint/verify (jose)
+- prisma/sql/access_token_hook.sql — Supabase custom token hook (sets role claim)
+- src/components/educator/persona-wizard/ — 4-step clinical persona wizard
+- src/components/educator/reports/       — Recharts competency radar + charts
+```
+
 ## File Structure (Planned)
 
 ```

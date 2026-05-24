@@ -1,6 +1,6 @@
 ---
 spec: 2026-05-23-educator-features
-status: draft
+status: COMPLETE
 domain: educator
 
 provides:
@@ -20,9 +20,25 @@ affects:
   - Feedback pipeline (SessionFeedbackScore normalization)
   - New service: lti.psko.app (Express + ltijs-postgresql)
 
-patterns_established: []
-key_files: []
-key_decisions: []
+patterns_established:
+  - "requireEducator / requireUser auth guards — throw on failure, routes catch+map via mapAuthError"
+  - "Join-code generator: crypto.randomBytes rejection sampling over 32-char unambiguous alphabet"
+  - "Visibility from request body — separate from Zod persona schema; extract before safeParse then use in create"
+  - "SessionFeedbackScore normalised in normalizeCompetencyScores; written in session/end after AI feedback"
+  - "Deep-link JWTs via jose (HS256, 7d TTL); env var throws on missing — no fallback"
+  - "CSV export: UTF-8 BOM header for Excel compatibility"
+key_files:
+  - "psko-app/src/lib/auth/index.ts — role guards (getRoleFromJwt, requireEducator, requireUser)"
+  - "psko-app/src/middleware.ts — /educator/* route gating"
+  - "psko-app/src/lib/cohorts/joinCode.ts — generateJoinCode (crypto, rejection sampling)"
+  - "psko-app/src/lib/reports/normalizeScores.ts — competency score normalisation"
+  - "psko-app/src/lib/deeplink/index.ts — JWT mint/verify for assignment deep-links"
+  - "psko-app/prisma/sql/access_token_hook.sql — Supabase custom JWT role claim hook"
+  - "psko-app/src/components/educator/persona-wizard/WizardShell.tsx — 4-step persona wizard"
+key_decisions:
+  - "FK columns use TEXT not @db.Uuid to match existing PK type — avoids live-data migration risk"
+  - "LTI 1.3 (AC-11..14) deferred — no test LMS instance; stubs would give false confidence"
+  - "mapAuthError duplicated in routes (not extracted) — acceptable tech debt, tracked for next sprint"
 ---
 
 # Spec: Educator Features & Scale (Phase 3)

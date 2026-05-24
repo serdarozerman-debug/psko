@@ -36,9 +36,9 @@ export function CohortBarChart({ studentScores }: Props) {
   }
 
   // Collect all domains
-  const domains = [
-    ...new Set(studentScores.flatMap((s) => s.scores.map((sc) => sc.domain))),
-  ]
+  const domains = Array.from(
+    new Set(studentScores.flatMap((s) => s.scores.map((sc) => sc.domain))),
+  )
 
   // Average score per domain per student
   const data = studentScores.map((st) => {

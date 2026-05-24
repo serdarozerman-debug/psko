@@ -26,10 +26,10 @@ interface Props {
 }
 
 export function CompetencyRadar({ studentScores, cohortAverages }: Props) {
-  const domains = [...new Set([
+  const domains = Array.from(new Set([
     ...studentScores.map((s) => s.domain),
     ...cohortAverages.map((a) => a.domain),
-  ])]
+  ]))
 
   if (domains.length === 0) {
     return <p className="text-slate-500 text-sm">No competency data yet.</p>

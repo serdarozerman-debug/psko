@@ -37,7 +37,7 @@ export function TrendLineChart({ scores }: Props) {
     return <p className="text-slate-500 text-sm">No score data yet.</p>
   }
 
-  const domains = [...new Set(scores.map((s) => s.domain))]
+  const domains = Array.from(new Set(scores.map((s) => s.domain)))
 
   // Group scores by date, then pivot domains as columns
   const byDate = new Map<string, Record<string, number>>()

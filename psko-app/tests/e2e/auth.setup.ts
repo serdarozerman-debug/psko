@@ -21,6 +21,19 @@ import { seedE2EFixtures, E2E_USER_EMAIL, E2E_USER_PASSWORD } from './helpers/se
 export const STUDENT_AUTH_FILE = path.join(__dirname, '.auth/student.json')
 
 setup('authenticate as E2E student', async ({ page }) => {
+  // When credentials are absent (e.g. CI without E2E secrets configured) write
+  // an empty storage-state file and return early.  Dependent spec projects will
+  // still start, but every test that needs auth skips itself via
+  //   test.skip(!process.env.E2E_USER_EMAIL, '...')
+  // so nothing fails — this setup step just passes cleanly.
+  if (!process.env.E2E_USER_EMAIL) {
+    const { writeFileSync, mkdirSync } = await import('fs')
+    mkdirSync(path.dirname(STUDENT_AUTH_FILE), { recursive: true })
+    writeFileSync(STUDENT_AUTH_FILE, JSON.stringify({ cookies: [], origins: [] }))
+    console.log('[auth.setup] E2E_USER_EMAIL not set — writing empty storage state, skipping sign-in.')
+    return
+  }
+
   // Only seed when we have a service role key (CI or local with full secrets).
   // Skip seeding when running against a pre-seeded staging env.
   if (process.env.SUPABASE_SERVICE_ROLE_KEY) {

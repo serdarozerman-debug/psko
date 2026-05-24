@@ -22,8 +22,11 @@ test.describe('/api/docs smoke tests', () => {
     await expect(page).toHaveURL(/\/auth\/sign-in/)
 
     // The redirect must carry the ?next= parameter so the user returns to
-    // /api/docs after successful login
-    expect(page.url()).toContain('next=%2Fapi%2Fdocs')
+    // /api/docs after successful login (browser may or may not encode the slash)
+    const url = page.url()
+    expect(
+      url.includes('next=%2Fapi%2Fdocs') || url.includes('next=/api/docs'),
+    ).toBe(true)
   })
 
   // Skipped: requires authenticated session fixture (Supabase cookie injection).

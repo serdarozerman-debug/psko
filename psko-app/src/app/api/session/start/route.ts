@@ -13,6 +13,8 @@ const StartSessionSchema = z.object({
   roleMode: z.enum(['THERAPIST', 'CLIENT']).default('THERAPIST'),
   /** Optional: pre-session intake answers */
   intakeResponses: z.record(z.string(), z.union([z.string(), z.number()])).optional(),
+  /** Optional: cohort assignment this session fulfils. */
+  assignmentId: z.string().optional(),
 })
 
 export async function POST(req: Request) {
@@ -29,13 +31,35 @@ export async function POST(req: Request) {
     return Response.json({ error: parsed.error.flatten() }, { status: 400 })
   }
 
-  const { personaId, therapeuticApproach, roleMode, intakeResponses } = parsed.data
-  const persona = getPersonaById(personaId)
+  const { personaId, therapeuticApproach, roleMode, intakeResponses, assignmentId } = parsed.data
+  const persona = await getPersonaById(personaId, prisma)
   if (!persona) {
     return Response.json({ error: 'Persona not found' }, { status: 404 })
   }
 
   try {
+    // If an assignmentId is supplied, confirm the caller is an active member of
+    // the cohort the assignment belongs to. Educators can't side-load progress
+    // for assignments they aren't enrolled in.
+    if (assignmentId) {
+      const assignment = await prisma.assignment.findUnique({
+        where: { id: assignmentId },
+        select: { cohortId: true },
+      })
+      if (!assignment) {
+        return Response.json({ error: 'Assignment not found' }, { status: 404 })
+      }
+      const membership = await prisma.cohortMembership.findFirst({
+        where: { cohortId: assignment.cohortId, studentId: user.id, status: 'ACTIVE' },
+        select: { id: true },
+      })
+      if (!membership) {
+        return Response.json(
+          { error: 'Not a member of this assignment\'s cohort' },
+          { status: 403 },
+        )
+      }
+    }
     // Upsert user in DB
     await prisma.user.upsert({
       where: { email: user.email! },
@@ -69,6 +93,7 @@ export async function POST(req: Request) {
         personaId,
         therapeuticApproach,
         roleMode: prismaRoleMode,
+        ...(assignmentId ? { assignmentId } : {}),
       },
     })
 

@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     return Response.json({ error: 'Session turn limit reached' }, { status: 400 })
   }
 
-  const persona = getPersonaById(session.personaId)
+  const persona = await getPersonaById(session.personaId, prisma)
   if (!persona) return Response.json({ error: 'Persona not found' }, { status: 404 })
 
   // Save student message

@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db/prisma'
 import { createClient } from '@/lib/supabase/server'
 import { getPersonaById } from '@/lib/personas'
 import { generateFeedback } from '@/lib/claude/supervisor-agent'
+import { normalizeCompetencyScores } from '@/lib/reports/normalizeScores'
 import type { TherapeuticApproach, MessageData, RoleMode } from '@/types'
 
 const EndSessionSchema = z.object({
@@ -27,7 +28,7 @@ export async function POST(req: Request) {
   if (!session) return Response.json({ error: 'Session not found' }, { status: 404 })
   if (session.endedAt) return Response.json({ error: 'Session already ended' }, { status: 400 })
 
-  const persona = getPersonaById(session.personaId)
+  const persona = await getPersonaById(session.personaId, prisma)
   if (!persona) return Response.json({ error: 'Persona not found' }, { status: 404 })
 
   const messages: MessageData[] = session.messages.map((m) => ({
@@ -46,13 +47,29 @@ export async function POST(req: Request) {
       session.roleMode as RoleMode
     )
 
+    const competencyScores = normalizeCompetencyScores(feedback)
+    const overallScoreRaw = (feedback as { overall_score?: unknown })?.overall_score
+    const overallScore = typeof overallScoreRaw === 'number' ? overallScoreRaw : null
+
     const updated = await prisma.session.update({
       where: { id: sessionId },
       data: {
         endedAt: new Date(),
         feedback: feedback as object,
+        ...(overallScore !== null ? { overallScore } : {}),
       },
     })
+
+    if (competencyScores.length > 0) {
+      await prisma.sessionFeedbackScore.createMany({
+        data: competencyScores.map((s) => ({
+          sessionId,
+          domain: s.domain,
+          score: s.score,
+          assessor: 'ai',
+        })),
+      })
+    }
 
     return Response.json({ session: updated, feedback })
   } catch (err) {

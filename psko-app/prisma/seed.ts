@@ -50,6 +50,32 @@ async function main() {
     console.log(`  ✓ ${p.name} (${p.id})`)
   }
 
+  // Educator demo account
+  const educator = await prisma.user.upsert({
+    where: { email: 'educator@demo.psko.app' },
+    update: { role: 'EDUCATOR' },
+    create: {
+      email: 'educator@demo.psko.app',
+      role: 'EDUCATOR',
+    },
+  })
+  console.log(`  ✓ Educator demo account: ${educator.email} (${educator.id})`)
+
+  // Sample cohort owned by the educator (idempotent via stable join code)
+  const cohort = await prisma.cohort.upsert({
+    where: { joinCode: 'DEMO01' },
+    update: {
+      name: 'Demo Cohort',
+      instructorId: educator.id,
+    },
+    create: {
+      name: 'Demo Cohort',
+      instructorId: educator.id,
+      joinCode: 'DEMO01',
+    },
+  })
+  console.log(`  ✓ Demo cohort: ${cohort.name} (join code: ${cohort.joinCode})`)
+
   console.log('Seed complete.')
 }
 

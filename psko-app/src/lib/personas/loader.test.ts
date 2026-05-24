@@ -102,10 +102,10 @@ describe('getPersonaLibrary', () => {
 })
 
 describe('getPersonaById (new persona ids)', () => {
-  test('test_getPersonaById_elifPtsdIntermediate_returnsPersonaObject', () => {
+  test('test_getPersonaById_elifPtsdIntermediate_returnsPersonaObject', async () => {
     // FAIL: elif-ptsd-intermediate.json does not exist yet.
     // After persona-loader task completes this will PASS.
-    const persona = getPersonaById('elif-ptsd-intermediate')
+    const persona = await getPersonaById('elif-ptsd-intermediate')
     assert.ok(
       persona !== undefined,
       "getPersonaById('elif-ptsd-intermediate') returned undefined. " +

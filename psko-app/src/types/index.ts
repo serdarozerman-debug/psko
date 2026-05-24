@@ -2,8 +2,76 @@ export type TherapeuticApproach = 'cbt' | 'psychodynamic' | 'humanistic' | 'act'
 export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced'
 export type MessageRole = 'student' | 'patient'
 export type ConversationalStyle = 'plain' | 'upset' | 'reserved' | 'verbose' | 'pleasing' | 'tangent'
-/** THERAPIST = student plays the therapist; CLIENT = student plays the patient */
-export type RoleMode = 'THERAPIST' | 'CLIENT'
+
+// ─── Prisma enum re-exports ────────────────────────────────────────────────
+// THERAPIST = student plays the therapist; CLIENT = student plays the patient
+import type { UserRole, PersonaVisibility, MembershipStatus, RoleMode, ScoreAssessor } from '@prisma/client'
+export type { UserRole, PersonaVisibility, MembershipStatus, RoleMode, ScoreAssessor }
+
+// ─── Educator / cohort domain types ────────────────────────────────────────
+
+export interface AppMetadata {
+  role?: string
+}
+
+export interface CohortBase {
+  id: string
+  name: string
+  instructorId: string
+  joinCode: string
+  joinCodeEnabled: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export interface CohortMembershipBase {
+  id: string
+  cohortId: string
+  studentId: string
+  joinedAt: string
+  status: 'ACTIVE' | 'INACTIVE'
+}
+
+export interface AssignmentBase {
+  id: string
+  cohortId: string
+  personaId: string
+  approachId?: string
+  roleMode: 'THERAPIST' | 'CLIENT'
+  dueAt?: string
+  createdBy: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface SessionFeedbackScoreBase {
+  id: string
+  sessionId: string
+  domain: string
+  score: number
+  assessor: 'ai' | 'instructor'
+  createdAt: string
+}
+
+export interface AssignmentProgress {
+  studentId: string
+  studentEmail: string
+  status: 'not_started' | 'in_progress' | 'completed'
+  overallScore?: number
+  sessionId?: string
+}
+
+export interface StudentReport {
+  studentId: string
+  scores: Array<{ domain: string; score: number; sessionId: string; createdAt: string }>
+  cohortAverages: Array<{ domain: string; avgScore: number }>
+}
+
+export interface CohortReport {
+  cohortId: string
+  studentScores: Array<{ studentId: string; studentEmail: string; overallScore: number }>
+  domainAverages: Array<{ domain: string; avgScore: number }>
+}
 
 // ─── Clinical Intelligence Engine Types ────────────────────────────────────
 

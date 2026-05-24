@@ -20,7 +20,7 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
 
   if (!session) notFound()
 
-  const persona = getPersonaById(session.personaId)
+  const persona = await getPersonaById(session.personaId)
   const approach = getApproach(session.therapeuticApproach as TherapeuticApproach)
 
   if (!persona || !approach) notFound()

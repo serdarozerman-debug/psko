@@ -19,7 +19,7 @@ export async function POST(req: Request) {
   if (!parsed.success) return Response.json({ error: parsed.error.flatten() }, { status: 400 })
 
   const { personaId, responses } = parsed.data
-  const persona = getPersonaById(personaId)
+  const persona = await getPersonaById(personaId)
   if (!persona) return Response.json({ error: 'Persona not found' }, { status: 404 })
 
   try {

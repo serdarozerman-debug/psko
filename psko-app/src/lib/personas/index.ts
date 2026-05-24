@@ -11,6 +11,7 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
+import type { PrismaClient } from '@prisma/client'
 import type { PersonaData } from '@/types'
 import { PersonaDataSchema } from './schema'
 
@@ -64,6 +65,22 @@ export function getPersonaLibrary(): PersonaData[] {
   return personaLibrary
 }
 
-export function getPersonaById(id: string): PersonaData | undefined {
-  return personaLibrary.find((p) => p.id === id)
+/**
+ * Look up a persona by id. Checks the file-based library first; if no match and
+ * a `prisma` client is provided, falls through to a DB lookup so educator-built
+ * custom personas resolve at runtime.
+ */
+export async function getPersonaById(
+  id: string,
+  prisma?: PrismaClient,
+): Promise<PersonaData | undefined> {
+  const libMatch = personaLibrary.find((p) => p.id === id)
+  if (libMatch) return libMatch
+
+  if (!prisma) return undefined
+
+  const dbPersona = await prisma.persona.findUnique({ where: { id } })
+  if (!dbPersona) return undefined
+
+  return dbPersona as unknown as PersonaData
 }

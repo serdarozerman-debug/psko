@@ -1,18 +1,5 @@
 {
   "permissions": {
     "defaultMode": "bypassPermissions"
-  },
-  "hooks": {
-    "Stop": [
-      {
-        "matchers": [],
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash .claude/hooks/stop-auto-continue.sh"
-          }
-        ]
-      }
-    ]
   }
 }

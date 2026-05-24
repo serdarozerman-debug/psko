@@ -10,10 +10,6 @@ const CreateCohortSchema = z.object({
   description: z.string().trim().max(2000).optional(),
 })
 
-function forbidden(message = 'Forbidden') {
-  return NextResponse.json({ error: message }, { status: 403 })
-}
-
 function isAuthError(err: unknown): { status: number; message: string } | null {
   if (!(err instanceof Error)) return null
   if (/forbidden/i.test(err.message)) return { status: 403, message: 'Forbidden' }

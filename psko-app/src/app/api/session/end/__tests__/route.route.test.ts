@@ -156,7 +156,7 @@ describe('POST session end — persists competency scores to SessionFeedbackScor
 
     // Act
     const res = await POST(makePOSTRequest({ sessionId: 'sess-test' }))
-    const body = await res.json()
+    await res.json()
 
     // Assert: HTTP response succeeds
     expect(res.status).toBe(200)

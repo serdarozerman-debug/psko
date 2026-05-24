@@ -134,7 +134,7 @@ describe('GET /api/educator/cohorts/[id]', () => {
 
       // Act
       const res = await GET(makeGETRequest('c-other'), makeParams('c-other'))
-      const body = await res.json()
+      await res.json()
 
       // Assert
       expect(res.status).toBe(404)

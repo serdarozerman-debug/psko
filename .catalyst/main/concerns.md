@@ -16,7 +16,7 @@
 - Supervisor feedback framed as "training tool guidance" not "clinical standard"
 - Clear disclaimer on all feedback: "This is AI-generated educational feedback. Consult your clinical supervisor."
 - Feedback grounded in CTS-R criteria (published, verifiable framework)
-- Phase 3: option for educator to override/annotate AI feedback
+- ✅ **RESOLVED (Phase 3):** Educator annotation feature shipped — educators can override/annotate AI feedback via `AnnotationEditor` component and `PATCH /api/educator/sessions/[id]/annotation`
 
 ### 3. Misuse — Students Using Platform as Real Therapy
 **Risk:** Students (or others) might engage with patient personas as if receiving real mental health support.

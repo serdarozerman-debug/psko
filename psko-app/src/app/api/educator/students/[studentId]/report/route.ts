@@ -35,12 +35,13 @@ export async function GET(
       return NextResponse.json({ error: 'Student not found' }, { status: 404 })
     }
 
-    // Verify the student is in a cohort owned by this educator.
+    // Verify the student is in a cohort owned by this educator; fetch member list in the same query.
     const cohort = await prisma.cohort.findFirst({
       where: {
         instructorId: educator.id,
         memberships: { some: { studentId } },
       },
+      include: { memberships: { select: { studentId: true } } },
     })
     if (!cohort) {
       return NextResponse.json(
@@ -64,11 +65,8 @@ export async function GET(
     }))
 
     // Cohort averages: mean score per domain across all members in this cohort.
-    const cohortMemberRows = await prisma.cohort.findUnique({
-      where: { id: cohort.id },
-      include: { memberships: { select: { studentId: true } } },
-    })
-    const memberIds = cohortMemberRows?.memberships.map((m) => m.studentId) ?? []
+    const cohortWithMembers = cohort as unknown as { memberships?: { studentId: string }[] }
+    const memberIds = cohortWithMembers.memberships?.map((m) => m.studentId) ?? []
 
     const cohortRows = memberIds.length
       ? ((await prisma.sessionFeedbackScore.findMany({
